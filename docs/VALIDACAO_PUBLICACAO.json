@@ -1,0 +1,20 @@
+{
+  "version": "1.6.0-beta",
+  "covers_version": "1.04",
+  "date": "2026-10-28",
+  "source_files_compared_with_current_project": 186,
+  "source_code_modified": false,
+  "line_endings_normalized": true,
+  "public_asset_hash_metadata_refreshed": true,
+  "copied_tree_tests": {
+    "host": "passed",
+    "integration": "passed",
+    "iso_pbp_order_theme_preferences": "passed",
+    "cover_installer": "passed"
+  },
+  "private_directories_included": false,
+  "remote_repository_created": false,
+  "git_staging_checkout_verified": true,
+  "embedded_vpk_personal_reference_check": "passed",
+  "note": "A documentação não afirma que os caminhos novos foram todos validados fisicamente. Pacotes binários ficam locais para GitHub Releases."
+}

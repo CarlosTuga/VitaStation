@@ -1,0 +1,7 @@
+Carátulas de loja 1.03 — cópia em bloco
+
+Requer VitaStation 1.5.7 ou posterior para ler o novo formato. O instalador deixa de criar 20 205 imagens individuais e copia uma só biblioteca covers.bin, acompanhada de manifest.tsv, para ux0:data/VitaStation/covers/. A biblioteca contém as mesmas imagens comprimidas, sem nova perda de qualidade. CRC de cada imagem verificado durante a cópia. Fecho e sincronização no fim; publicação do índice após o bloco, rollback em caso de falha de renomeação. Teste de falha de publicação/rollback aprovado. Não garante recuperação automática em caso de corte de energia no meio das renomeações finais.
+
+Instala primeiro VitaStation 1.5.7 e este VPK. Abre Carátulas de loja no LiveArea e prime X. Antes de atualizar uma aplicação que esteja a copiar imagens, para a cópia com O e fecha-a. As imagens individuais já copiadas são preservadas e continuam compatíveis com VitaStation 1.5.7. Não é necessário terminar a cópia antiga. A nova cópia precisa de cerca de 250 MiB adicionais livres. Se interrompida, a cópia em bloco recomeça do início; o bloco final anterior não é substituído por uma cópia incompleta. Backups .previous são preservados.
+
+O VPK continua a conter um único bloco de imagens, mantendo rápida a extração no VitaShell. A pasta permanece depois de reiniciar e depois de remover a bolha do instalador. Não remover os ficheiros de dados se quiser manter as carátulas. Desempenho real na Vita ainda por medir.

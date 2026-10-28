@@ -1,0 +1,158 @@
+[
+  {
+    "name": "GlobalSign",
+    "sha256": "cbb522d7b7f127ad6a0113865bdf1cd4102e7d0759af635a7cf4720dc963c53b"
+  },
+  {
+    "name": "Go Daddy Root Certificate Authority - G2",
+    "sha256": "45140b3247eb9cc8c5b4f0d7b53091f73292089e6e5a63e2749dd3aca9198eda"
+  },
+  {
+    "name": "Starfield Root Certificate Authority - G2",
+    "sha256": "2ce1cb0bf9d2f9e102993fbe215152c3b2dd0cabde1c68e5319b839154dbb7f5"
+  },
+  {
+    "name": "Starfield Services Root Certificate Authority - G2",
+    "sha256": "568d6905a2c88708a4b3025190edcfedb1974a606a13c6e5290fcb2ae63edab5"
+  },
+  {
+    "name": "DigiCert Assured ID Root G2",
+    "sha256": "7d05ebb682339f8c9451ee094eebfefa7953a114edb2f44949452fab7d2fc185"
+  },
+  {
+    "name": "DigiCert Assured ID Root G3",
+    "sha256": "7e37cb8b4c47090cab36551ba6f45db840680fba166a952db100717f43053fc2"
+  },
+  {
+    "name": "DigiCert Global Root G2",
+    "sha256": "cb3ccbb76031e5e0138f8dd39a23f9de47ffc35e43c1144cea27d46a5ab1cb5f"
+  },
+  {
+    "name": "DigiCert Global Root G3",
+    "sha256": "31ad6648f8104138c738f39ea4320133393e3a18cc02296ef97c2ac9ef6731d0"
+  },
+  {
+    "name": "DigiCert Trusted Root G4",
+    "sha256": "552f7bdcf1a7af9e6ce672017f4f12abf77240c78e761ac203d1d9d20ac89988"
+  },
+  {
+    "name": "USERTrust RSA Certification Authority",
+    "sha256": "e793c9b02fd8aa13e21c31228accb08119643b749c898964b1746d46c3d4cbd2"
+  },
+  {
+    "name": "USERTrust ECC Certification Authority",
+    "sha256": "4ff460d54b9c86dabfbcfc5712e0400d2bed3fbc4d4fbdaa86e06adcd2a9ad7a"
+  },
+  {
+    "name": "GlobalSign",
+    "sha256": "179fbc148a3dd00fd24ea13458cc43bfa7f59c8182d783a513f6ebec100c8924"
+  },
+  {
+    "name": "ISRG Root X1",
+    "sha256": "96bcec06264976f37460779acf28c5a7cfe8a3c0aae11a8ffcee05c0bddf08c6"
+  },
+  {
+    "name": "Amazon Root CA 1",
+    "sha256": "8ecde6884f3d87b1125ba31ac3fcb13d7016de7f57cc904fe1cb97c6ae98196e"
+  },
+  {
+    "name": "Amazon Root CA 2",
+    "sha256": "1ba5b2aa8c65401a82960118f80bec4f62304d83cec4713a19c39c011ea46db4"
+  },
+  {
+    "name": "Amazon Root CA 3",
+    "sha256": "18ce6cfe7bf14e60b2e347b8dfe868cb31d02ebb3ada271569f50343b46db3a4"
+  },
+  {
+    "name": "Amazon Root CA 4",
+    "sha256": "e35d28419ed02025cfa69038cd623962458da5c695fbdea3c22b0bfb25897092"
+  },
+  {
+    "name": "SSL.com Root Certification Authority RSA",
+    "sha256": "85666a562ee0be5ce925c1d8890a6f76a87ec16d4d7d5f29ea7419cf20123b69"
+  },
+  {
+    "name": "SSL.com Root Certification Authority ECC",
+    "sha256": "3417bb06cc6007da1b961c920b8ab4ce3fad820e4aa30b9acbc4a74ebdcebc65"
+  },
+  {
+    "name": "SSL.com EV Root Certification Authority RSA R2",
+    "sha256": "2e7bf16cc22485a7bbe2aa8696750761b0ae39be3b2fe9d0cc6d4ef73491425c"
+  },
+  {
+    "name": "SSL.com EV Root Certification Authority ECC",
+    "sha256": "22a2c1f7bded704cc1e701b5f408c310880fe956b5de2a4a44f99c873a25a7c8"
+  },
+  {
+    "name": "GlobalSign",
+    "sha256": "2cabeafe37d06ca22aba7391c0033d25982952c453647349763a3ab5ad6ccf69"
+  },
+  {
+    "name": "Microsoft ECC Root Certificate Authority 2017",
+    "sha256": "358df39d764af9e1b766e9c972df352ee15cfac227af6ad1d70e8e4a6edcba02"
+  },
+  {
+    "name": "Microsoft RSA Root Certificate Authority 2017",
+    "sha256": "c741f70f4b2a8d88bf2e71c14122ef53ef10eba0cfa5e64cfa20f418853073e0"
+  },
+  {
+    "name": "GlobalSign Root R46",
+    "sha256": "4fa3126d8d3a11d1c4855a4f807cbad6cf919d3a5a88b03bea2c6372d93c40c9"
+  },
+  {
+    "name": "GlobalSign Root E46",
+    "sha256": "cbb9c44d84b8043e1050ea31a69f514955d7bfd2e2c6b49301019ad61d9f5058"
+  },
+  {
+    "name": "ISRG Root X2",
+    "sha256": "69729b8e15a86efc177a57afb7171dfc64add28c2fca8cf1507e34453ccb1470"
+  },
+  {
+    "name": "GlobalSign",
+    "sha256": "b085d70b964f191a73e4af0d54ae7a0e07aafdaf9b71dd0862138ab7325a24a2"
+  },
+  {
+    "name": "GTS Root R1",
+    "sha256": "d947432abde7b7fa90fc2e6b59101b1280e0e1c7e4e40fa3c6887fff57a7f4cf"
+  },
+  {
+    "name": "GTS Root R3",
+    "sha256": "34d8a73ee208d9bcdb0d956520934b4e40e69482596e8b6f73c8426b010a6f48"
+  },
+  {
+    "name": "GTS Root R4",
+    "sha256": "349dfa4058c5e263123b398ae795573c4e1313c83fe68f93556cd5e8031b3c7d"
+  },
+  {
+    "name": "DigiCert TLS ECC P384 Root G5",
+    "sha256": "018e13f0772532cf809bd1b17281867283fc48c6e13be9c69812854a490c1b05"
+  },
+  {
+    "name": "DigiCert TLS RSA4096 Root G5",
+    "sha256": "371a00dc0533b3721a7eeb40e8419e70799d2b0a0f2c1d80693165f7cec4ad75"
+  },
+  {
+    "name": "Certainly Root R1",
+    "sha256": "77b82cd8644c4305f7acc5cb156b45675004033d51c60c6202a8e0c33467d3a0"
+  },
+  {
+    "name": "Certainly Root E1",
+    "sha256": "b4585f22e4ac756a4e8612a1361c5d9d031a93fd84febb778fa3068b0fc42dc2"
+  },
+  {
+    "name": "Sectigo Public Server Authentication Root E46",
+    "sha256": "c90f26f0fb1b4018b22227519b5ca2b53e2ca5b3be5cf18efe1bef47380c5383"
+  },
+  {
+    "name": "Sectigo Public Server Authentication Root R46",
+    "sha256": "7bb647a62aeeac88bf257aa522d01ffea395e0ab45c73f93f65654ec38f25a06"
+  },
+  {
+    "name": "SSL.com TLS RSA Root CA 2022",
+    "sha256": "8faf7d2e2cb4709bb8e0b33666bf75a5dd45b5de480f8ea8d4bfe6bebc17f2ed"
+  },
+  {
+    "name": "SSL.com TLS ECC Root CA 2022",
+    "sha256": "c32ffd9f46f936d16c3673990959434b9ad60aafbb9e7cf33654f144cc1ba143"
+  }
+]

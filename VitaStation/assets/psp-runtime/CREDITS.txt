@@ -1,0 +1,7 @@
+VitaStation PSP/PS1 support
+Runtime and generic per-bubble loader from RetroFlow v8.5.0 payloads.
+RetroFlow: https://github.com/jimbob4000/RetroFlow-Launcher (MIT; contributors retain rights).
+Adrenaline: TheOfficialFloW and contributors; https://github.com/TheOfficialFloW/Adrenaline (included license).
+AdrBubbleBooter: LMAN / LeecherMan, ONElua and contributors; open-source reconstruction/integration https://github.com/shoui520/AdrBubbleBooter-oss (included license).
+Corresponding published source snapshot included in assets/plugin-sources/AdrBubbleBooter-oss-source.zip.
+No proprietary Sony firmware is bundled. An existing, initialized official Adrenaline 7 installation is required for the guarded automatic runtime installation. Existing native PSP/PS1 bubbles remain separate from ISO shortcut creation.

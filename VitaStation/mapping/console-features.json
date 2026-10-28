@@ -1,0 +1,671 @@
+{
+  "target_firmware": "3.65",
+  "scope": "Requested product feature inventory, not a dump of the console or proof of full compatibility",
+  "features": [
+    {
+      "category": "Rede",
+      "feature": "Wi-Fi: ligar e desligar",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Rede",
+      "feature": "Procurar pontos de acesso",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Rede",
+      "feature": "Perfis Wi-Fi e autenticação",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Rede",
+      "feature": "Endereço IP, DNS e proxy",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Rede",
+      "feature": "Estado da ligação",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Rede",
+      "feature": "Teste de Internet",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Rede",
+      "feature": "Rede móvel e cartão SIM",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Rede",
+      "feature": "Modo de avião",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Perfil: nome e apresentação",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Avatar e imagem do perfil",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Estado online",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Iniciar e terminar sessão",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Informações da conta",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Privacidade e bloqueios",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Contas familiares",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Ativação da consola",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Conta e PSN",
+      "feature": "Sincronização de dados",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Troféus",
+      "feature": "Lista de jogos",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Troféus",
+      "feature": "Troféus obtidos e por obter",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Troféus",
+      "feature": "Detalhes e datas dos troféus",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Troféus",
+      "feature": "Progresso por jogo",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Troféus",
+      "feature": "Sincronizar com PSN",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Troféus",
+      "feature": "Comparar com amigos",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Troféus",
+      "feature": "Visibilidade dos troféus",
+      "status": "investigation",
+      "dependency": "Local identity/data access plus authenticated PSN services; not verified",
+      "hardware_verified": false
+    },
+    {
+      "category": "Dispositivos",
+      "feature": "Dispositivos Bluetooth",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Dispositivos",
+      "feature": "Emparelhar e remover dispositivos",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Dispositivos",
+      "feature": "Teclado externo",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Dispositivos",
+      "feature": "Comandos e atribuição de botões",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Dispositivos",
+      "feature": "Painel tátil e sensores",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Dispositivos",
+      "feature": "Câmara e microfone",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Som e ecrã",
+      "feature": "Volume da consola",
+      "status": "sdk_candidate",
+      "dependency": "SceAVConfig; native runtime verification required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Som e ecrã",
+      "feature": "Brilho do ecrã",
+      "status": "sdk_candidate",
+      "dependency": "SceAVConfig; native runtime verification required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Som e ecrã",
+      "feature": "Limite de volume AVLS",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Som e ecrã",
+      "feature": "Música do sistema",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Som e ecrã",
+      "feature": "Silêncio automático",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Som e ecrã",
+      "feature": "Temas e fundos",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Notificações",
+      "feature": "Alertas e apresentação",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Notificações",
+      "feature": "Notificações por aplicação",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Idioma e relógio",
+      "feature": "Idioma da consola",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Idioma e relógio",
+      "feature": "Idiomas do teclado",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Idioma e relógio",
+      "feature": "Data e hora",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Idioma e relógio",
+      "feature": "Fuso horário",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Idioma e relógio",
+      "feature": "Hora de verão",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Idioma e relógio",
+      "feature": "Formatos de data e hora",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Acessibilidade",
+      "feature": "Ampliação do ecrã",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Acessibilidade",
+      "feature": "Inversão de cores",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Acessibilidade",
+      "feature": "Tamanho e espessura do texto",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Acessibilidade",
+      "feature": "Contraste elevado",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Acessibilidade",
+      "feature": "Legendas",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Acessibilidade",
+      "feature": "Atribuição de botões",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Acessibilidade",
+      "feature": "Menu rápido",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "Informações da consola e versão",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "Arranque automático",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "Controlo por botões",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "Alimentação USB",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "Consumo e utilização",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "Registo de erros",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "Licenças e avisos",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "PlayStation Mobile",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Sistema",
+      "feature": "Atualização do firmware",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Energia",
+      "feature": "Temporização de espera",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Energia",
+      "feature": "Poupança de energia Wi-Fi",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Energia",
+      "feature": "Estado e carga da bateria",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Energia",
+      "feature": "Suspender",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Energia",
+      "feature": "Desligar e reiniciar",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Bloqueio do ecrã",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Controlo parental",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Espaço disponível",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Gestão de aplicações e dados",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Cópias de segurança e restauro",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Dicionário do teclado",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Formatação do cartão",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Reposição das definições",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Segurança e armazenamento",
+      "feature": "Restauro completo",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Biblioteca e execução de aplicações",
+      "status": "implemented",
+      "dependency": "Existing VitaStation code; on-device coverage varies",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Instalação de pacotes",
+      "status": "investigation",
+      "dependency": "Usagi engine imported; native adapter and tests pending",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Downloads e fila",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Carátulas e metadados",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Amigos",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Mensagens",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Grupos e conversação",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Ligação à PS4",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Reprodução remota PS3",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Navegador",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Fotografias",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Música e vídeos",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Correio e calendário",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Aplicações e serviços",
+      "feature": "Transferência de conteúdo",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Integração do launcher",
+      "feature": "Navegação L/R e favoritos",
+      "status": "implemented",
+      "dependency": "Existing VitaStation code; on-device coverage varies",
+      "hardware_verified": false
+    },
+    {
+      "category": "Integração do launcher",
+      "feature": "Preferências persistentes",
+      "status": "implemented",
+      "dependency": "Existing VitaStation code; on-device coverage varies",
+      "hardware_verified": false
+    },
+    {
+      "category": "Integração do launcher",
+      "feature": "Logótipo e arranque",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Integração do launcher",
+      "feature": "Indicador de volume",
+      "status": "implemented",
+      "dependency": "Existing VitaStation code; on-device coverage varies",
+      "hardware_verified": false
+    },
+    {
+      "category": "Integração do launcher",
+      "feature": "Botão PS e duplo toque",
+      "status": "investigation",
+      "dependency": "SceShell/taiHEN plugin required; not implemented",
+      "hardware_verified": false
+    },
+    {
+      "category": "Integração do launcher",
+      "feature": "Plugins taiHEN: diagnóstico",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    },
+    {
+      "category": "Integração do launcher",
+      "feature": "Plugins taiHEN: instalação e recuperação",
+      "status": "investigation",
+      "dependency": "SDK or private services; audit required",
+      "hardware_verified": false
+    }
+  ]
+}

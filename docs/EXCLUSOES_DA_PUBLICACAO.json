@@ -1,0 +1,97 @@
+{
+  "note": "Os originais permanecem na pasta de trabalho. Publicação contém o código atual e os pacotes mais recentes; não inclui os backups pessoais nem compilações antigas duplicadas.",
+  "excluded": [
+    {
+      "path": "VitaStation/ALIVE_FILE_ENGINE_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/ALIVE_TEST_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/BUILD_VITA_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/console-backup/",
+      "reason": "backup pessoal, transferência ou ficheiro gerado"
+    },
+    {
+      "path": "VitaStation/deployment/",
+      "reason": "backup pessoal, transferência ou ficheiro gerado"
+    },
+    {
+      "path": "VitaStation/IMAGE_AUDIT_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/INSTALL_FIX_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/INTEGRATION_TEST_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/PKG_ENGINE_TEST_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/SHA256SUMS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/TEST_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "VitaStation/tests/__pycache__/validate_vpk.cpython-313.pyc",
+      "reason": "cache ou binário de desenvolvimento"
+    },
+    {
+      "path": "VitaStation/TLS_TEST_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "Caratulas-de-loja/BUILD_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "Caratulas-de-loja/PACKAGE_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "Caratulas-de-loja/RECOLHA_GUARDADA.json",
+      "reason": "recibo privado ou apontamento local desatualizado"
+    },
+    {
+      "path": "Caratulas-de-loja/SHA256SUMS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "Caratulas-de-loja/TEST_RESULTS.txt",
+      "reason": "resultado antigo com caminhos locais; resumo atual em docs/TESTES.md"
+    },
+    {
+      "path": "Caratulas-de-loja/tools/__pycache__/package_vpk.cpython-313.pyc",
+      "reason": "cache ou binário de desenvolvimento"
+    },
+    {
+      "path": "Caratulas-de-loja/TRANSFERENCIA.json",
+      "reason": "recibo privado ou apontamento local desatualizado"
+    },
+    {
+      "path": "Caratulas-de-loja/TRANSFERENCIA_1.02.json",
+      "reason": "recibo privado ou apontamento local desatualizado"
+    },
+    {
+      "path": "Caratulas-de-loja/TRANSFERENCIA_1.03.json",
+      "reason": "recibo privado ou apontamento local desatualizado"
+    },
+    {
+      "path": "Caratulas-de-loja/TRANSFERENCIA_1.04.json",
+      "reason": "recibo privado ou apontamento local desatualizado"
+    }
+  ]
+}

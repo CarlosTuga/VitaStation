@@ -1,0 +1,22 @@
+{
+  "release": "https://github.com/jimbob4000/RetroFlow-Launcher/releases/tag/v8.5.0",
+  "runtime_source": "https://github.com/shoui520/AdrBubbleBooter-oss",
+  "files": {
+    "AdrBubbleBooter-oss-LICENSE.txt": "0ce75135246f72af800a7c8fbd11bae661512f2535fd80130d4ff3924395b2eb",
+    "adrbubblebooter.suprx": "31f61cc7326e447d6e753f8d50a0820041766117ebed0c41e24ad3e8bbfb6565",
+    "Adrenaline-LICENSE.txt": "0ce75135246f72af800a7c8fbd11bae661512f2535fd80130d4ff3924395b2eb",
+    "adrenaline_kernel.skprx": "251e9eab0fccadf004d35983263718026032f544f8d1e78442198c20568b2d07",
+    "adrenaline_user.suprx": "7935ba02a22c7c3e69b253a2fb58d2430d59126963423ae84f7437c498bb9a52",
+    "adrenaline_vsh.suprx": "867c913562e3ade6e59cc958024b39e501c6b6279cfe81c3ac1ccbf2b785d5c4",
+    "bootconv.suprx": "df0bf3e6c49bcfc11a349b56d3747d25008f59bcd7f65d3f31bc8ce481d02446",
+    "bubble-bg0.png": "f460382b3b1719af13b18b5e920ac0a8f454a688c7ac2c4f0481dc371fe4f0ac",
+    "bubble-boot.bin": "d60df20d98fba149f7aa36dfd9f7e949149a8d6705e4f63a689c44541400fb9a",
+    "bubble-eboot.bin": "6a0e6c192ea0071ddc3f661193a5b40f78ca2dc17283505ffbf500123cd97e93",
+    "bubble-param.sfo": "1704eb594b2855c0e0bb0f47ecb6ebfbba1584a37786f9bb29c4e351f1460b6c",
+    "bubble-startup.png": "8d0a04ab4fe4d1f598dde069220e668a95f5d6bea09109f796656d2bc0950cd9",
+    "bubble-template.xml": "1e1d07123e332459431b45903d508c3d24207e6e1ad1b6011e2227337a73ce80",
+    "CREDITS.txt": "e040fa0d9dd4426bbd5006105956f914bf86d0e642a9a8e922e6276c22d7483e",
+    "RetroFlow-LICENSE.txt": "1ee487327dcfb9feadbeb0315c7c20f37fc28a2704ab8c92dcdd39a25d2422ae"
+  },
+  "source_snapshot": "b603ca04740734abfab0fae192a2a7d2b3cdda2c"
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "file": "nonpdrm.skprx",
+    "section": "*KERNEL",
+    "repository": "https://github.com/TheOfficialFloW/NoNpDrm",
+    "tag": "v1.2",
+    "commit": "ef073fd7c8f773e6d31a1634b9bf06d54b268d08",
+    "download": "https://github.com/TheOfficialFloW/NoNpDrm/releases/download/v1.2/nonpdrm.skprx",
+    "bytes": 3920,
+    "sha256": "6600602020e8aedd0ec4bc55941f0349f63f06ebe6ef91f390e1e0a15e19f3b0"
+  },
+  {
+    "file": "nopsmdrm.skprx",
+    "section": "*KERNEL",
+    "repository": "https://github.com/frangarcj/NoPsmDrm",
+    "tag": "v1.5",
+    "commit": "ce80bee441e945c13c701342b2bcd28822d94c70",
+    "download": "https://github.com/frangarcj/NoPsmDrm/releases/download/v1.5/nopsmdrm.skprx",
+    "bytes": 7978,
+    "sha256": "0a78b44d3c78264647c34632c20c14741539c988d4244012872d93c804cc5cd1"
+  },
+  {
+    "file": "NoPspEmuDrm_kern.skprx",
+    "section": "*KERNEL",
+    "repository": "https://github.com/LiEnby/NoPspEmuDrm",
+    "tag": "v1.06",
+    "commit": "c1ba02adbd890b48f3c6535265ba7d9b3301c156",
+    "download": "https://github.com/LiEnby/NoPspEmuDrm/releases/download/v1.06/NoPspEmuDrm_kern.skprx",
+    "bytes": 11265,
+    "sha256": "70e1c8bcfffd7d25e0af2f5d47fb6f15ad2e1d271f73a43e64fa94387198e470"
+  },
+  {
+    "file": "NoPspEmuDrm_user.suprx",
+    "section": "*ALL",
+    "repository": "https://github.com/LiEnby/NoPspEmuDrm",
+    "tag": "v1.06",
+    "commit": "c1ba02adbd890b48f3c6535265ba7d9b3301c156",
+    "download": "https://github.com/LiEnby/NoPspEmuDrm/releases/download/v1.06/NoPspEmuDrm_user.suprx",
+    "bytes": 44786,
+    "sha256": "261fb224ea24b7bc3f9dfca71de0da90bbdeff3e39c3cba31a517b8403ef788f"
+  }
+]

@@ -1,0 +1,743 @@
+{
+  "counts": {
+    "VitaStation": 27,
+    "Consola": 78
+  },
+  "entries": [
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Som do VitaStation",
+      "indice": 0,
+      "controlo": "local"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Loja externa predefinida",
+      "indice": 1,
+      "controlo": "local"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Animações do launcher",
+      "indice": 2,
+      "controlo": "local"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Voltar ao início",
+      "indice": 3,
+      "controlo": "local"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Iniciar VitaStation com a consola",
+      "indice": 4,
+      "controlo": "local"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Gerir plugins",
+      "indice": 5,
+      "controlo": "local"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Comportamento do botão PS",
+      "indice": 6,
+      "controlo": "local"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Desligar ou reiniciar",
+      "indice": 7,
+      "controlo": "local"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Instalar DLCs com o jogo",
+      "indice": 8,
+      "controlo": "local"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Rede",
+      "nome": "Wi-Fi: ligar e desligar",
+      "indice": 9,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Rede",
+      "nome": "Procurar pontos de acesso",
+      "indice": 10,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Rede",
+      "nome": "Perfis Wi-Fi e autenticação",
+      "indice": 11,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Rede",
+      "nome": "Endereço IP, DNS e proxy",
+      "indice": 12,
+      "controlo": "100"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Rede",
+      "nome": "Estado da ligação",
+      "indice": 13,
+      "controlo": "100"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Rede",
+      "nome": "Teste de Internet",
+      "indice": 14,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Rede",
+      "nome": "Rede móvel e cartão SIM",
+      "indice": 15,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Rede",
+      "nome": "Modo de avião",
+      "indice": 16,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Perfil: nome e apresentação",
+      "indice": 17,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Avatar e imagem do perfil",
+      "indice": 18,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Estado online",
+      "indice": 19,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Iniciar e terminar sessão",
+      "indice": 20,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Informações da conta",
+      "indice": 21,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Privacidade e bloqueios",
+      "indice": 22,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Contas familiares",
+      "indice": 23,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Ativação da consola",
+      "indice": 24,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Conta e PSN",
+      "nome": "Sincronização de dados",
+      "indice": 25,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Troféus",
+      "nome": "Lista de jogos",
+      "indice": 26,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Troféus",
+      "nome": "Troféus obtidos e por obter",
+      "indice": 27,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Troféus",
+      "nome": "Detalhes e datas dos troféus",
+      "indice": 28,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Troféus",
+      "nome": "Progresso por jogo",
+      "indice": 29,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Troféus",
+      "nome": "Sincronizar com PSN",
+      "indice": 30,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Troféus",
+      "nome": "Comparar com amigos",
+      "indice": 31,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Troféus",
+      "nome": "Visibilidade dos troféus",
+      "indice": 32,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Dispositivos",
+      "nome": "Dispositivos Bluetooth",
+      "indice": 33,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Dispositivos",
+      "nome": "Emparelhar e remover dispositivos",
+      "indice": 34,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Dispositivos",
+      "nome": "Teclado externo",
+      "indice": 35,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Dispositivos",
+      "nome": "Comandos e atribuição de botões",
+      "indice": 36,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Dispositivos",
+      "nome": "Painel tátil e sensores",
+      "indice": 37,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Dispositivos",
+      "nome": "Câmara e microfone",
+      "indice": 38,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Som e ecrã",
+      "nome": "Volume da consola",
+      "indice": 39,
+      "controlo": "0"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Som e ecrã",
+      "nome": "Brilho do ecrã",
+      "indice": 40,
+      "controlo": "1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Som e ecrã",
+      "nome": "Limite de volume AVLS",
+      "indice": 41,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Som e ecrã",
+      "nome": "Música do sistema",
+      "indice": 42,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Som e ecrã",
+      "nome": "Silêncio automático",
+      "indice": 43,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Som e ecrã",
+      "nome": "Temas e fundos",
+      "indice": 44,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Notificações",
+      "nome": "Alertas e apresentação",
+      "indice": 45,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Notificações",
+      "nome": "Notificações por aplicação",
+      "indice": 46,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Idioma e relógio",
+      "nome": "Idioma da consola",
+      "indice": 47,
+      "controlo": "110"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Idioma e relógio",
+      "nome": "Idiomas do teclado",
+      "indice": 48,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Idioma e relógio",
+      "nome": "Data e hora",
+      "indice": 49,
+      "controlo": "104"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Idioma e relógio",
+      "nome": "Fuso horário",
+      "indice": 50,
+      "controlo": "104"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Idioma e relógio",
+      "nome": "Hora de verão",
+      "indice": 51,
+      "controlo": "104"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Idioma e relógio",
+      "nome": "Formatos de data e hora",
+      "indice": 52,
+      "controlo": "104"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Acessibilidade",
+      "nome": "Ampliação do ecrã",
+      "indice": 53,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Acessibilidade",
+      "nome": "Inversão de cores",
+      "indice": 54,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Acessibilidade",
+      "nome": "Tamanho e espessura do texto",
+      "indice": 55,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Acessibilidade",
+      "nome": "Contraste elevado",
+      "indice": 56,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Acessibilidade",
+      "nome": "Legendas",
+      "indice": 57,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Acessibilidade",
+      "nome": "Atribuição de botões",
+      "indice": 58,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Acessibilidade",
+      "nome": "Menu rápido",
+      "indice": 59,
+      "controlo": "SYS_ACTION_QUICK"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Sistema",
+      "nome": "Informações da consola e versão",
+      "indice": 60,
+      "controlo": "101"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Sistema",
+      "nome": "Arranque automático",
+      "indice": 61,
+      "controlo": "SYS_ACTION_AUTOBOOT"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Sistema",
+      "nome": "Controlo por botões",
+      "indice": 62,
+      "controlo": "106"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Sistema",
+      "nome": "Alimentação USB",
+      "indice": 63,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Sistema",
+      "nome": "Consumo e utilização",
+      "indice": 64,
+      "controlo": "108"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Sistema",
+      "nome": "Registo de erros",
+      "indice": 65,
+      "controlo": "105"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Sistema",
+      "nome": "Licenças e avisos",
+      "indice": 66,
+      "controlo": "107"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Sistema",
+      "nome": "PlayStation Mobile",
+      "indice": 67,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Sistema",
+      "nome": "Atualização do firmware",
+      "indice": 68,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Energia",
+      "nome": "Temporização de espera",
+      "indice": 69,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Energia",
+      "nome": "Poupança de energia Wi-Fi",
+      "indice": 70,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Energia",
+      "nome": "Estado e carga da bateria",
+      "indice": 71,
+      "controlo": "102"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Energia",
+      "nome": "Suspender",
+      "indice": 72,
+      "controlo": "SYS_ACTION_SUSPEND"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Energia",
+      "nome": "Desligar e reiniciar",
+      "indice": 73,
+      "controlo": "SYS_ACTION_POWER"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Segurança e armazenamento",
+      "nome": "Bloqueio do ecrã",
+      "indice": 74,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Segurança e armazenamento",
+      "nome": "Controlo parental",
+      "indice": 75,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Segurança e armazenamento",
+      "nome": "Espaço disponível",
+      "indice": 76,
+      "controlo": "103"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Gestão de aplicações e dados",
+      "indice": 77,
+      "controlo": "SYS_ACTION_REFRESH"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Segurança e armazenamento",
+      "nome": "Cópias de segurança e restauro",
+      "indice": 78,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Segurança e armazenamento",
+      "nome": "Dicionário do teclado",
+      "indice": 79,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Segurança e armazenamento",
+      "nome": "Formatação do cartão",
+      "indice": 80,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Segurança e armazenamento",
+      "nome": "Reposição das definições",
+      "indice": 81,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Segurança e armazenamento",
+      "nome": "Restauro completo",
+      "indice": 82,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Aplicações e serviços",
+      "nome": "Biblioteca e execução de aplicações",
+      "indice": 83,
+      "controlo": "SYS_ACTION_LIBRARY"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Aplicações e serviços",
+      "nome": "Instalação de pacotes",
+      "indice": 84,
+      "controlo": "SYS_ACTION_STORE"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Aplicações e serviços",
+      "nome": "Downloads e fila",
+      "indice": 85,
+      "controlo": "109"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Aplicações e serviços",
+      "nome": "Carátulas e metadados",
+      "indice": 86,
+      "controlo": "SYS_ACTION_STORE"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Amigos",
+      "indice": 87,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Mensagens",
+      "indice": 88,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Grupos e conversação",
+      "indice": 89,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Ligação à PS4",
+      "indice": 90,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Reprodução remota PS3",
+      "indice": 91,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Navegador",
+      "indice": 92,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Fotografias",
+      "indice": 93,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Música e vídeos",
+      "indice": 94,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Correio e calendário",
+      "indice": 95,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "Consola",
+      "categoria": "Aplicações e serviços",
+      "nome": "Transferência de conteúdo",
+      "indice": 96,
+      "controlo": "-1"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Integração do launcher",
+      "nome": "Navegação L/R e favoritos",
+      "indice": 97,
+      "controlo": "SYS_ACTION_LIBRARY"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Integração do launcher",
+      "nome": "Preferências persistentes",
+      "indice": 98,
+      "controlo": "SYS_ACTION_PREFERENCES"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Integração do launcher",
+      "nome": "Logótipo e arranque",
+      "indice": 99,
+      "controlo": "SYS_ACTION_AUTOBOOT"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Integração do launcher",
+      "nome": "Indicador de volume",
+      "indice": 100,
+      "controlo": "0"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Integração do launcher",
+      "nome": "Botão PS e duplo toque",
+      "indice": 101,
+      "controlo": "SYS_ACTION_PS"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "VitaStation",
+      "nome": "Reconstruir base de dados",
+      "indice": 102,
+      "controlo": "SYS_ACTION_REFRESH"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Integração do launcher",
+      "nome": "Plugins taiHEN: diagnóstico",
+      "indice": 103,
+      "controlo": "SYS_ACTION_PLUGINS"
+    },
+    {
+      "grupo": "VitaStation",
+      "categoria": "Integração do launcher",
+      "nome": "Plugins taiHEN: instalação e recuperação",
+      "indice": 104,
+      "controlo": "SYS_ACTION_PLUGIN_PREPARE"
+    }
+  ]
+}

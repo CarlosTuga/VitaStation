@@ -1,0 +1,11 @@
+VitaStation 1.5.9 beta — definições separadas
+
+Definições abre duas categorias: Definições da consola e Definições do VitaStation. Cada opção aparece numa única categoria, com navegação filtrada por setas, L/R e toque. O regressa primeiro à escolha das categorias; nesse ecrã, volta ao início. Páginas de informações, plugins e energia mantêm o contexto da categoria ao voltar.
+
+VitaStation reúne som do launcher, loja externa predefinida, animações, voltar ao início, arranque automático/iniciar com a consola, gestão de plugins, comportamento PS/duplo toque, desligar/reiniciar, DLCs com o jogo, biblioteca/aplicações, instalação de pacotes, descargas/fila, carátulas/metadados, navegação L/R/favoritos, preferências, logótipo/arranque, reconstrução da base de dados e diagnóstico/instalação/recuperação taiHEN. A entrada Gestão de aplicações e dados agora executa a reconstrução da base de dados do VitaStation, conforme o pedido; a descrição indica essa ação. Registos e licenças do launcher também ficam nesta área.
+
+Consola mantém as definições e consultas do hardware e dos serviços do sistema: rede, conta/PSN, troféus, dispositivos, volume/brilho, idioma/relógio, segurança, bateria e restantes serviços nativos. A reorganização conserva as limitações funcionais anteriores: as opções sem adaptador continuam identificadas como indisponíveis.
+
+Visual: cartões de entrada com ilustrações vetoriais próprias, ícones pequenos nas listas, seleção clara, painel de descrição arredondado, textos portugueses e ajuda contextual. Ícones desenhados pelo código; não exigem imagens da Internet. A abertura direta por X, filtro Europa/EUA, bandeiras e base de dados da versão anterior mantêm-se. Não é necessário reinstalar as carátulas.
+
+Validação: testes de host e integração aprovados, incluindo cobertura exata de todas as 105 entradas numa única categoria, navegação sem atravessar grupos, limites de lista, retorno por O, toque e reconstrução manual. Pré-visualizações geradas a partir dos comandos de desenho do programa revistas nas três páginas (métricas de fonte aproximadas). Compilação VitaSDK e validação do VPK aprovadas; teste desta interface na consola ainda por confirmar. Mapa completo em mapping/DEFINICOES_1.5.9.csv.

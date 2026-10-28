@@ -1,0 +1,109 @@
+﻿grupo,categoria,nome,indice,controlo,estado
+VitaStation,VitaStation,Som do VitaStation,0,local,preferência ou ação do launcher
+VitaStation,VitaStation,Loja externa predefinida,1,local,preferência ou ação do launcher
+VitaStation,VitaStation,Animações do launcher,2,local,preferência ou ação do launcher
+VitaStation,VitaStation,Voltar ao início,3,local,preferência ou ação do launcher
+VitaStation,VitaStation,Iniciar VitaStation com a consola,4,local,preferência ou ação do launcher
+VitaStation,VitaStation,Gerir plugins,5,local,preferência ou ação do launcher
+VitaStation,VitaStation,Comportamento do botão PS,6,local,preferência ou ação do launcher
+VitaStation,VitaStation,Desligar ou reiniciar,7,local,preferência ou ação do launcher
+VitaStation,VitaStation,Instalar DLCs com o jogo,8,local,preferência ou ação do launcher
+VitaStation,VitaStation,Cor do ambiente,9,local,preferência ou ação do launcher
+VitaStation,VitaStation,Cor das letras,10,local,preferência ou ação do launcher
+VitaStation,VitaStation,Alto contraste,11,local,preferência ou ação do launcher
+Consola,Rede,Wi-Fi: ligar e desligar,12,-1,indisponível: sem adaptador
+Consola,Rede,Procurar pontos de acesso,13,-1,indisponível: sem adaptador
+Consola,Rede,Perfis Wi-Fi e autenticação,14,-1,indisponível: sem adaptador
+Consola,Rede,"Endereço IP, DNS e proxy",15,100,consulta: apenas leitura
+Consola,Rede,Estado da ligação,16,100,consulta: apenas leitura
+Consola,Rede,Teste de Internet,17,-1,indisponível: sem adaptador
+Consola,Rede,Rede móvel e cartão SIM,18,-1,indisponível: sem adaptador
+Consola,Rede,Modo de avião,19,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Perfil: nome e apresentação,20,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Avatar e imagem do perfil,21,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Estado online,22,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Iniciar e terminar sessão,23,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Informações da conta,24,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Privacidade e bloqueios,25,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Contas familiares,26,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Ativação da consola,27,-1,indisponível: sem adaptador
+Consola,Conta e PSN,Sincronização de dados,28,-1,indisponível: sem adaptador
+Consola,Troféus,Lista de jogos,29,-1,indisponível: sem adaptador
+Consola,Troféus,Troféus obtidos e por obter,30,-1,indisponível: sem adaptador
+Consola,Troféus,Detalhes e datas dos troféus,31,-1,indisponível: sem adaptador
+Consola,Troféus,Progresso por jogo,32,-1,indisponível: sem adaptador
+Consola,Troféus,Sincronizar com PSN,33,-1,indisponível: sem adaptador
+Consola,Troféus,Comparar com amigos,34,-1,indisponível: sem adaptador
+Consola,Troféus,Visibilidade dos troféus,35,-1,indisponível: sem adaptador
+Consola,Dispositivos,Dispositivos Bluetooth,36,-1,indisponível: sem adaptador
+Consola,Dispositivos,Emparelhar e remover dispositivos,37,-1,indisponível: sem adaptador
+Consola,Dispositivos,Teclado externo,38,-1,indisponível: sem adaptador
+Consola,Dispositivos,Comandos e atribuição de botões,39,-1,indisponível: sem adaptador
+Consola,Dispositivos,Painel tátil e sensores,40,-1,indisponível: sem adaptador
+Consola,Dispositivos,Câmara e microfone,41,-1,indisponível: sem adaptador
+Consola,Som e ecrã,Volume da consola,42,0,controlo nativo: volume/brilho
+Consola,Som e ecrã,Brilho do ecrã,43,1,controlo nativo: volume/brilho
+Consola,Som e ecrã,Limite de volume AVLS,44,-1,indisponível: sem adaptador
+Consola,Som e ecrã,Música do sistema,45,-1,indisponível: sem adaptador
+Consola,Som e ecrã,Silêncio automático,46,-1,indisponível: sem adaptador
+Consola,Som e ecrã,Temas e fundos,47,-1,indisponível: sem adaptador
+Consola,Notificações,Alertas e apresentação,48,-1,indisponível: sem adaptador
+Consola,Notificações,Notificações por aplicação,49,-1,indisponível: sem adaptador
+Consola,Idioma e relógio,Idioma da consola,50,110,consulta: apenas leitura
+Consola,Idioma e relógio,Idiomas do teclado,51,-1,indisponível: sem adaptador
+Consola,Idioma e relógio,Data e hora,52,104,consulta: apenas leitura
+Consola,Idioma e relógio,Fuso horário,53,104,consulta: apenas leitura
+Consola,Idioma e relógio,Hora de verão,54,104,consulta: apenas leitura
+Consola,Idioma e relógio,Formatos de data e hora,55,104,consulta: apenas leitura
+Consola,Acessibilidade,Ampliação do ecrã,56,-1,indisponível: sem adaptador
+Consola,Acessibilidade,Inversão de cores,57,-1,indisponível: sem adaptador
+Consola,Acessibilidade,Tamanho e espessura do texto,58,-1,indisponível: sem adaptador
+Consola,Acessibilidade,Contraste elevado,59,-1,indisponível: sem adaptador
+Consola,Acessibilidade,Legendas,60,-1,indisponível: sem adaptador
+Consola,Acessibilidade,Atribuição de botões,61,-1,indisponível: sem adaptador
+VitaStation,Acessibilidade,Menu rápido,62,SYS_ACTION_QUICK,ação implementada; validação física pendente
+Consola,Sistema,Informações da consola e versão,63,101,consulta: apenas leitura
+VitaStation,Sistema,Arranque automático,64,SYS_ACTION_AUTOBOOT,ação implementada; validação física pendente
+Consola,Sistema,Controlo por botões,65,106,consulta: apenas leitura
+Consola,Sistema,Alimentação USB,66,-1,indisponível: sem adaptador
+Consola,Sistema,Consumo e utilização,67,108,consulta: apenas leitura
+VitaStation,Sistema,Registo de erros,68,105,consulta: apenas leitura
+VitaStation,Sistema,Licenças e avisos,69,107,consulta: apenas leitura
+Consola,Sistema,PlayStation Mobile,70,-1,indisponível: sem adaptador
+Consola,Sistema,Atualização do firmware,71,-1,indisponível: sem adaptador
+Consola,Energia,Temporização de espera,72,-1,indisponível: sem adaptador
+Consola,Energia,Poupança de energia Wi-Fi,73,-1,indisponível: sem adaptador
+Consola,Energia,Estado e carga da bateria,74,102,consulta: apenas leitura
+Consola,Energia,Suspender,75,SYS_ACTION_SUSPEND,ação implementada; validação física pendente
+VitaStation,Energia,Desligar e reiniciar,76,SYS_ACTION_POWER,ação implementada; validação física pendente
+Consola,Segurança e armazenamento,Bloqueio do ecrã,77,-1,indisponível: sem adaptador
+Consola,Segurança e armazenamento,Controlo parental,78,-1,indisponível: sem adaptador
+Consola,Segurança e armazenamento,Espaço disponível,79,103,consulta: apenas leitura
+VitaStation,VitaStation,Gestão de aplicações e dados,80,SYS_ACTION_REFRESH,ação implementada; validação física pendente
+Consola,Segurança e armazenamento,Cópias de segurança e restauro,81,-1,indisponível: sem adaptador
+Consola,Segurança e armazenamento,Dicionário do teclado,82,-1,indisponível: sem adaptador
+Consola,Segurança e armazenamento,Formatação do cartão,83,-1,indisponível: sem adaptador
+Consola,Segurança e armazenamento,Reposição das definições,84,-1,indisponível: sem adaptador
+Consola,Segurança e armazenamento,Restauro completo,85,-1,indisponível: sem adaptador
+VitaStation,Aplicações e serviços,Biblioteca e execução de aplicações,86,SYS_ACTION_LIBRARY,ação implementada; validação física pendente
+VitaStation,Aplicações e serviços,Instalação de pacotes,87,SYS_ACTION_STORE,ação implementada; validação física pendente
+VitaStation,Aplicações e serviços,Downloads e fila,88,109,consulta: apenas leitura
+VitaStation,Aplicações e serviços,Carátulas e metadados,89,SYS_ACTION_STORE,ação implementada; validação física pendente
+Consola,Aplicações e serviços,Amigos,90,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Mensagens,91,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Grupos e conversação,92,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Ligação à PS4,93,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Reprodução remota PS3,94,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Navegador,95,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Fotografias,96,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Música e vídeos,97,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Correio e calendário,98,-1,indisponível: sem adaptador
+Consola,Aplicações e serviços,Transferência de conteúdo,99,-1,indisponível: sem adaptador
+VitaStation,Integração do launcher,Navegação L/R e favoritos,100,SYS_ACTION_LIBRARY,ação implementada; validação física pendente
+VitaStation,Integração do launcher,Preferências persistentes,101,SYS_ACTION_PREFERENCES,ação implementada; validação física pendente
+VitaStation,Integração do launcher,Logótipo e arranque,102,SYS_ACTION_AUTOBOOT,ação implementada; validação física pendente
+VitaStation,Integração do launcher,Indicador de volume,103,0,controlo nativo: volume/brilho
+VitaStation,Integração do launcher,Botão PS e duplo toque,104,SYS_ACTION_PS,ação implementada; validação física pendente
+VitaStation,VitaStation,Reconstruir base de dados,105,SYS_ACTION_REFRESH,ação implementada; validação física pendente
+VitaStation,Integração do launcher,Plugins taiHEN: diagnóstico,106,SYS_ACTION_PLUGINS,ação implementada; validação física pendente
+VitaStation,Integração do launcher,Plugins taiHEN: instalação e recuperação,107,SYS_ACTION_PLUGIN_PREPARE,ação implementada; validação física pendente

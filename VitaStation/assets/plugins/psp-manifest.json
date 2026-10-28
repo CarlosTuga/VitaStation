@@ -1,0 +1,10 @@
+{
+  "file": "npdrm_free_mod.prx",
+  "repository": "https://github.com/lusid1/npdrm_free_mod",
+  "tag": "v7.3",
+  "commit": "8830df952c0dc90b9ff463c95754a7dd06532396",
+  "download": "https://github.com/lusid1/npdrm_free_mod/releases/download/v7.3/npdrm_free_mod_v7.3.zip",
+  "sha256": "5a1bc15c6af3f8aa53fbe86ed4bde23abe66faccea10ea88290bd1d3dc53fb82",
+  "bytes": 17666,
+  "usage": "Optional PSP/Adrenaline fallback; preserve existing npdrm_free.prx"
+}

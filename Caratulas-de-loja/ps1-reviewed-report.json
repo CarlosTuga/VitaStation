@@ -1,0 +1,250 @@
+[
+  {
+    "id": "NPUJ00036",
+    "name": "Darkstalkers ",
+    "disc_id": "SLUS00036",
+    "disc_title": "Darkstalkers - The Night Warriors",
+    "file": "NPUJ00036.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPUJ01552",
+    "name": "Dirt Jockey ",
+    "disc_id": "SLUS01552",
+    "disc_title": "Dirt Jockey - Heavy Equipment Operator",
+    "file": "NPUJ01552.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPUJ94454",
+    "name": "Tomba! 2 ",
+    "disc_id": "SCUS94454",
+    "disc_title": "Tomba! 2 - The Evil Swine Returns",
+    "file": "NPUJ94454.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPUJ94571",
+    "name": "The Emperor’s New Groove ",
+    "disc_id": "SCUS94571",
+    "disc_title": "Disney's The Emperor's New Groove",
+    "file": "NPUJ94571.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEE00038",
+    "name": "Kurushi Final: Mental Blocks (German only) ",
+    "disc_id": "SCES02009",
+    "disc_title": "Kurushi Final",
+    "file": "NPEE00038.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEE00062",
+    "name": "Warhawk (Spanish store) ",
+    "disc_id": "SCES00062",
+    "disc_title": "Warhawk - The Red Mercury Missions",
+    "file": "NPEE00062.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00004",
+    "name": "Hardcore 4×4 (German) ",
+    "disc_id": "SLES00261",
+    "disc_title": "Hardcore 4x4",
+    "file": "NPEF00004.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00046",
+    "name": "The Little Mermaid II (German) ",
+    "disc_id": "SCES03235",
+    "disc_title": "Disney's The Little Mermaid II (Deutsch)",
+    "file": "NPEF00046.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00056",
+    "name": "James Pond 2: Codename Robocod  (other language?)",
+    "disc_id": "SLES04112",
+    "disc_title": "James Pond - Codename Robocod",
+    "file": "NPEF00056.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00058",
+    "name": "Creatures 3: Raised in Space (Spanish Store) ",
+    "disc_id": "SLES04111",
+    "disc_title": "Creatures Raised In Space",
+    "file": "NPEF00058.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00084",
+    "name": "Disney Lilo & Stitch grossi guai ale hawaii",
+    "disc_id": "SCES03871",
+    "disc_title": "Disney's Lilo & Stitch",
+    "file": "NPEF00084.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00085",
+    "name": "Peter Pan: Adventures in Neverland (German only) ",
+    "disc_id": "SLUS01583",
+    "disc_title": "Peter Pan - Return to Neverland",
+    "file": "NPEF00085.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00088",
+    "name": "Atlantis: The Lost Empire (German) ",
+    "disc_id": "SCUS94636",
+    "disc_title": "Disney's Atlantis - The Lost Empire",
+    "file": "NPEF00088.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00093",
+    "name": "Toy Story 2: Buzz Lightyear to the Rescue! (Italian only) ",
+    "disc_id": "SLES02067",
+    "disc_title": "Disney's Toy Story 2 - Buzz Lightyear to the Rescue",
+    "file": "NPEF00093.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00106",
+    "name": "Airboat Racing",
+    "disc_id": "SLUS01566",
+    "disc_title": "XS Airboat Racing",
+    "file": "NPEF00106.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00112",
+    "name": "Fear Effect 2 (German store) ",
+    "disc_id": "SLUS01266",
+    "disc_title": "Fear Effect 2 - Retro Helix [Disc1of4]",
+    "file": "NPEF00112.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00131",
+    "name": "Critical Depth (Dutch store) ",
+    "disc_id": "SLES00136",
+    "disc_title": "Critical Depth",
+    "file": "NPEF00131.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00152",
+    "name": "Final Fantasy V  (alt link)",
+    "disc_id": "SLPM86081",
+    "disc_title": "Final Fantasy V",
+    "file": "NPEF00152.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00158",
+    "name": "Streak: Hover Board Racing (Russian Store)",
+    "disc_id": "SLES01437",
+    "disc_title": "Streak - Hoverboard Racing",
+    "file": "NPEF00158.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00159",
+    "name": "Bugriders: The Race of Kings (Russian Store)",
+    "disc_id": "SLES00875",
+    "disc_title": "Bugriders - The Race of Kings",
+    "file": "NPEF00159.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00167",
+    "name": "Arc the Lad 1",
+    "disc_id": "SCPS10008",
+    "disc_title": "Arc the Lad",
+    "file": "NPEF00167.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00170",
+    "name": "Arc Arena: Monster Tournament ",
+    "disc_id": "SLUS01255",
+    "disc_title": "Arc the Lad - Monster Tournament - Battle Arena",
+    "file": "NPEF00170.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00171",
+    "name": "Arcade Hits: Shienryu",
+    "disc_id": "SLPM87228",
+    "disc_title": "Geki-Oh Shooting King - Shienryu [Major Wave Series]",
+    "file": "NPEF00171.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00177",
+    "name": "Cho Aniki",
+    "disc_id": "SLPM86873",
+    "disc_title": "Choaniki - Kyuukyoku Muteki Ginga Saikyou Otoko [Cyclone Reprint]",
+    "file": "NPEF00177.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00203",
+    "name": "Mickey Wild Adventure (Italy)",
+    "disc_id": "SCES00163",
+    "disc_title": "Mickey's Wild Adventures",
+    "file": "NPEF00203.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00205",
+    "name": "Buzz Lightyear of Star Command (German only) ",
+    "disc_id": "SLES03310",
+    "disc_title": "Disney's Buzz Lightyear of Star Command",
+    "file": "NPEF00205.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPUI94309",
+    "name": "Jet Moto® Full Game",
+    "disc_id": "SCUS94309",
+    "disc_title": "Jet Moto",
+    "file": "NPUI94309.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPUI94508",
+    "name": "2Xtreme (License)",
+    "disc_id": "SCUS94508",
+    "disc_title": "2Xtreme",
+    "file": "NPUI94508.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPUI94640",
+    "name": "Syphon Filter® 3 Full Game",
+    "disc_id": "SCUS94640",
+    "disc_title": "Syphon Filter 3",
+    "file": "NPUI94640.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPUJ00893",
+    "name": "Toy Story 2: Buzz Lightyear To The Rescue! ",
+    "disc_id": "SLUS00893",
+    "disc_title": "Disney's Toy Story 2 - Buzz Lightyear to the Rescue",
+    "file": "NPUJ00893.cover.jpg",
+    "method": "reviewed abbreviated/edition title alias"
+  },
+  {
+    "id": "NPEF00077",
+    "name": "Monsters Inc. Scare Island / localized variants",
+    "disc_id": "SCES03759",
+    "disc_title": "Disney-Pixar Monsters, Inc. - Scare Island",
+    "file": "NPEF00077.cover.jpg",
+    "method": "reviewed DuckStation European game identity"
+  }
+]

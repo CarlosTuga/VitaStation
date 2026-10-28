@@ -1,0 +1,27 @@
+# Pacotes completos ficam disponíveis na pasta local para anexar a GitHub Releases.
+/release-assets/*
+!/release-assets/README.md
+!/release-assets/SHA256SUMS.txt
+# Saídas de compilação e ficheiros privados
+**/build/
+**/build-vita/
+**/build-host/
+**/console-backup/
+**/deployment/
+**/__pycache__/
+**/*.pyc
+*.part
+*.new
+*.previous
+*.bak
+*.pdb
+*.obj
+*.o
+*.elf
+*.velf
+*.self
+*.vpk
+.vs/
+.idea/
+.DS_Store
+Thumbs.db

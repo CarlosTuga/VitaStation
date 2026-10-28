@@ -1,0 +1,5 @@
+Catalog source: PS Vita Alive Store (PSVitaAlive) and contributors
+https://github.com/VegettoSan/PSVitaAlive
+Snapshot: 16de7c63e9eadea46236bc11e7051e888ede7d7e
+Catalog curation and original metadata: CC BY 4.0 where applicable; see CATALOG_LICENSE.md.
+VitaStation adapts presentation and link routing; original developers retain their rights.

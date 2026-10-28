@@ -1,0 +1,21 @@
+Carátulas de loja — VitaStation
+
+Carátulas HexFlow: Andiweli / HexFlow-Covers e contribuidores.
+https://github.com/Andiweli/HexFlow-Covers
+Snapshot 5ceaab4cb05040c1afada229511e11d5c657b88a.
+Licença da coleção: CC BY-NC-SA 4.0. Ver assets/licenses/HexFlow-LICENSE.txt.
+Imagens redimensionadas para até 224x320 e recodificadas em JPEG (qualidade 70); transparência conservada em PNG. Utilização não comercial conforme a licença.
+
+Ícones e catálogo Homebrew: PS Vita Alive Store e contribuidores.
+https://github.com/VegettoSan/PSVitaAlive
+Catálogo original incluído no VitaStation: 16de7c63e9eadea46236bc11e7051e888ede7d7e.
+Curadoria e metadados originais sob CC BY 4.0 onde aplicável; exceções conforme a licença incluída.
+Os autores e titulares originais mantêm os direitos sobre os ícones das aplicações.
+
+Imagens adicionais recuperadas do cache pessoal Usagi PKGj da consola do utilizador.
+Instalador VitaStation: código original sob MIT. Fontes e manifesto acompanham este pacote.
+Este pacote não implica associação ou aprovação pela Sony, HexFlow, Usagi ou PS Vita Alive.
+
+Adições 1.04: ícones PSM obtidos de PSM Reborn (https://psmreborn.com/libary.php); direitos dos autores/titulares originais. Correspondências de nomes/seriais PS1 verificadas com libretro-database/dat/ps1.idlst e DuckStation/data/resources/gamedb.yaml. Os relatórios de correspondências e origens acompanham as fontes. Carátulas PS1 reutilizadas da coleção HexFlow sob a licença já incluída; nomes PSN adicionados como aliases, sem alterar os pixels.
+
+Adições 1.04: ícones PSM obtidos de PSM Reborn (https://psmreborn.com/libary.php); direitos dos autores/titulares originais. Correspondências de nomes/seriais PS1 verificadas com libretro-database/dat/ps1.idlst e DuckStation/data/resources/gamedb.yaml. Os relatórios de correspondências e origens acompanham as fontes. Carátulas PS1 reutilizadas da coleção HexFlow sob a licença já incluída; nomes PSN adicionados como aliases, sem alterar os pixels.

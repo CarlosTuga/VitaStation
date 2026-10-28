@@ -1,0 +1,3171 @@
+{
+  "added": [
+    {
+      "id": "NPUF30005",
+      "name": "Tall Unlimited",
+      "region": "JP",
+      "disc_id": "SLPS02366",
+      "disc_title": "Tall Unlimited",
+      "file": "NPUF30005.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUF30018",
+      "name": "Arcade Hits: Sonic Wings Special",
+      "region": "JP",
+      "disc_id": "SLPS00307",
+      "disc_title": "Sonic Wings Special",
+      "file": "NPUF30018.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUF30026",
+      "name": "Rapid Angel",
+      "region": "JP",
+      "disc_id": "SLPS01553",
+      "disc_title": "Rapid Angel, The",
+      "file": "NPUF30026.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUF30027",
+      "name": "Kyuiin ",
+      "region": "JP",
+      "disc_id": "SLPS00214",
+      "disc_title": "Kyuiin",
+      "file": "NPUF30027.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUF30031",
+      "name": "Arcade Hits: Magical Drop",
+      "region": "JP",
+      "disc_id": "SLPS00201",
+      "disc_title": "Magical Drop",
+      "file": "NPUF30031.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUF30048",
+      "name": "Oz no Mahoutsukai ~Another World~ RungRung",
+      "region": "JP",
+      "disc_id": "SLPS02335",
+      "disc_title": "Oz no Mahoutsukai - Another World - Rung Rung",
+      "file": "NPUF30048.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUF30050",
+      "name": "Trump Shiyouyo! Fukkoku-ban",
+      "region": "JP",
+      "disc_id": "SLPS02612",
+      "disc_title": "Trump Shiyou yo! (Fukkokuban)",
+      "file": "NPUF30050.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUF30051",
+      "name": "Mahjong Uranai Fortuna-Tsuki no Megami Tachi",
+      "region": "JP",
+      "disc_id": "SLPS03123",
+      "disc_title": "Mahjong Uranai Fortuna - Tsuki no Megami-tachi",
+      "file": "NPUF30051.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUF30059",
+      "name": "The Firemen 2: Pete & Danny",
+      "region": "JP",
+      "disc_id": "SLPS00148",
+      "disc_title": "Firemen 2, The - Pete & Danny",
+      "file": "NPUF30059.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUI94356",
+      "name": "Cool Boarders",
+      "region": "US",
+      "disc_id": "SCUS94356",
+      "disc_title": "Cool Boarders",
+      "file": "NPUI94356.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUJ00637",
+      "name": "N2O ",
+      "region": "US",
+      "disc_id": "SLES00809",
+      "disc_title": "N2O",
+      "file": "NPUJ00637.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUJ00806",
+      "name": "Gex: Deep Cover Gecko ",
+      "region": "US",
+      "disc_id": "SLES01299",
+      "disc_title": "Gex - Deep Cover Gecko",
+      "file": "NPUJ00806.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUJ00885",
+      "name": "Tomb Raider: The Last Revelation®",
+      "region": "US",
+      "disc_id": "SLUS00885",
+      "disc_title": "Tomb Raider - The Last Revelation",
+      "file": "NPUJ00885.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUJ01520",
+      "name": "XS Junior League Soccer ",
+      "region": "US",
+      "disc_id": "SLUS01520",
+      "disc_title": "XS Junior League Soccer",
+      "file": "NPUJ01520.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00002",
+      "name": "Minna no Golf 2  (req. OFW 3.40)",
+      "region": "JP",
+      "disc_id": "SCPS10093",
+      "disc_title": "Minna no Golf 2",
+      "file": "NPJI00002.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00008",
+      "name": "Gekisou TomaRunner",
+      "region": "JP",
+      "disc_id": "SCPS10087",
+      "disc_title": "Gekisou Tomarunner",
+      "file": "NPJI00008.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00013",
+      "name": "Ganbare Morikawa-kun 2nd Pet in TV ",
+      "region": "JP",
+      "disc_id": "SCPS45070",
+      "disc_title": "Ganbare Morikawa-kun 2nd Pet in TV",
+      "file": "NPJI00013.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00019",
+      "name": "XI [sai] ",
+      "region": "JP",
+      "disc_id": "SCPS10051",
+      "disc_title": "XI [sai]",
+      "file": "NPJI00019.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00025",
+      "name": "Robbit Mon Dieu ",
+      "region": "JP",
+      "disc_id": "SCPS10103",
+      "disc_title": "Robbit mon Dieu",
+      "file": "NPJI00025.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00039",
+      "name": "PoPoRoGue ",
+      "region": "JP",
+      "disc_id": "SCPS10050",
+      "disc_title": "PoPoRoGue",
+      "file": "NPJI00039.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00045",
+      "name": "XI [sai] Jumbo  (req. OFW 3.70)",
+      "region": "JP",
+      "disc_id": "SCPS10123",
+      "disc_title": "XI [sai] Jumbo",
+      "file": "NPJI00045.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00047",
+      "name": "The Legend of Dragoon  (req. OFW 6.35)",
+      "region": "JP",
+      "disc_id": "SCPS10119",
+      "disc_title": "Legend of Dragoon, The [Disc1of4]",
+      "file": "NPJI00047.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00048",
+      "name": "I.Q Final  (req. OFW 5.50)",
+      "region": "JP",
+      "disc_id": "SCPS10071",
+      "disc_title": "I.Q. Final",
+      "file": "NPJI00048.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00055",
+      "name": "Addie no Okurimono: To Moze from Addie",
+      "region": "JP",
+      "disc_id": "SCPS10126",
+      "disc_title": "Addie no Okurimono - To Moze from Addie",
+      "file": "NPJI00055.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00063",
+      "name": "Spyro 2: Ripto's Rage!",
+      "region": "JP",
+      "disc_id": "SCUS94425",
+      "disc_title": "Spyro 2 - Ripto's Rage!",
+      "file": "NPJI00063.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00078",
+      "name": "Doko Demo Issho",
+      "region": "JP",
+      "disc_id": "SCPS10092",
+      "disc_title": "Doko Demo Issho",
+      "file": "NPJI00078.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00015",
+      "name": "A. IV Evolution Global (PlayStation the Best) ",
+      "region": "JP",
+      "disc_id": "SLPM87231",
+      "disc_title": "A. IV Evolution Global [Superlite 1500 Series]",
+      "file": "NPJJ00015.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00016",
+      "name": "Vampire: Kyuuketsuki Densetsu  (req. OFW 5.50)",
+      "region": "JP",
+      "disc_id": "SLPS01932",
+      "disc_title": "Vampire - Kyuuketsuki Densetsu",
+      "file": "NPJJ00016.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00020",
+      "name": "THE DRUG STORE",
+      "region": "JP",
+      "disc_id": "SLPM86678",
+      "disc_title": "Drugstore, The [Major Wave Series]",
+      "file": "NPJJ00020.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00025",
+      "name": "Tall Unlimited ",
+      "region": "JP",
+      "disc_id": "SLPS02366",
+      "disc_title": "Tall Unlimited",
+      "file": "NPJJ00025.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00028",
+      "name": "A5: A-Ressha de Ikou 5 ",
+      "region": "JP",
+      "disc_id": "SLPS01120",
+      "disc_title": "A5 - A Ressha de Ikou 5",
+      "file": "NPJJ00028.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00029",
+      "name": "Lunatic Dawn III  (req. OFW 5.50)",
+      "region": "JP",
+      "disc_id": "SLPS01749",
+      "disc_title": "Lunatic Dawn III",
+      "file": "NPJJ00029.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00030",
+      "name": "Fushigi Deka",
+      "region": "JP",
+      "disc_id": "SLPM86642",
+      "disc_title": "Fushigi Deka",
+      "file": "NPJJ00030.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00033",
+      "name": "Ikasama Mahjong ",
+      "region": "JP",
+      "disc_id": "SLPS02606",
+      "disc_title": "Ikasama Mahjong",
+      "file": "NPJJ00033.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00042",
+      "name": "Garou Densetsu Wild Ambition ",
+      "region": "JP",
+      "disc_id": "SCPS45409",
+      "disc_title": "Garou Densetsu - Wild Ambition",
+      "file": "NPJJ00042.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00046",
+      "name": "The FamiRes: Shijou Saikyou no Menu",
+      "region": "JP",
+      "disc_id": "SLPS01763",
+      "disc_title": "The Famires - Shijou Saikyou no Menu",
+      "file": "NPJJ00046.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00050",
+      "name": "The King Of Fighters ’95 ",
+      "region": "JP",
+      "disc_id": "SLPS00351",
+      "disc_title": "King of Fighters '95, The",
+      "file": "NPJJ00050.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00051",
+      "name": "The King Of Fighters ’96 ",
+      "region": "JP",
+      "disc_id": "SLPM86110",
+      "disc_title": "King of Fighters '96, The [Playstation The Best]",
+      "file": "NPJJ00051.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00052",
+      "name": "The King Of Fighters ’97 ",
+      "region": "JP",
+      "disc_id": "SCPS45248",
+      "disc_title": "King of Fighters '97",
+      "file": "NPJJ00052.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00056",
+      "name": "The King Of Fighters ’98 ",
+      "region": "JP",
+      "disc_id": "SLPM86201",
+      "disc_title": "King of Fighters '98",
+      "file": "NPJJ00056.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00057",
+      "name": "The King Of Fighters ’99 ",
+      "region": "JP",
+      "disc_id": "SCPS45489",
+      "disc_title": "The King of Fighters '99",
+      "file": "NPJJ00057.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00058",
+      "name": "Samurai Spirits: Amakusa Kourin Special ",
+      "region": "JP",
+      "disc_id": "SLPS01171",
+      "disc_title": "Samurai Spirits - Amakusa Kourin Special",
+      "file": "NPJJ00058.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00059",
+      "name": "The King Of Fighters Kyo ",
+      "region": "JP",
+      "disc_id": "SLPM86095",
+      "disc_title": "King of Fighters Kyo",
+      "file": "NPJJ00059.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00062",
+      "name": "AI Mahjong Selection",
+      "region": "JP",
+      "disc_id": "SLPM87117",
+      "disc_title": "AI Mahjong Selection",
+      "file": "NPJJ00062.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00065",
+      "name": "Sanvein (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86459",
+      "disc_title": "Sanvein [Superlite 1500 Series]",
+      "file": "NPJJ00065.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00073",
+      "name": "Chiki Chiki Chicken (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86630",
+      "disc_title": "Chiki Chiki Chicken [Superlite 1500 Series]",
+      "file": "NPJJ00073.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00081",
+      "name": "Arcade Hits: Sonic Wings Special ",
+      "region": "JP",
+      "disc_id": "SLPS00307",
+      "disc_title": "Sonic Wings Special",
+      "file": "NPJJ00081.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00082",
+      "name": "The Conveni 2: Zenkoku Chain Tenkai da! ",
+      "region": "JP",
+      "disc_id": "SLPS01146",
+      "disc_title": "The Conveni 2 - Zenkoku Chain Tenkai da!",
+      "file": "NPJJ00082.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00086",
+      "name": "Blue Breaker: Egao no Yakusoku",
+      "region": "JP",
+      "disc_id": "SLPS01122",
+      "disc_title": "Blue Breaker - Egao no Yakusoku",
+      "file": "NPJJ00086.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00092",
+      "name": "Hanafuda Graffiti: Koi Koi Monogatari",
+      "region": "JP",
+      "disc_id": "SLPS00367",
+      "disc_title": "Hanafuda Graffiti - Koi Koi Monogatari",
+      "file": "NPJJ00092.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00096",
+      "name": "Echo Night #2: Nemuri no Shihaisha ",
+      "region": "JP",
+      "disc_id": "SLPS02167",
+      "disc_title": "Echo Night 2 - Nemuri no Shihaisha",
+      "file": "NPJJ00096.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00101",
+      "name": "Sanyo Pachinko Paradise 4  (req. OFW 3.72)",
+      "region": "JP",
+      "disc_id": "SLPS02988",
+      "disc_title": "Sanyo Pachinko Paradise 4",
+      "file": "NPJJ00101.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00124",
+      "name": "Card II (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86298",
+      "disc_title": "Card II [Superlite 1500 Series]",
+      "file": "NPJJ00124.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00125",
+      "name": "Hanafuda II (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86319",
+      "disc_title": "Hanafuda II [Superlite 1500 Series]",
+      "file": "NPJJ00125.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00127",
+      "name": "Arcade Hits: Magical Drop ",
+      "region": "JP",
+      "disc_id": "SLPS00201",
+      "disc_title": "Magical Drop",
+      "file": "NPJJ00127.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00128",
+      "name": "Robin Lloyd no Bouken ",
+      "region": "JP",
+      "disc_id": "SLPS02501",
+      "disc_title": "Robin Lloyd no Bouken",
+      "file": "NPJJ00128.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00130",
+      "name": "Dezaemon Plus!  (req. OFW 3.80)",
+      "region": "JP",
+      "disc_id": "SLPS00335",
+      "disc_title": "Dezaemon Plus",
+      "file": "NPJJ00130.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00131",
+      "name": "Pro Mahjong Kiwame Plus  (req. OFW 6.61)",
+      "region": "JP",
+      "disc_id": "SLPS00402",
+      "disc_title": "Pro Mahjong Kiwame Plus",
+      "file": "NPJJ00131.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00132",
+      "name": "Athena no Kateiban: Family Game  (req. OFW 3.93)",
+      "region": "JP",
+      "disc_id": "SLPS00263",
+      "disc_title": "Athena no Kateiban - Family Game",
+      "file": "NPJJ00132.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00137",
+      "name": "Money Idol Exchanger  (req. OFW 3.90)",
+      "region": "JP",
+      "disc_id": "SLPS00963",
+      "disc_title": "Money Idol Exchanger",
+      "file": "NPJJ00137.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00139",
+      "name": "Nobunaga Hiroku: Ge-Ten no Yume  (req. OFW 6.60)",
+      "region": "JP",
+      "disc_id": "SLPM86632",
+      "disc_title": "Nobunaga Hiroku - Ge-Ten no Yume [Superlite 1500 Series]",
+      "file": "NPJJ00139.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00140",
+      "name": "Ide Yosuke no Mahjong Kyoshitsu  (req. OFW 3.90)",
+      "region": "JP",
+      "disc_id": "SLPS02272",
+      "disc_title": "Ide Yosuke no Mahjong Kyoshitsu",
+      "file": "NPJJ00140.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00143",
+      "name": "Kawa no Nushi Tsuri: Hikyou o Motomete ",
+      "region": "JP",
+      "disc_id": "SLPS91502",
+      "disc_title": "Kawa no Nushi Tsuri - Hikyou o Motomete [PSOne Books]",
+      "file": "NPJJ00143.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00145",
+      "name": "Metal Gear Solid (req. OFW 3.93)",
+      "region": "JP",
+      "disc_id": "SCPS45320",
+      "disc_title": "Metal Gear Solid",
+      "file": "NPJJ00145.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00146",
+      "name": "Dezaemon Kids!  (req. OFW 6.60)",
+      "region": "JP",
+      "disc_id": "SLPM86582",
+      "disc_title": "Dezaemon Kids! [Superlite 1500 Series]",
+      "file": "NPJJ00146.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00152",
+      "name": "Pukunpa: Joshikouki No Houkago  (req. OFW 6.61)",
+      "region": "JP",
+      "disc_id": "SLPS00409",
+      "disc_title": "Pukunpa - Joshikouki no Houkago",
+      "file": "NPJJ00152.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00159",
+      "name": "Lord Monarch: Shin Gaia Oukokuki",
+      "region": "JP",
+      "disc_id": "SLPS01728",
+      "disc_title": "Lord Monarch - Shin Gaia Oukokuki",
+      "file": "NPJJ00159.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00161",
+      "name": "Tamamayu Monogatari (PlayStation the Best)  (req. OFW 6.60)",
+      "region": "JP",
+      "disc_id": "SLPS01729",
+      "disc_title": "Tamamayu Monogatari",
+      "file": "NPJJ00161.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00176",
+      "name": "Yamasa Digi Selection 2",
+      "region": "JP",
+      "disc_id": "SLPS03484",
+      "disc_title": "Yamasa Digi Selection 2",
+      "file": "NPJJ00176.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00179",
+      "name": "Aquanaut no Kyuujitsu: Memories of Summer 1996 ",
+      "region": "JP",
+      "disc_id": "SLPS00406",
+      "disc_title": "Aquanaut no Kyuujitsu - Memories of Summer 1996",
+      "file": "NPJJ00179.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00180",
+      "name": "Raycrisis  (req. OFW 4.40)",
+      "region": "JP",
+      "disc_id": "SCPS45487",
+      "disc_title": "Raycrisis",
+      "file": "NPJJ00180.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00190",
+      "name": "Magical Date: Doki Doki Kokuhaku Daisakusen",
+      "region": "JP",
+      "disc_id": "SCPS45134",
+      "disc_title": "Magical Date - Doki Doki Kokuhaku Daisakusen",
+      "file": "NPJJ00190.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00193",
+      "name": "Seirei Shoukan: Princess of Darkness ",
+      "region": "JP",
+      "disc_id": "SLPS01271",
+      "disc_title": "Seirei Shoukan - Princess of Darkness",
+      "file": "NPJJ00193.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00197",
+      "name": "Blockids  (req. OFW 4.05)",
+      "region": "JP",
+      "disc_id": "SLPS00205",
+      "disc_title": "Blockids",
+      "file": "NPJJ00197.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00217",
+      "name": "Touki Denshou: Angel Eyes",
+      "region": "JP",
+      "disc_id": "SLPS01168",
+      "disc_title": "Touki Denshou - Angel Eyes",
+      "file": "NPJJ00217.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00233",
+      "name": "Bushido Blade 2 ",
+      "region": "JP",
+      "disc_id": "SCPS45187",
+      "disc_title": "Bushido Blade 2",
+      "file": "NPJJ00233.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00245",
+      "name": "Lunar Wing: Toki o Koeta Seisen ",
+      "region": "JP",
+      "disc_id": "SLPM86777",
+      "disc_title": "Lunar Wing - Toki o Koeta Seisen",
+      "file": "NPJJ00245.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00250",
+      "name": "Fire Pro Wrestling G  (req. OFW 5.02)",
+      "region": "JP",
+      "disc_id": "SLPS02065",
+      "disc_title": "Fire Pro Wrestling G",
+      "file": "NPJJ00250.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00258",
+      "name": "Himitsu Sentai Metamor V Deluxe ",
+      "region": "JP",
+      "disc_id": "SLPS01626",
+      "disc_title": "Himitsu Sentai Metamor V Deluxe (Disc 1)",
+      "file": "NPJJ00258.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00261",
+      "name": "Gakkou o Tsukurou!! Kouchou Sensei Monogatari ",
+      "region": "JP",
+      "disc_id": "SLPS02998",
+      "disc_title": "Gakkou o Tsukurou!! Kouchou Sensei Monogatari",
+      "file": "NPJJ00261.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00262",
+      "name": "Tilk: Aoi Umi kara Kita Shoujo ",
+      "region": "JP",
+      "disc_id": "SLPS00717",
+      "disc_title": "Tilk - Aoi Umi kara Kita Shoujo",
+      "file": "NPJJ00262.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00273",
+      "name": "Final Fantasy II",
+      "region": "JP",
+      "disc_id": "SLPS03502",
+      "disc_title": "Final Fantasy II",
+      "file": "NPJJ00273.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00275",
+      "name": "Rockman  (req. OFW 6.60)",
+      "region": "JP",
+      "disc_id": "SLPM87250",
+      "disc_title": "Rockman",
+      "file": "NPJJ00275.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00286",
+      "name": "Rapid Angel ",
+      "region": "JP",
+      "disc_id": "SLPS01553",
+      "disc_title": "Rapid Angel, The",
+      "file": "NPJJ00286.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00287",
+      "name": "Rockman 2: Dr. Wily no Nazo  (req. OFW 5.50)",
+      "region": "JP",
+      "disc_id": "SLPM87249",
+      "disc_title": "Rockman 2 - Dr. Wily no Nazo",
+      "file": "NPJJ00287.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00288",
+      "name": "Side Pocket 3",
+      "region": "JP",
+      "disc_id": "SLPS01079",
+      "disc_title": "Side Pocket 3",
+      "file": "NPJJ00288.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00291",
+      "name": "Epica Stella",
+      "region": "JP",
+      "disc_id": "SLPS01465",
+      "disc_title": "Epica Stella",
+      "file": "NPJJ00291.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00293",
+      "name": "Theme Aquarium  (req. OFW 6.60)",
+      "region": "JP",
+      "disc_id": "SLPS01768",
+      "disc_title": "Theme Aquarium",
+      "file": "NPJJ00293.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00307",
+      "name": "Tokimeki Memorial 2  (req. OFW 6.60)",
+      "region": "JP",
+      "disc_id": "SCPS45451",
+      "disc_title": "Tokimeki Memorial 2",
+      "file": "NPJJ00307.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00310",
+      "name": "Gourmet Action Game: Manpuku!! Nabe Kazoku",
+      "region": "JP",
+      "disc_id": "SLPS03381",
+      "disc_title": "Gourmet Action Game - Manpuku!! Nabe Kazoku",
+      "file": "NPJJ00310.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00311",
+      "name": "Magical Drop III ",
+      "region": "JP",
+      "disc_id": "SLES02964",
+      "disc_title": "Magical Drop III (Disc 1) (Magical Drop III)",
+      "file": "NPJJ00311.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00318",
+      "name": "Tokimeki Memorial: Taisen Puzzle-Dama",
+      "region": "JP",
+      "disc_id": "SLPM86005",
+      "disc_title": "Tokimeki Memorial Taisen Puzzledama",
+      "file": "NPJJ00318.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00321",
+      "name": "Kyuiin ",
+      "region": "JP",
+      "disc_id": "SLPS00214",
+      "disc_title": "Kyuiin",
+      "file": "NPJJ00321.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00331",
+      "name": "The Pro Mahjong: Menkyo Minnaten ",
+      "region": "JP",
+      "disc_id": "SLPM86139",
+      "disc_title": "Pro Mahjong, The - Menkyo Minnaten",
+      "file": "NPJJ00331.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00337",
+      "name": "Simple 1500 Series Vol. 14: The Block Kuzushi ",
+      "region": "JP",
+      "disc_id": "SLPS02450",
+      "disc_title": "Simple 1500 Series Vol. 14 - The Block Kuzushi",
+      "file": "NPJJ00337.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00338",
+      "name": "Simple 1500 Series Vol. 15: The Pachinko ",
+      "region": "JP",
+      "disc_id": "SLPS02451",
+      "disc_title": "Simple 1500 Series Vol. 15 - The Pachinko",
+      "file": "NPJJ00338.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00339",
+      "name": "Simple 1500 Series Vol. 18: The Bowling ",
+      "region": "JP",
+      "disc_id": "SLPS02433",
+      "disc_title": "Simple 1500 Series Vol. 18 - The Bowling",
+      "file": "NPJJ00339.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00340",
+      "name": "Simple 1500 Series Vol. 31: The Sound Novel ",
+      "region": "JP",
+      "disc_id": "SLPS02840",
+      "disc_title": "Simple 1500 Series Vol. 31 - The Sound Novel",
+      "file": "NPJJ00340.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00341",
+      "name": "Rockman 3: Dr. Wily no Saigo!?  (req. OFW 6.20)",
+      "region": "JP",
+      "disc_id": "SLPS02262",
+      "disc_title": "RockMan 3 - Dr. Wily no Saigo!! [Complete Works]",
+      "file": "NPJJ00341.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00343",
+      "name": "Uchuu Goushouden: Bakuretsu Akindo",
+      "region": "JP",
+      "disc_id": "SLPS00236",
+      "disc_title": "Uchuu Goushouden - Bakuretsu Akindo",
+      "file": "NPJJ00343.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00345",
+      "name": "Simple 1500 Series Vol. 32: The Boxing ",
+      "region": "JP",
+      "disc_id": "SLPS02922",
+      "disc_title": "Simple 1500 Series Vol. 32 - The Boxing",
+      "file": "NPJJ00345.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00346",
+      "name": "Simple 1500 Series Vol. 35: The Shooting ",
+      "region": "JP",
+      "disc_id": "SLPS02910",
+      "disc_title": "Simple 1500 Series Vol. 35 - The Shooting",
+      "file": "NPJJ00346.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00347",
+      "name": "Simple 1500 Series Vol. 37: The Illust Puzzle & Slide Puzzle ",
+      "region": "JP",
+      "disc_id": "SLPS02958",
+      "disc_title": "Simple 1500 Series Vol. 37 - The Illust Puzzle & Slide Puzzle",
+      "file": "NPJJ00347.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00348",
+      "name": "Simple 1500 Series Vol. 43: The Hanafuda 2 ",
+      "region": "JP",
+      "disc_id": "SLPS03009",
+      "disc_title": "Simple 1500 Series Vol. 43 - The Hanafuda 2",
+      "file": "NPJJ00348.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00350",
+      "name": "Simple 1500 Series Vol. 28: The Dungeon RPG ",
+      "region": "JP",
+      "disc_id": "SLPS02726",
+      "disc_title": "Simple 1500 Series Vol. 28 - The Dungeon RPG",
+      "file": "NPJJ00350.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00351",
+      "name": "Simple 1500 Series Vol. 33: The Takkyuu ",
+      "region": "JP",
+      "disc_id": "SLPS02908",
+      "disc_title": "Simple 1500 Series Vol. 33 - The Takkyuu",
+      "file": "NPJJ00351.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00352",
+      "name": "Simple 1500 Series Vol. 39: The Mahjong 2 ",
+      "region": "JP",
+      "disc_id": "SLPS03004",
+      "disc_title": "Simple 1500 Series Vol. 39 - The Mahjong 2",
+      "file": "NPJJ00352.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00362",
+      "name": "Simple 1500 Series Vol. 41: The Reversi 2 ",
+      "region": "JP",
+      "disc_id": "SLPS03010",
+      "disc_title": "Simple 1500 Series Vol. 41 - The Reversi 2",
+      "file": "NPJJ00362.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00364",
+      "name": "Simple 1500 Series Vol. 45: The Block Kuzushi 2 ",
+      "region": "JP",
+      "disc_id": "SLPS03036",
+      "disc_title": "Simple 1500 Series Vol. 45 - The Block Kuzushi 2",
+      "file": "NPJJ00364.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00371",
+      "name": "Koutetsu Reiiki: Steeldom ",
+      "region": "JP",
+      "disc_id": "SLPS00431",
+      "disc_title": "Koutetsu Reiiki - Steeldom",
+      "file": "NPJJ00371.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00372",
+      "name": "Simple 1500 Series Vol. 48: The Puzzle 2 ",
+      "region": "JP",
+      "disc_id": "SLPM86698",
+      "disc_title": "Simple 1500 Series Vol. 48 - The Puzzle 2",
+      "file": "NPJJ00372.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00373",
+      "name": "Simple 1500 Series Vol. 49: The Casino ",
+      "region": "JP",
+      "disc_id": "SLPM86699",
+      "disc_title": "Simple 1500 Series Vol. 49 - The Casino",
+      "file": "NPJJ00373.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00374",
+      "name": "Simple 1500 Series Vol. 53: The Helicopter ",
+      "region": "JP",
+      "disc_id": "SLPM86701",
+      "disc_title": "Simple 1500 Series Vol. 53 - The Helicopter",
+      "file": "NPJJ00374.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00375",
+      "name": "Simple 1500 Series Vol. 55: The Darts ",
+      "region": "JP",
+      "disc_id": "SLPM86714",
+      "disc_title": "Simple 1500 Series Vol. 55 - The Darts",
+      "file": "NPJJ00375.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00378",
+      "name": "Jet CopterX",
+      "region": "JP",
+      "disc_id": "SLPM86894",
+      "disc_title": "Jet Copter X",
+      "file": "NPJJ00378.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00380",
+      "name": "Simple 1500 Series Vol. 56: The Sniper ",
+      "region": "JP",
+      "disc_id": "SLPM86762",
+      "disc_title": "Simple 1500 Series Vol. 56 - The Sniper",
+      "file": "NPJJ00380.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00381",
+      "name": "Simple 1500 Series Vol. 57: The Meiro ",
+      "region": "JP",
+      "disc_id": "SLPM86715",
+      "disc_title": "Simple 1500 Series Vol. 57 - The Meiro",
+      "file": "NPJJ00381.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00382",
+      "name": "Simple 1500 Series Vol. 59: The Suiri – IT Tantei: 18 no Jikenbo ",
+      "region": "JP",
+      "disc_id": "SLPM86709",
+      "disc_title": "Simple 1500 Series Vol. 59 - The Suiri - IT Tantei 18 no Jikenbo",
+      "file": "NPJJ00382.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00383",
+      "name": "Simple 1500 Series Vol. 60: The Table Hockey ",
+      "region": "JP",
+      "disc_id": "SLPM86761",
+      "disc_title": "Simple 1500 Series Vol. 60 - The Table Hockey",
+      "file": "NPJJ00383.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00386",
+      "name": "Simple 1500 Series Vol.63: The Gun Shooting 2 ",
+      "region": "JP",
+      "disc_id": "SLPM86816",
+      "disc_title": "Simple 1500 Series Vol. 63 - The Gun Shooting 2",
+      "file": "NPJJ00386.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00387",
+      "name": "Simple 1500 Series Vol.64: The Kickboxing ",
+      "region": "JP",
+      "disc_id": "SLPM86841",
+      "disc_title": "Simple 1500 Series Vol. 64 - The Kick Boxing",
+      "file": "NPJJ00387.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00388",
+      "name": "Simple 1500 Series Vol.65: The Golf ",
+      "region": "JP",
+      "disc_id": "SLPM86842",
+      "disc_title": "Simple 1500 Series Vol. 65 - The Golf",
+      "file": "NPJJ00388.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00391",
+      "name": "The Firemen 2: Pete & Danny ",
+      "region": "JP",
+      "disc_id": "SLPS00148",
+      "disc_title": "Firemen 2, The - Pete & Danny",
+      "file": "NPJJ00391.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00396",
+      "name": "Simple 1500 Series Vol.69: The Putter Golf ",
+      "region": "JP",
+      "disc_id": "SLPM86868",
+      "disc_title": "Simple 1500 Series Vol. 69 - The Putter Golf",
+      "file": "NPJJ00396.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00398",
+      "name": "Simple 1500 Series Vol.72: The Beach Volley ",
+      "region": "JP",
+      "disc_id": "SLPM86871",
+      "disc_title": "Simple 1500 Series Vol. 72 - The Beach Volley",
+      "file": "NPJJ00398.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00400",
+      "name": "Kumitate Battle: Kuttu Ketto ",
+      "region": "JP",
+      "disc_id": "SLPS01208",
+      "disc_title": "Kumitate Battle Kuttu Ketto",
+      "file": "NPJJ00400.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00403",
+      "name": "Simple 1500 Series Vol. 78: The Zero Yon ",
+      "region": "JP",
+      "disc_id": "SLPM86712",
+      "disc_title": "Simple 1500 Series Vol. 78 - The Zeroyon",
+      "file": "NPJJ00403.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00404",
+      "name": "Simple 1500 Series Vol. 82: The Sensuikan ",
+      "region": "JP",
+      "disc_id": "SLPM86973",
+      "disc_title": "Simple 1500 Series Vol. 82 - The Sensuikan",
+      "file": "NPJJ00404.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00405",
+      "name": "Simple 1500 Series Vol. 85: The Sengoku Bushou ~Tenka Touitsu no Yabou~ ",
+      "region": "JP",
+      "disc_id": "SLPM87008",
+      "disc_title": "Simple 1500 Series Vol. 85 - The Sengoku Bushou - Tenka Touitsu no Yabou",
+      "file": "NPJJ00405.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00406",
+      "name": "Simple 1500 Series Vol. 86: The Onigokko ",
+      "region": "JP",
+      "disc_id": "SLPM87017",
+      "disc_title": "Simple 1500 Series Vol. 86 - The Onigokko",
+      "file": "NPJJ00406.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00409",
+      "name": "Minna Atsumare! Igo Kyoushitsu ",
+      "region": "JP",
+      "disc_id": "SLPS03554",
+      "disc_title": "Minna Atsumare! Igo Kyoushitsu",
+      "file": "NPJJ00409.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00413",
+      "name": "Simple 1500 Series Vol.87: The Kyoutei ",
+      "region": "JP",
+      "disc_id": "SLPM87026",
+      "disc_title": "Simple 1500 Series Vol. 87 - The Kyoutei",
+      "file": "NPJJ00413.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00415",
+      "name": "Simple 1500 Series Vol.90: The Sensha ",
+      "region": "JP",
+      "disc_id": "SLPM87044",
+      "disc_title": "Simple 1500 Series Vol. 90 - The Sensha",
+      "file": "NPJJ00415.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00416",
+      "name": "Simple 1500 Series Vol.91: The Gambler – Honoo no Tobaku Densetsu ",
+      "region": "JP",
+      "disc_id": "SLPM86975",
+      "disc_title": "Simple 1500 Series Vol. 91 - The Gambler - Honoo no Tobaku Densetsu",
+      "file": "NPJJ00416.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00419",
+      "name": "Battle Sugoroku: The Hunter (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86400",
+      "disc_title": "Battle Sugoroku - The Hunter [Superlite 1500 Series]",
+      "file": "NPJJ00419.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00420",
+      "name": "Oekaki Puzzle (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPS02068",
+      "disc_title": "Oekaki Puzzle [Superlite 1500 Series]",
+      "file": "NPJJ00420.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00422",
+      "name": "Simple 1500 Series Vol. 95: The Hikouki ",
+      "region": "JP",
+      "disc_id": "SLPM87070",
+      "disc_title": "Simple 1500 Series Vol. 95 - The Hikouki",
+      "file": "NPJJ00422.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00423",
+      "name": "Simple 1500 Series Vol. 97: The Squash ",
+      "region": "JP",
+      "disc_id": "SLPM87088",
+      "disc_title": "Simple 1500 Series Vol. 97 - The Squash",
+      "file": "NPJJ00423.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00424",
+      "name": "Simple 1500 Series Vol. 98: The Futsal ",
+      "region": "JP",
+      "disc_id": "SLPM87087",
+      "disc_title": "Simple 1500 Series Vol. 98 - The Futsal",
+      "file": "NPJJ00424.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00426",
+      "name": "SuperLite1500 Series Hooockey!!",
+      "region": "JP",
+      "disc_id": "SLPM86488",
+      "disc_title": "SuperLite 1500 Series - Hooockey!!",
+      "file": "NPJJ00426.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00428",
+      "name": "SuperLite1500 Series Oekaki Puzzle 2",
+      "region": "JP",
+      "disc_id": "SLPM86428",
+      "disc_title": "SuperLite 1500 Series - Oekaki Puzzle 2",
+      "file": "NPJJ00428.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00435",
+      "name": "Shin Megami Tensei II ",
+      "region": "JP",
+      "disc_id": "SLPM86924",
+      "disc_title": "Shin Megami Tensei II",
+      "file": "NPJJ00435.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00436",
+      "name": "Simple 1500 Series Vol.100: The Uchuuhikoushi ",
+      "region": "JP",
+      "disc_id": "SLPM87141",
+      "disc_title": "Simple 1500 Series Vol. 100 - The Uchuu Hikoushi",
+      "file": "NPJJ00436.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00440",
+      "name": "The Curling (SuperLite 1500 Series)",
+      "region": "JP",
+      "disc_id": "SLPM86237",
+      "disc_title": "Curling, The [Superlite 1500 Series]",
+      "file": "NPJJ00440.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00443",
+      "name": "Chocobo no Fushigi na Dungeon",
+      "region": "JP",
+      "disc_id": "SCPS45163",
+      "disc_title": "Chocobo no Fushigi na Dungeon (aka Chocobo Mysterious Dungeon)",
+      "file": "NPJJ00443.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00449",
+      "name": "Akagawa Jirou: Yasoukyoku 2 ",
+      "region": "JP",
+      "disc_id": "SLPS91505",
+      "disc_title": "Akagawa Jirou - Yasoukyoku 2 [PSOne Books]",
+      "file": "NPJJ00449.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00450",
+      "name": "Mahjong Youchien: Tamago-Gumi 2 – Taikai e Ikou! ",
+      "region": "JP",
+      "disc_id": "SLPS02956",
+      "disc_title": "Mahjong Youchien Tamago Gumi 2 - Taikai e Ikou!",
+      "file": "NPJJ00450.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00459",
+      "name": "Oekaki Puzzle 3 (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86533",
+      "disc_title": "Oekaki Puzzle 3 [Superlite 1500 Series]",
+      "file": "NPJJ00459.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00460",
+      "name": "Pinball Golden Logres (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86260",
+      "disc_title": "Pinball Golden Logres [Superlite 1500 Series]",
+      "file": "NPJJ00460.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00462",
+      "name": "Salary Man Champ: Tatakau Salary Man ",
+      "region": "JP",
+      "disc_id": "SLPM86820",
+      "disc_title": "Salaryman Champ - Tatakau Salaryman",
+      "file": "NPJJ00462.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00468",
+      "name": "Oekaki Puzzle 4 (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86675",
+      "disc_title": "Oekaki Puzzle 4 [Superlite 1500 Series]",
+      "file": "NPJJ00468.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00469",
+      "name": "Saikyou Ginsei Chess ",
+      "region": "JP",
+      "disc_id": "SLPS03482",
+      "disc_title": "Saikyou Ginsei Chess",
+      "file": "NPJJ00469.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00475",
+      "name": "Oekaki Puzzle 5 (SuperLite 1500 Series) ",
+      "region": "JP",
+      "disc_id": "SLPM86800",
+      "disc_title": "Oekaki Puzzle 5 [Superlite 1500 Series]",
+      "file": "NPJJ00475.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00488",
+      "name": "Favorite Dear: Junpaku no Yogensha",
+      "region": "JP",
+      "disc_id": "SLPS02754",
+      "disc_title": "Favorite Dear - Junpaku no Yogensha",
+      "file": "NPJJ00488.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00489",
+      "name": "Akumajou Dracula X: Gekka no Yasoukyoku ",
+      "region": "JP",
+      "disc_id": "SLPM86023",
+      "disc_title": "Akumajou Dracula X - Gekka no Yasoukyoku",
+      "file": "NPJJ00489.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00494",
+      "name": "Le Concert ff (fortissimo) ",
+      "region": "JP",
+      "disc_id": "SLPS02344",
+      "disc_title": "Le Concert - ff - Fortissimo",
+      "file": "NPJJ00494.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00498",
+      "name": "Dai-3-Ji Super Robot Taisen ",
+      "region": "JP",
+      "disc_id": "SLPS02530",
+      "disc_title": "Dai-3-Ji Super Robot Taisen",
+      "file": "NPJJ00498.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00500",
+      "name": "Yamasa Digi World: Tetra Master ",
+      "region": "JP",
+      "disc_id": "SLPS03212",
+      "disc_title": "Yamasa Digi World - Tetra Master",
+      "file": "NPJJ00500.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00505",
+      "name": "Mahjong Uranai Fortuna: Tsuki no Megami-tachi ",
+      "region": "JP",
+      "disc_id": "SLPS03123",
+      "disc_title": "Mahjong Uranai Fortuna - Tsuki no Megami-tachi",
+      "file": "NPJJ00505.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00508",
+      "name": "Star Gladiator: Episode I – Final Crusade ",
+      "region": "JP",
+      "disc_id": "SLPS00539",
+      "disc_title": "Star Gladiator - Episode I - Final Crusade",
+      "file": "NPJJ00508.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00511",
+      "name": "Rockman 4: Aratanaru Yabou!!  (req. OFW 6.60)",
+      "region": "JP",
+      "disc_id": "SLPM87259",
+      "disc_title": "Rockman 4 - Aratanaru Yabou!!",
+      "file": "NPJJ00511.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00515",
+      "name": "Uki Uki Tsuri Tengoku: Ningyo Densetsu no Nazo",
+      "region": "JP",
+      "disc_id": "SLPS00983",
+      "disc_title": "Uki Uki Tsuri Tengoku - Ningyo Densetsu no Nazo",
+      "file": "NPJJ00515.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00516",
+      "name": "Mr. Prospector: Horiate Kun ",
+      "region": "JP",
+      "disc_id": "SLPS02226",
+      "disc_title": "Mr. Prospector - Horiate-kun",
+      "file": "NPJJ00516.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00517",
+      "name": "Hatsukoi Valentine ",
+      "region": "JP",
+      "disc_id": "SLPS00831",
+      "disc_title": "Hatsukoi Valentine",
+      "file": "NPJJ00517.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00519",
+      "name": "Suizokukan Project: Fish Hunter e no Michi",
+      "region": "JP",
+      "disc_id": "SLPS01809",
+      "disc_title": "Suizokukan Project - Fish Hunter e no Michi",
+      "file": "NPJJ00519.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00523",
+      "name": "Asuka 120% Excellent: Burning Fest. Excellent ",
+      "region": "JP",
+      "disc_id": "SLPS00849",
+      "disc_title": "Asuka 120% Excellent - Burning Fest. Excellent",
+      "file": "NPJJ00523.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00524",
+      "name": "First Queen IV: Varcia Senki ",
+      "region": "JP",
+      "disc_id": "SLPS00604",
+      "disc_title": "First Queen IV - Varcia Senki",
+      "file": "NPJJ00524.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00527",
+      "name": "Hatsukoi Valentine Special ",
+      "region": "JP",
+      "disc_id": "SLPS01452",
+      "disc_title": "Hatsukoi Valentine Special",
+      "file": "NPJJ00527.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00533",
+      "name": "Community Pom: Omoide o Dakishimete ",
+      "region": "JP",
+      "disc_id": "SLPS02116",
+      "disc_title": "Community Pom - Omoide o Dakishimete",
+      "file": "NPJJ00533.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00541",
+      "name": "Wakusei Koukitai Little Cats ",
+      "region": "JP",
+      "disc_id": "SLPS01374",
+      "disc_title": "Wakusei Koukitai - Little Cats",
+      "file": "NPJJ00541.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00542",
+      "name": "Koushien V",
+      "region": "JP",
+      "disc_id": "SLPS00729",
+      "disc_title": "Koushien V",
+      "file": "NPJJ00542.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00559",
+      "name": "Bounty Sword: Double Edge",
+      "region": "JP",
+      "disc_id": "SLPS01479",
+      "disc_title": "Bounty Sword - Double Edge",
+      "file": "NPJJ00559.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00565",
+      "name": "Zoku Gussun Oyoyo",
+      "region": "JP",
+      "disc_id": "SLPS00488",
+      "disc_title": "Zoku Gussun Oyoyo",
+      "file": "NPJJ00565.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00577",
+      "name": "The Bombing Islands",
+      "region": "JP",
+      "disc_id": "SLPS91449",
+      "disc_title": "The Bombing Islands",
+      "file": "NPJJ00577.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00578",
+      "name": "Wai Wai 3-nin Uchi Mahjong",
+      "region": "JP",
+      "disc_id": "SLPM86696",
+      "disc_title": "Wai Wai 3-nin Uchi Mahjong",
+      "file": "NPJJ00578.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00582",
+      "name": "The Oni Taiji: Mezase! Nidaime Momotarou",
+      "region": "JP",
+      "disc_id": "SLPS00089",
+      "disc_title": "The Oni Taiji!! - Mezase! Nidaime Momotarou",
+      "file": "NPJJ00582.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00584",
+      "name": "Tekken",
+      "region": "JP",
+      "disc_id": "SLPS00040",
+      "disc_title": "Tekken",
+      "file": "NPJJ00584.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00586",
+      "name": "R4 RIDGE RACER TYPE 4",
+      "region": "JP",
+      "disc_id": "SCPS45354",
+      "disc_title": "R4 - Ridge Racer Type 4",
+      "file": "NPJJ00586.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00588",
+      "name": "Jigsaw Island: Japan Graffiti",
+      "region": "JP",
+      "disc_id": "SLPS00473",
+      "disc_title": "Jigsaw Island - Japan Graffiti",
+      "file": "NPJJ00588.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00593",
+      "name": "Rockman 5: Blues no Wana!?  (req. OFW 6.60)",
+      "region": "JP",
+      "disc_id": "SLPM87268",
+      "disc_title": "Rockman 5 - Blues no Wana!?",
+      "file": "NPJJ00593.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00599",
+      "name": "Sound Novel Evolution 2: Kamaitachi no Yoru: Tokubetsu-Hen ",
+      "region": "JP",
+      "disc_id": "SLPS01794",
+      "disc_title": "Sound Novel Evolution 2 - Kamaitachi no Yoru Tokubetsu Hen",
+      "file": "NPJJ00599.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00610",
+      "name": "Cool Boarders ",
+      "region": "JP",
+      "disc_id": "SCPS45061",
+      "disc_title": "Cool Boarders",
+      "file": "NPJJ00610.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00621",
+      "name": "Super Robot Taisen Alpha Gaiden ",
+      "region": "JP",
+      "disc_id": "SLPS03148",
+      "disc_title": "Super Robot Taisen Alpha Gaiden",
+      "file": "NPJJ00621.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00633",
+      "name": "Trump Shiyouyo! Fukkoku-ban",
+      "region": "JP",
+      "disc_id": "SLPS02612",
+      "disc_title": "Trump Shiyou yo! (Fukkokuban)",
+      "file": "NPJJ00633.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00662",
+      "name": "Umihara Kawase Shun Second Edition ",
+      "region": "JP",
+      "disc_id": "SLPS02549",
+      "disc_title": "Umihara Kawase Shun - Second Edition",
+      "file": "NPJJ00662.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00670",
+      "name": "The Match Golf",
+      "region": "JP",
+      "disc_id": "SLPS00178",
+      "disc_title": "Match Golf, The",
+      "file": "NPJJ00670.cover.jpg",
+      "source": "libretro",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00679",
+      "name": "Soukuu no Tsubasa: Gotha World",
+      "region": "JP",
+      "disc_id": "SLPS01041",
+      "disc_title": "Soukuu no Tsubasa - Gotha World (Disc 1)",
+      "file": "NPJJ00679.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00723",
+      "name": "Tron ni Kobun ",
+      "region": "JP",
+      "disc_id": "SLPS02108",
+      "disc_title": "Tron ni Kobun",
+      "file": "NPJJ00723.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00727",
+      "name": "Rockman 8: Metal Heroes ",
+      "region": "JP",
+      "disc_id": "SLPS00630",
+      "disc_title": "Rockman 8 - Metal Heroes",
+      "file": "NPJJ00727.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00731",
+      "name": "Honoo no Ryourinin: Cooking Fighter Hao",
+      "region": "JP",
+      "disc_id": "SLPS01382",
+      "disc_title": "Honoo no Ryourinin - Cooking Fighter Hao",
+      "file": "NPJJ00731.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00755",
+      "name": "Koutetsu Reiiki: Steeldom",
+      "region": "JP",
+      "disc_id": "SLPS00431",
+      "disc_title": "Koutetsu Reiiki - Steeldom",
+      "file": "NPJJ00755.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00759",
+      "name": "Kumitate Battle: Kuttu Ketto",
+      "region": "JP",
+      "disc_id": "SLPS01208",
+      "disc_title": "Kumitate Battle Kuttu Ketto",
+      "file": "NPJJ00759.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00763",
+      "name": "Nekketsu Oyako",
+      "region": "JP",
+      "disc_id": "SLPS00006",
+      "disc_title": "Nekketsu Oyako",
+      "file": "NPJJ00763.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00764",
+      "name": "Puyo Puyo Tsuu Ketteiban",
+      "region": "JP",
+      "disc_id": "SLPS00530",
+      "disc_title": "Puyo Puyo Tsuu - Ketteiban",
+      "file": "NPJJ00764.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEE00025",
+      "name": "Everybody’s Golf 2 ",
+      "region": "EU",
+      "disc_id": "SCES02146",
+      "disc_title": "Everybody's Golf 2",
+      "file": "NPEE00025.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEE00027",
+      "name": "Cool Boarders ",
+      "region": "EU",
+      "disc_id": "SCES00568",
+      "disc_title": "Cool Boarders",
+      "file": "NPEE00027.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEE00054",
+      "name": "Jet Rider ",
+      "region": "EU",
+      "disc_id": "SCES00566",
+      "disc_title": "Jet Rider",
+      "file": "NPEE00054.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEE00055",
+      "name": "Jet Rider 2 ",
+      "region": "EU",
+      "disc_id": "SCES01045",
+      "disc_title": "Jet Rider 2",
+      "file": "NPEE00055.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEE00074",
+      "name": "Spyro 2: Gateway to Glimmer ",
+      "region": "EU",
+      "disc_id": "SCES02104",
+      "disc_title": "Spyro 2 - Gateway to Glimmer",
+      "file": "NPEE00074.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEE00075",
+      "name": "Spyro: Year of The Dragon ",
+      "region": "EU",
+      "disc_id": "SCES02835",
+      "disc_title": "Spyro - Year of the Dragon",
+      "file": "NPEE00075.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00006",
+      "name": "Loaded ",
+      "region": "EU",
+      "disc_id": "SLES00013",
+      "disc_title": "Loaded",
+      "file": "NPEF00006.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00007",
+      "name": "N2O ",
+      "region": "EU",
+      "disc_id": "SLES00809",
+      "disc_title": "N2O",
+      "file": "NPEF00007.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00016",
+      "name": "Fade to Black ",
+      "region": "EU",
+      "disc_id": "SLES00209",
+      "disc_title": "Fade to Black",
+      "file": "NPEF00016.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00027",
+      "name": "Street Skater ",
+      "region": "EU",
+      "disc_id": "SLES01759",
+      "disc_title": "Street Skater",
+      "file": "NPEF00027.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00048",
+      "name": "Street Skater 2 ",
+      "region": "EU",
+      "disc_id": "SLES02703",
+      "disc_title": "Street Skater 2",
+      "file": "NPEF00048.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00082",
+      "name": "Disney’s Party Time with Winnie the Pooh ",
+      "region": "EU",
+      "disc_id": "SCES03705",
+      "disc_title": "Disney's Party Time with Winnie the Pooh",
+      "file": "NPEF00082.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00107",
+      "name": "XS Junior League Soccer ",
+      "region": "EU",
+      "disc_id": "SLES04120",
+      "disc_title": "XS Junior League Soccer",
+      "file": "NPEF00107.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00118",
+      "name": "Gex: Deep Cover Gecko (FR/DE) (German store) ",
+      "region": "EU",
+      "disc_id": "SLES01908",
+      "disc_title": "Gex - Deep Cover Gecko (Europe) (Fr,De)",
+      "file": "NPEF00118.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00119",
+      "name": "Gex 3D: Enter The Gecko ",
+      "region": "EU",
+      "disc_id": "SLES00596",
+      "disc_title": "Gex 3D - Enter the Gecko",
+      "file": "NPEF00119.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00120",
+      "name": "Tomb Raider: The Last Revelation ",
+      "region": "EU",
+      "disc_id": "SLES02238",
+      "disc_title": "Tomb Raider - The Last Revelation",
+      "file": "NPEF00120.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00121",
+      "name": "Tomb Raider Chronicles ",
+      "region": "EU",
+      "disc_id": "SLES03331",
+      "disc_title": "Tomb Raider Chronicles",
+      "file": "NPEF00121.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00129",
+      "name": "Atari Anniversary Edition Redux ",
+      "region": "EU",
+      "disc_id": "SLES03808",
+      "disc_title": "Atari Anniversary Edition Redux",
+      "file": "NPEF00129.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00134",
+      "name": "Tekken ",
+      "region": "EU",
+      "disc_id": "SCES00005",
+      "disc_title": "Tekken",
+      "file": "NPEF00134.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00135",
+      "name": "R4: Ridge Racer Type 4 (German store) ",
+      "region": "EU",
+      "disc_id": "SCPS45354",
+      "disc_title": "R4 - Ridge Racer Type 4",
+      "file": "NPEF00135.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00172",
+      "name": "Arcade Hits: Sonic Wings Special",
+      "region": "EU",
+      "disc_id": "SLES04102",
+      "disc_title": "Sonic Wings Special",
+      "file": "NPEF00172.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00182",
+      "name": "Tall Unlimited",
+      "region": "EU",
+      "disc_id": "SLPS02366",
+      "disc_title": "Tall Unlimited",
+      "file": "NPEF00182.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPEF00273",
+      "name": "Tomba! 2: The Evil Swine Return ",
+      "region": "EU",
+      "disc_id": "SCUS94454",
+      "disc_title": "Tomba! 2 - The Evil Swine Return",
+      "file": "NPEF00273.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00322",
+      "name": "Tokimeki Memorial 2 Taisen Puzzle-dama",
+      "region": "JP",
+      "disc_id": "SLPM86753",
+      "disc_title": "Tokimeki Memorial 2 - Taisen Puzzledama",
+      "file": "NPJJ00322.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00548",
+      "name": "Asuka 120% Final: Burning Fest. Final",
+      "region": "JP",
+      "disc_id": "SLPS02074",
+      "disc_title": "Asuka 120% Final - Burning Fest. Final",
+      "file": "NPJJ00548.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUI94426",
+      "name": "CTR: Crash Team Racing™",
+      "region": "US",
+      "disc_id": "SCUS94426",
+      "disc_title": "CTR - Crash Team Racing",
+      "file": "NPUI94426.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUI94467",
+      "name": "Spyro Year of the Dragon™",
+      "region": "US",
+      "disc_id": "SCUS94467",
+      "disc_title": "Spyro - Year of the Dragon",
+      "file": "NPUI94467.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPUJ01554",
+      "name": "XS Junior League Football ",
+      "region": "US",
+      "disc_id": "SLUS01554",
+      "disc_title": "XS Junior League Football",
+      "file": "NPUJ01554.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJJ00470",
+      "name": "Umi no Nushi Tsuri: Takarajima ni Mukatte",
+      "region": "JP",
+      "disc_id": "SLPS02172",
+      "disc_title": "Umi no Nushi Tsuri - Takarajima ni Mukatte",
+      "file": "NPJJ00470.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    },
+    {
+      "id": "NPJI00023",
+      "name": "DEPTH",
+      "region": "JP",
+      "disc_id": "SCPS18003",
+      "disc_title": "Depth",
+      "file": "NPJI00023.cover.jpg",
+      "source": "DuckStation",
+      "method": "exact normalized title; edition labels stripped; prefer same region"
+    }
+  ],
+  "missing": [
+    {
+      "id": "NPUF30001",
+      "name": "GaiaSeed",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30002",
+      "name": "Cho Aniki",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30003",
+      "name": "Magical Drop F",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30004",
+      "name": "Arcade Hits: Outlaws of the Lost Dynasty",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30006",
+      "name": "Arcade Hits: Shienryu",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30022",
+      "name": "Mega Man",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30023",
+      "name": "Mega Man 2",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30024",
+      "name": "Mega Man 3",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30029",
+      "name": "Mega Man 4",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30035",
+      "name": "LUP★SALAD",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30038",
+      "name": "ZANAC×ZANAC",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30039",
+      "name": "Zero Kara no Mahjong ~Mahjong Tamago-gumi 2~",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30040",
+      "name": "Mahjong Youchien Tamago-gumi",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30041",
+      "name": "Zero Kara No Shogi~Shogi Youchien Ayumi-gumi~",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30044",
+      "name": "Favorite Dear ~Jyunpaku no Yogensha~",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30047",
+      "name": "Motto Trump Shiyouyo!",
+      "region": "JP"
+    },
+    {
+      "id": "NPUF30060",
+      "name": "Sarara's Little Shop",
+      "region": "JP"
+    },
+    {
+      "id": "NPUJ00036",
+      "name": "Darkstalkers ",
+      "region": "US"
+    },
+    {
+      "id": "NPUJ01552",
+      "name": "Dirt Jockey ",
+      "region": "US"
+    },
+    {
+      "id": "NPUJ94454",
+      "name": "Tomba! 2 ",
+      "region": "US"
+    },
+    {
+      "id": "NPUJ94571",
+      "name": "The Emperor’s New Groove ",
+      "region": "US"
+    },
+    {
+      "id": "NPJI00006",
+      "name": "GLOBAL FORCE～New Battle Nation",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00021",
+      "name": "Jumping Flash! 2: Aloha Danshaku Ooyowari no Kan ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00022",
+      "name": "Panekit ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00029",
+      "name": "Twisted Metal EX ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00031",
+      "name": "My Hot Cooking",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00034",
+      "name": "Crash Bandicoot 2 ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00050",
+      "name": "Arc The Lad III  (req. OFW 6.60) (DateCode 2013-10-09)",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00053",
+      "name": "Kokohore! Pukka: Dig-a-Dig Pukka ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00061",
+      "name": "Crash Bash Carnival ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI00072",
+      "name": "WarHawk",
+      "region": "JP"
+    },
+    {
+      "id": "NPJI90001",
+      "name": "XI[sai] / Devil Dice (Demo) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00010",
+      "name": "The Conveni: Ano Machi wo Dokusen Seyo",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00011",
+      "name": "The Adventure of Puppet Princess: Marl Oukoku no Ningyou Hime ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00018",
+      "name": "Logic Mahjong Soryu 3 or 4players",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00024",
+      "name": "Arcade Hits: Raiden",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00037",
+      "name": "Bakumatsu Rouman: Gekka no Kenshi ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00041",
+      "name": "Kenkaku Ibunroku Yomigaerishi Soukou no Yaiba Samurai Spirits Shinshou ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00044",
+      "name": "Spectral Force 2: Eien naru Kiseki ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00049",
+      "name": "Samurai Spirits: Kenkaku Yubinan Pack ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00054",
+      "name": "Spectral Tower 2 ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00067",
+      "name": "Cotton Original (SuperLite 1500 Series) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00071",
+      "name": "The Adventure Of Little Ralph ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00074",
+      "name": "Memorial * Series: Sunsoft Vol. 1: Ikki / Super Arabian ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00075",
+      "name": "Memorial * Series: Sunsoft Vol. 2: Route-16 Turbo / Atlantis no Nazo ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00085",
+      "name": "Memorial * Series: Sunsoft Vol. 3: Madoola no Tsubasa / Toukaidou Gojuusan Tsugi ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00107",
+      "name": "Frisky Tom",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00108",
+      "name": "Arcade Hits: Moon Cresta",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00121",
+      "name": "Marī no Atorie – Zāruburugu no Renkinjutsushi (Atelier Marie – The Alchemist of Salburg) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00129",
+      "name": "Biohazard 2  (DateCode 2010-01-13)",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00133",
+      "name": "Kuroi Hitomi no Noir: Cielgris Fantasm (Noir Yeux Noire) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00144",
+      "name": "Gakkou o Tsukurou!!",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00148",
+      "name": "Erī no Atorie – Zāruburugu no Renkinjutsushi 2 (Atelier Elie – The Alchemist of Salburg 2) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00150",
+      "name": "Magical Drop F ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00151",
+      "name": "Arcade Hits: Shienryu ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00203",
+      "name": "Kouyasai ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00208",
+      "name": "Yamasa Digi",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00223",
+      "name": "カルドセプト エキスパンション・プラス",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00239",
+      "name": "Biohazard 3 Last Escape  (DateCode 2010-01-06)",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00247",
+      "name": "Tenshi Doumei (Angel Alliance) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00252",
+      "name": "Cho Aniki ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00256",
+      "name": "重装機兵ヴァルケン2",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00267",
+      "name": "Arubarea no Otome: Uruwashi no Seishikitachi ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00269",
+      "name": "Dream Generation ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00270",
+      "name": "Final Fantasy I",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00277",
+      "name": "GaiaSeed ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00280",
+      "name": "Arcade Hits: Outlaws Of The Lost Dynasty ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00284",
+      "name": "Shisha no Yobu Tachi",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00285",
+      "name": "Tetsuman Special: Honkaku Mahjong ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00305",
+      "name": "Tehodoki Mahjong: Nyuumon-hen ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00308",
+      "name": "Tokimeki Memorial 2 EVS Append Disc",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00332",
+      "name": "Tokimeki no Houkago",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00335",
+      "name": "Family Gunjin Shogi",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00353",
+      "name": "Simple 1500 Series Vol. 40: The Shogi 2 ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00357",
+      "name": "Hamster Club",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00358",
+      "name": "Fantastic Pinball Kyutenkai ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00361",
+      "name": "Simple 1500 Series Vol. 36: The Renai Simulation ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00363",
+      "name": "Simple 1500 Series Vol. 44: The Card II ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00366",
+      "name": "Kisou Jidaigeki Sugoroku: Ninroku",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00397",
+      "name": "Simple 1500 Series Vol.71: The Renai Simulation 2 ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00399",
+      "name": "Simple 1500 Series Vol.74: The Horror Mystery ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00414",
+      "name": "Simple 1500 Series Vol.88: The Gal Mahjong – Love Songs Idol ha High Rate ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00421",
+      "name": "Sougaku Toshi Osaka ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00425",
+      "name": "Simple 1500 Series Vol. 99: The Kendo – Ken no Hanamichi ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00427",
+      "name": "SuperLite1500 Series Bomb Boat",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00430",
+      "name": "LSD ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00432",
+      "name": "Zero Kara no Shogi: Shogi Youchien – Ayumi Kumi ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00439",
+      "name": "Pangaea (SuperLite 1500 Series) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00442",
+      "name": "RungRung: Oz no Mahou Tsukai – Another World",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00447",
+      "name": "Akagawa Jirou: Yasoukyoku",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00453",
+      "name": "Angolmois 99 (SuperLite 1500 Series)",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00454",
+      "name": "Endless Season: Anoko Doko Noko (SuperLite 1500 Series)",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00457",
+      "name": "Lup*Salad ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00464",
+      "name": "Memorial * Series: Sunsoft Vol. 4: Chou Wakusei Senki Metafight / Ripple Island ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00467",
+      "name": "Shin Megami Tensei: Devil Children ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00476",
+      "name": "Cotton 100% ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00478",
+      "name": "Saikyou Ginsei Shogi 2 ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00485",
+      "name": "Memorial * Series: Sunsoft Vol. 5: Raf World / Hebereke ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00495",
+      "name": "Koten Tsugoshuu: Shijin no Kan ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00496",
+      "name": "Kohni Shogun ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00501",
+      "name": "Metamoru Panic: Doki Doki Youma Busters!! ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00502",
+      "name": "Memorial * Series: Sunsoft Vol. 6: Battle Formula / Gimmick! ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00503",
+      "name": "Akagawa Jirou: Majotachi no Nemuri – Fukkatsusai ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00536",
+      "name": "Pro Wrestling Sengokuden: Hyper Tag Match ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00544",
+      "name": "Oekaki Puzzle Shuu (SuperLite 3in1 Series)",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00547",
+      "name": "豪血寺一族2 ちょっとだけ最強伝説",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00556",
+      "name": "Pocket Tuner  (unknown difference - 1 )",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00575",
+      "name": "Toy Dream ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00576",
+      "name": "Waku Waku Derby ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00590",
+      "name": "Chiisa na Oukoku Eltria ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00596",
+      "name": "99 Kosuhien",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00608",
+      "name": "天地を喰らう Ⅱ 赤壁の戦い",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00609",
+      "name": "Sarara's Little Shop",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00612",
+      "name": "Super Robot Taisen F Final ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00618",
+      "name": "The Shanghai (value 1500) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00627",
+      "name": "Shiritsu Justice Gakuen: Legion Of Heroes (Rival Schools) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00651",
+      "name": "Motto Trump Shiyouyo!",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00664",
+      "name": "Rockman 6: Shijou Saidai no Tatakai!!  (DateCode 2013-01-21)",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00716",
+      "name": "Sihouette☆Stories",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00732",
+      "name": "Shiritsu Justice Gakuen: Nekketsu Seisyun Nikki 2 ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00741",
+      "name": "Gambler Jiko Chuushinha: Ippatsu Shoubu!",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00743",
+      "name": "Capcom Generation Dai-go-shū Kakutōka-tachi (Capcom Generations 5: Street Fighter Collection 2) ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00746",
+      "name": "Doki Doki Poyacchio ",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00768",
+      "name": "Puyo Puyo~n: Kakkun to Issho",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00777",
+      "name": "サイレントメビウス CASE:TITANIC",
+      "region": "JP"
+    },
+    {
+      "id": "NPEE00038",
+      "name": "Kurushi Final: Mental Blocks ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00038",
+      "name": "Kurushi Final: Mental Blocks (German only) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00062",
+      "name": "Warhawk (Dutch store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00062",
+      "name": "Warhawk (English store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00062",
+      "name": "Warhawk (French store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00062",
+      "name": "Warhawk (German store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00062",
+      "name": "Warhawk (Italian store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00062",
+      "name": "Warhawk (Portuguese store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00062",
+      "name": "Warhawk (Russian store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEE00062",
+      "name": "Warhawk (Spanish store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00004",
+      "name": "Hardcore 4×4 (German) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00046",
+      "name": "The Little Mermaid II ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00046",
+      "name": "The Little Mermaid II (German) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00056",
+      "name": "James Pond 2: Codename Robocod ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00056",
+      "name": "James Pond 2: Codename Robocod  (other language?)",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00058",
+      "name": "Creatures 3: Raised in Space ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00058",
+      "name": "Creatures 3: Raised in Space (Spanish Store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00077",
+      "name": "Monsters, Inc. Scare Island ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00077",
+      "name": "Monsters, Inc. Scare Island (German only) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00084",
+      "name": "Lilo & Stitch: Trouble in Paradise (German only) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00085",
+      "name": "Peter Pan: Adventures in Neverland ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00085",
+      "name": "Peter Pan: Adventures in Neverland (German only) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00088",
+      "name": "Atlantis: The Lost Empire ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00088",
+      "name": "Atlantis: The Lost Empire (French only) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00088",
+      "name": "Atlantis: The Lost Empire (German) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00093",
+      "name": "Toy Story 2: Buzz Lightyear to the Rescue ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00093",
+      "name": "Toy Story 2: Buzz Lightyear to the Rescue! (German) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00093",
+      "name": "Toy Story 2: Buzz Lightyear to the Rescue! (Italian only) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00106",
+      "name": "Airboat Racing",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00112",
+      "name": "Fear Effect 2 ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00112",
+      "name": "Fear Effect 2 (German store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00131",
+      "name": "Critical Depth (Dutch store) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00152",
+      "name": "Final Fantasy V  (alt link)",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00153",
+      "name": "A Bug's life and Monster's Inc",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00154",
+      "name": "Atlantis and Hercules",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00155",
+      "name": "Little Mermaid 2 & Winnie the Pooh",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00156",
+      "name": "Toy Story Racer & Toy Story 2",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00158",
+      "name": "Streak: Hover Board Racing (Russian Store)",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00159",
+      "name": "Bugriders: The Race of Kings (Russian Store)",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00167",
+      "name": "Arc the Lad 1",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00170",
+      "name": "Arc Arena: Monster Tournament ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00171",
+      "name": "Arcade Hits: Shienryu",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00177",
+      "name": "Cho Aniki",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00200",
+      "name": "NAMCO Heritage Bundle",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00203",
+      "name": "Mickey Wild Adventure",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00205",
+      "name": "Buzz Lightyear of Star Command ",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00205",
+      "name": "Buzz Lightyear of Star Command (German only) ",
+      "region": "EU"
+    },
+    {
+      "id": "NPJJ00677",
+      "name": "Zutto Issho",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00753",
+      "name": "Fantastic Pinball Kyutenkai",
+      "region": "JP"
+    },
+    {
+      "id": "NPJJ00771",
+      "name": "GUNbare! Game Tengoku",
+      "region": "JP"
+    },
+    {
+      "id": "NPUI94309",
+      "name": "Jet Moto® Full Game",
+      "region": "US"
+    },
+    {
+      "id": "NPUI94508",
+      "name": "2Xtreme (License)",
+      "region": "US"
+    },
+    {
+      "id": "NPUI94640",
+      "name": "Syphon Filter® 3 Full Game",
+      "region": "US"
+    },
+    {
+      "id": "NPUJ00893",
+      "name": "Toy Story 2: Buzz Lightyear To The Rescue! ",
+      "region": "US"
+    },
+    {
+      "id": "NPEF00077",
+      "name": "Monsters & Co. : L'Isola dello Spavento",
+      "region": "EU"
+    },
+    {
+      "id": "NPJJ00308",
+      "name": "Tokimeki Memorial 2 EVS Append Disc",
+      "region": "JP"
+    },
+    {
+      "id": "NPEF00177",
+      "name": "Cho Aniki",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00177",
+      "name": "Cho Aniki",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00084",
+      "name": "Disney Lilo & Stitch grossi guai ale hawaii",
+      "region": "EU"
+    },
+    {
+      "id": "NPEF00203",
+      "name": "Mickey Wild Adventure (Italy)",
+      "region": "EU"
+    }
+  ]
+}

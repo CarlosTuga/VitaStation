@@ -1,0 +1,1 @@
+static const unsigned runtime_crc[]={0x21bd6d72u,0x2c6fb429u,0x485293a1u,0x039095fdu,0xd072fe17u};

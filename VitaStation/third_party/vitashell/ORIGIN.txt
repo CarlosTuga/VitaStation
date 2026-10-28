@@ -1,0 +1,3 @@
+https://github.com/henkaku/VitaShell
+Commit: 4fa583c6a4996180bfdc14a24460218e15515451
+Header template and fpkg hash algorithm; GPL-3.0-or-later.

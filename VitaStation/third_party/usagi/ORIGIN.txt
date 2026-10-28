@@ -1,0 +1,2 @@
+coelhomarcus/usagi-pkgj commit 744541320532b59335771de67399fdeb231f7284
+Adapted for VitaStation: isolated staging, bounded package parsing, no resume serialization.

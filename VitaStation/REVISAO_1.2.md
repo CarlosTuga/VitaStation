@@ -1,0 +1,12 @@
+# VitaStation 1.2 — 28/10/2026
+
+O utilizador confirmou que a versão anterior instalou e abriu na Vita. Esta revisão responde às correções de navegação, posição dos ícones e aproximação visual/sonora à PS5.
+
+- **L/R:** a leitura padrão de sceCtrlPeekBufferPositive entrega LTRIGGER/RTRIGGER (0x100/0x200). O código anterior procurava L1/R1 (0x400/0x800), próprios do mapeamento Ext2. O novo mapeador aceita ambos; os valores são confirmados por verificações de compilação contra os headers reais do SDK. R percorre Jogos → Homebrew → Recentes → Favoritos → Jogos; L faz o percurso inverso. Funciona também com categorias vazias. L/R fecha detalhes/menus e regressa à categoria escolhida; durante descoberta da biblioteca fica suspenso. Pressionar ambos simultaneamente cancela a mudança.
+- **Interface:** carrossel no topo, abaixo das categorias, ícone selecionado maior, contorno branco e halo subtil. Arte e informações ocupam a zona inferior. Ações Jogar, Favorito e Detalhes são funcionais e têm zonas de toque atualizadas. IDs/contadores saíram do início e continuam nos detalhes. Painéis mais translúcidos, destaques claros e fundo azul escuro mais discreto. Não são usados PNGs completos do mockup nem capturas da PS5 como interface.
+- **Som:** novos efeitos originais sintetizados, com ataques suaves, harmónicos, transientes curtos e cauda discreta. Navegação, categoria, confirmação, retorno e menu têm sons distintos. Não são gravações oficiais da Sony. O mesmo gerador C produz o PCM da Vita e o ficheiro de demonstração previews/sounds.wav. Mantêm-se fila de áudio, mutex, mute e encerramento seguro.
+- **Instalação:** TITLE_ID VTST00001 mantido para atualizar a aplicação e APP_VER 01.20. O ícone de instalação mantém paleta indexada de 8 bits e passa na verificação de CRC/formato.
+
+Testes adicionais: bits físicos L/R e aliases Ext2; três ciclos completos das categorias; retorno circular; categorias vazias; retorno de detalhes; L+R simultâneo; bloqueio em carregamento; seleção por toque no carrossel superior; limites e energia/distinção dos cinco sons. A suite anterior continua incluída. Compilação, resultados e validação do pacote em BUILD_VITA_RESULTS.txt e TEST_RESULTS.txt.
+
+As imagens de previews são rasterizações das chamadas reais de desenho em host, com fixtures TESTE e fonte Segoe UI; não são capturas da consola. A reprodução sonora real, o mapeamento físico no equipamento do utilizador e a aparência final desta versão precisam de confirmação na Vita. Não se afirmam medições de FPS.

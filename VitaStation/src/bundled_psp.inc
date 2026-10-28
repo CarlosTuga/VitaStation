@@ -1,0 +1,1 @@
+static const char*psp_plugin_hash="5a1bc15c6af3f8aa53fbe86ed4bde23abe66faccea10ea88290bd1d3dc53fb82";

@@ -1,0 +1,28 @@
+[
+  {
+    "catalog": "psx",
+    "regions": [
+      "EU",
+      "US"
+    ],
+    "unique_ids": 379,
+    "covered_ids": 374,
+    "missing": {
+      "NPEF00153": "A Bug's life and Monster's Inc",
+      "NPEF00154": "Atlantis and Hercules",
+      "NPEF00155": "Little Mermaid 2 & Winnie the Pooh",
+      "NPEF00156": "Toy Story Racer & Toy Story 2",
+      "NPEF00200": "NAMCO Heritage Bundle"
+    }
+  },
+  {
+    "catalog": "psm",
+    "regions": [
+      "EU",
+      "US"
+    ],
+    "unique_ids": 413,
+    "covered_ids": 413,
+    "missing": {}
+  }
+]

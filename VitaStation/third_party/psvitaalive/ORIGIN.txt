@@ -1,0 +1,3 @@
+https://github.com/VegettoSan/PSVitaAlive
+Commit 16de7c63e9eadea46236bc11e7051e888ede7d7e
+Adapted pure HTML MediaFire parser from Client PSVitaAlive/source/network/mediafire_resolver.cpp. Original MIT LICENSE retained. ZIP 64-bit and shallow promoter path consulted from the same source.

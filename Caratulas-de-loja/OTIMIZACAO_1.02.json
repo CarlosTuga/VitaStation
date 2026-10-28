@@ -1,0 +1,14 @@
+{
+  "old_vpk_bytes": 258783607,
+  "new_vpk_bytes": 245594201,
+  "image_count": 20205,
+  "old_zip_entries": 20214,
+  "new_zip_entries": 11,
+  "payload_source_handles_before": 20205,
+  "payload_source_handles_after": 1,
+  "forced_sync_calls_fresh_install_before": 20205,
+  "batched_sync_calls_fresh_install_after": 158,
+  "same_image_manifest": true,
+  "hardware_duration_measured": false,
+  "note": "Counts describe code paths, not measured Vita timing. Destination files remain individual for launcher compatibility."
+}

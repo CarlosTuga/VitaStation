@@ -1,0 +1,106 @@
+﻿grupo,categoria,nome,indice,controlo
+VitaStation,VitaStation,Som do VitaStation,0,local
+VitaStation,VitaStation,Loja externa predefinida,1,local
+VitaStation,VitaStation,Animações do launcher,2,local
+VitaStation,VitaStation,Voltar ao início,3,local
+VitaStation,VitaStation,Iniciar VitaStation com a consola,4,local
+VitaStation,VitaStation,Gerir plugins,5,local
+VitaStation,VitaStation,Comportamento do botão PS,6,local
+VitaStation,VitaStation,Desligar ou reiniciar,7,local
+VitaStation,VitaStation,Instalar DLCs com o jogo,8,local
+Consola,Rede,Wi-Fi: ligar e desligar,9,-1
+Consola,Rede,Procurar pontos de acesso,10,-1
+Consola,Rede,Perfis Wi-Fi e autenticação,11,-1
+Consola,Rede,"Endereço IP, DNS e proxy",12,100
+Consola,Rede,Estado da ligação,13,100
+Consola,Rede,Teste de Internet,14,-1
+Consola,Rede,Rede móvel e cartão SIM,15,-1
+Consola,Rede,Modo de avião,16,-1
+Consola,Conta e PSN,Perfil: nome e apresentação,17,-1
+Consola,Conta e PSN,Avatar e imagem do perfil,18,-1
+Consola,Conta e PSN,Estado online,19,-1
+Consola,Conta e PSN,Iniciar e terminar sessão,20,-1
+Consola,Conta e PSN,Informações da conta,21,-1
+Consola,Conta e PSN,Privacidade e bloqueios,22,-1
+Consola,Conta e PSN,Contas familiares,23,-1
+Consola,Conta e PSN,Ativação da consola,24,-1
+Consola,Conta e PSN,Sincronização de dados,25,-1
+Consola,Troféus,Lista de jogos,26,-1
+Consola,Troféus,Troféus obtidos e por obter,27,-1
+Consola,Troféus,Detalhes e datas dos troféus,28,-1
+Consola,Troféus,Progresso por jogo,29,-1
+Consola,Troféus,Sincronizar com PSN,30,-1
+Consola,Troféus,Comparar com amigos,31,-1
+Consola,Troféus,Visibilidade dos troféus,32,-1
+Consola,Dispositivos,Dispositivos Bluetooth,33,-1
+Consola,Dispositivos,Emparelhar e remover dispositivos,34,-1
+Consola,Dispositivos,Teclado externo,35,-1
+Consola,Dispositivos,Comandos e atribuição de botões,36,-1
+Consola,Dispositivos,Painel tátil e sensores,37,-1
+Consola,Dispositivos,Câmara e microfone,38,-1
+Consola,Som e ecrã,Volume da consola,39,0
+Consola,Som e ecrã,Brilho do ecrã,40,1
+Consola,Som e ecrã,Limite de volume AVLS,41,-1
+Consola,Som e ecrã,Música do sistema,42,-1
+Consola,Som e ecrã,Silêncio automático,43,-1
+Consola,Som e ecrã,Temas e fundos,44,-1
+Consola,Notificações,Alertas e apresentação,45,-1
+Consola,Notificações,Notificações por aplicação,46,-1
+Consola,Idioma e relógio,Idioma da consola,47,110
+Consola,Idioma e relógio,Idiomas do teclado,48,-1
+Consola,Idioma e relógio,Data e hora,49,104
+Consola,Idioma e relógio,Fuso horário,50,104
+Consola,Idioma e relógio,Hora de verão,51,104
+Consola,Idioma e relógio,Formatos de data e hora,52,104
+Consola,Acessibilidade,Ampliação do ecrã,53,-1
+Consola,Acessibilidade,Inversão de cores,54,-1
+Consola,Acessibilidade,Tamanho e espessura do texto,55,-1
+Consola,Acessibilidade,Contraste elevado,56,-1
+Consola,Acessibilidade,Legendas,57,-1
+Consola,Acessibilidade,Atribuição de botões,58,-1
+VitaStation,Acessibilidade,Menu rápido,59,SYS_ACTION_QUICK
+Consola,Sistema,Informações da consola e versão,60,101
+VitaStation,Sistema,Arranque automático,61,SYS_ACTION_AUTOBOOT
+Consola,Sistema,Controlo por botões,62,106
+Consola,Sistema,Alimentação USB,63,-1
+Consola,Sistema,Consumo e utilização,64,108
+VitaStation,Sistema,Registo de erros,65,105
+VitaStation,Sistema,Licenças e avisos,66,107
+Consola,Sistema,PlayStation Mobile,67,-1
+Consola,Sistema,Atualização do firmware,68,-1
+Consola,Energia,Temporização de espera,69,-1
+Consola,Energia,Poupança de energia Wi-Fi,70,-1
+Consola,Energia,Estado e carga da bateria,71,102
+Consola,Energia,Suspender,72,SYS_ACTION_SUSPEND
+VitaStation,Energia,Desligar e reiniciar,73,SYS_ACTION_POWER
+Consola,Segurança e armazenamento,Bloqueio do ecrã,74,-1
+Consola,Segurança e armazenamento,Controlo parental,75,-1
+Consola,Segurança e armazenamento,Espaço disponível,76,103
+VitaStation,VitaStation,Gestão de aplicações e dados,77,SYS_ACTION_REFRESH
+Consola,Segurança e armazenamento,Cópias de segurança e restauro,78,-1
+Consola,Segurança e armazenamento,Dicionário do teclado,79,-1
+Consola,Segurança e armazenamento,Formatação do cartão,80,-1
+Consola,Segurança e armazenamento,Reposição das definições,81,-1
+Consola,Segurança e armazenamento,Restauro completo,82,-1
+VitaStation,Aplicações e serviços,Biblioteca e execução de aplicações,83,SYS_ACTION_LIBRARY
+VitaStation,Aplicações e serviços,Instalação de pacotes,84,SYS_ACTION_STORE
+VitaStation,Aplicações e serviços,Downloads e fila,85,109
+VitaStation,Aplicações e serviços,Carátulas e metadados,86,SYS_ACTION_STORE
+Consola,Aplicações e serviços,Amigos,87,-1
+Consola,Aplicações e serviços,Mensagens,88,-1
+Consola,Aplicações e serviços,Grupos e conversação,89,-1
+Consola,Aplicações e serviços,Ligação à PS4,90,-1
+Consola,Aplicações e serviços,Reprodução remota PS3,91,-1
+Consola,Aplicações e serviços,Navegador,92,-1
+Consola,Aplicações e serviços,Fotografias,93,-1
+Consola,Aplicações e serviços,Música e vídeos,94,-1
+Consola,Aplicações e serviços,Correio e calendário,95,-1
+Consola,Aplicações e serviços,Transferência de conteúdo,96,-1
+VitaStation,Integração do launcher,Navegação L/R e favoritos,97,SYS_ACTION_LIBRARY
+VitaStation,Integração do launcher,Preferências persistentes,98,SYS_ACTION_PREFERENCES
+VitaStation,Integração do launcher,Logótipo e arranque,99,SYS_ACTION_AUTOBOOT
+VitaStation,Integração do launcher,Indicador de volume,100,0
+VitaStation,Integração do launcher,Botão PS e duplo toque,101,SYS_ACTION_PS
+VitaStation,VitaStation,Reconstruir base de dados,102,SYS_ACTION_REFRESH
+VitaStation,Integração do launcher,Plugins taiHEN: diagnóstico,103,SYS_ACTION_PLUGINS
+VitaStation,Integração do launcher,Plugins taiHEN: instalação e recuperação,104,SYS_ACTION_PLUGIN_PREPARE
