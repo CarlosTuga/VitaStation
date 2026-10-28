@@ -1,8 +1,11 @@
+#include "updater.h"
 #include "store.h"
 #include "system_info.h"
 #include <string.h>
 #include <stdio.h>
 #if !defined(__vita__)
+void store_update_request(void){}
+void store_update_status(UpdateStatus*s){if(s){memset(s,0,sizeof(*s));snprintf(s->message,sizeof(s->message),"Atualizacoes exigem uma PS Vita.");}}
 bool store_start(void){return false;}
 bool store_enqueue(const CatalogPackage*p,char*error,size_t n){(void)p;if(error && n)snprintf(error,n,"A instalacao exige uma PS Vita.");return false;}
 void store_progress(StoreProgress*p){if(p)memset(p,0,sizeof(*p));}

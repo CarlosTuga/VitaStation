@@ -1,3 +1,5 @@
+#include "updater.h"
+#include "version.h"
 #include "ui.h"
 #include "store_ui.h"
 #include "store.h"
@@ -794,7 +796,7 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
         render_draw_text(46,126,0xFF9DB5CE,.65f,"O: categorias  |  Cima / Baixo: escolher");
         int position=settings_group_position(ui->settings_group,ui->settings_index);
         int first=position>5?position-5:0;
-        const char*local[]={"Som do VitaStation","Loja externa predefinida","Animações do launcher","Voltar ao início","Iniciar VitaStation com a consola","Gerir plugins","Comportamento do botão PS","Desligar ou reiniciar","Instalar DLCs com o jogo","Cor do ambiente","Cor das letras","Alto contraste"};
+        const char*local[]={"Som do VitaStation","Loja externa predefinida","Animações do launcher","Voltar ao início","Iniciar VitaStation com a consola","Gerir plugins","Comportamento do botão PS","Desligar ou reiniciar","Instalar DLCs com o jogo","Cor do ambiente","Cor das letras","Alto contraste","Versão da aplicação","Atualizações do VitaStation"};
         int total=settings_group_count(ui->settings_group);
         for(int row=first;row<first+7 && row<total;row++){
             int i=settings_group_item(ui->settings_group,row),y=164+(row-first)*46;bool sel=i==ui->settings_index;
@@ -831,6 +833,14 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
                 render_draw_text(465,347,0xFFB7C9E0,.8f,"Nao abre o painel original do sistema.");
             }
         }else{
+            if(ui->settings_index>=12){
+                UpdateStatus status;store_update_status(&status);
+                render_draw_text(465,220,COLOR_WHITE,1.0f,VS_VERSION_LABEL);
+                draw_title(465,270,.8f,ui->settings_index==12?"Desenvolvido por Carlos Tuga":status.message,48);
+                if(ui->settings_index==13 && status.phase==3){render_draw_text(465,410,COLOR_WHITE,.65f,"ux0:data/VitaStation/updates/VitaStation.vpk");}
+                render_draw_text(465,322,0xFFB7C9E0,.65f,"GitHub: CarlosTuga/VitaStation (inclui betas)");
+                render_draw_text(465,370,COLOR_WHITE,.7f,"X: procurar / descarregar; instalar no VitaShell");
+            }else{
             render_draw_text(520,165,0xFF9EBDDF,.75f,"VitaStation");
             draw_title(520,215,.95f,local[ui->settings_index],31);
             const char*value=ui->settings_index==9?theme_environment_name(ui->environment_theme):ui->settings_index==10?theme_text_name(ui->text_theme):ui->settings_index==11?(ui->high_contrast?"Ativado: texto opaco com sombra":"Contraste normal"):ui->settings_index==8?(ui->auto_dlcs_enabled?"Ligado: DLCs da mesma ID do jogo":"Desligado: instalar apenas o jogo"):ui->settings_index==5?"Ativar ou desativar plugins individuais":ui->settings_index==6?(ui->ps_routing_enabled?"Um toque: VitaStation | Dois: LiveArea":"Comportamento original do sistema"):ui->settings_index==7?"Desligar, reiniciar ou cancelar":ui->settings_index==4?(ui->autoboot_enabled?"Ligado: iniciar VitaStation":"Desligado: iniciar LiveArea"):ui->settings_index==0?(ui->sound_enabled?"Efeitos sonoros ligados":"Efeitos sonoros desligados"):ui->settings_index==2?(ui->animations_enabled?"Animacoes ligadas":"Animacoes desligadas"):ui->settings_index==1?"Escolher uma aplicacao instalada":"Regressar a biblioteca";
@@ -838,6 +848,7 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
             const char*descriptions[]={"Ativa ou silencia os efeitos do launcher.","Escolhe a loja externa usada por predefinição.","Ativa as transições visuais da interface.","Regressa à biblioteca de aplicações.","Abre VitaStation ao iniciar a consola.","Consulta e ativa plugins individualmente.","Configura um toque e duplo toque no botão PS.","Abre as opções de energia da consola.","Adiciona os DLCs disponíveis da mesma ID.","Personaliza os fundos e os painéis.","Escolhe o tom das letras da interface.","Reforça a opacidade e a sombra das letras."};
             draw_title(465,332,.69f,descriptions[ui->settings_index],55);
             render_fill_rounded_rect(465,388,420,44,22,0xFFF2F4F8);render_draw_text(500,418,0xFF172133,.95f,"X  Selecionar");
+        }
         }
         }
     }

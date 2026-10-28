@@ -1,3 +1,2 @@
-b68a638211bc384c2ef4f51148db6093b33307bd05c22a6fc39f6eb50a8f029d  VitaStation-1.6.0-beta.vpk
-5a92de68571d6b1bed6725a186dcd55c0ddd5a38cefb32787f5f407d2ec24925  Caratulas-de-loja-1.04.vpk
-4b58f4501b6ecd6b51353219dc26e371a5a693a0730407eeaa43eb3c7981b909  VitaStation-1.6.0-public-source.zip
+37a076f191a2df8f570323a6f16fe3c74d6f852529eeb329b93372e0fe13f6b9  VitaStation-1.6.1-beta.vpk
+034fdab1c240a1415f3a4b98d498dba695d25b4a5cfb535eb37f88ccbca00085  VitaStation-1.6.1-public-source.zip

@@ -1,3 +1,5 @@
+#include "updater.h"
+#include "version.h"
 #include "system_ui.h"
 #include "settings_menu.h"
 #include "system_controls.h"
@@ -36,6 +38,8 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
             }
             if(f && f->control>=SYS_INFO_NETWORK){u->information_page=f->control;u->information_count=system_info_read(u->information_page,u->information_lines);u->information_poll=1;u->state=UI_STATE_SYSTEM_INFO;return true;}
         }
+        if(u->settings_index==12){ui_show_toast(u,"VitaStation " VS_VERSION_LABEL);return true;}
+        if(u->settings_index==13){store_update_request();return true;}
         if(u->settings_index==5){u->plugin_count=plugins_list(u->plugin_entries,96);u->plugin_index=0;u->state=UI_STATE_PLUGINS;return true;}
         if(u->settings_index==6){
             if(!autoboot_bridge_available()){ui_show_toast(u,"O plugin do VitaStation ainda nao esta configurado.");return true;}

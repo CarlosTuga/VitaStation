@@ -1,3 +1,5 @@
+#include "updater.h"
+#include "version.h"
 /* Native VitaStation adapter. PKG decoding: third_party/usagi (BSD-2-Clause).
  * Homebrew head.bin generation adapted from VitaShell, TheFloW (GPL-3.0-or-later).
  * See third_party/vitashell/LICENSE and THIRD_PARTY.md. */
@@ -41,6 +43,8 @@ static SceUID cover_wake_id=-1,cover_thread_id=-1;
 static std::mutex network_init_mutex;
 static std::atomic<bool> stop_worker{false},cancel_job{false};
 static StoreProgress progress{};
+static UpdateStatus update_status{};
+static bool update_pending=false,update_download=false;
 static CatalogPackage queue[8];
 static char active_content_id[64]{},active_title_id[10]{},active_url[1024]{};
 static unsigned first=0,count=0;
@@ -311,14 +315,36 @@ static CURL* https_client(const std::string&url){
     curl_easy_setopt(h,CURLOPT_CONNECTTIMEOUT,10L);curl_easy_setopt(h,CURLOPT_LOW_SPEED_LIMIT,128L);curl_easy_setopt(h,CURLOPT_LOW_SPEED_TIME,30L);
     curl_easy_setopt(h,CURLOPT_NOSIGNAL,1L);curl_easy_setopt(h,CURLOPT_FAILONERROR,1L);curl_easy_setopt(h,CURLOPT_FOLLOWLOCATION,1L);curl_easy_setopt(h,CURLOPT_MAXREDIRS,5L);
     curl_easy_setopt(h,CURLOPT_PROTOCOLS_STR,"http,https");curl_easy_setopt(h,CURLOPT_REDIR_PROTOCOLS_STR,"http,https");
-    curl_easy_setopt(h,CURLOPT_USERAGENT,"VitaStation/1.5.6");return h;
+    curl_easy_setopt(h,CURLOPT_USERAGENT,"VitaStation/" VS_VERSION);return h;
 }
 static std::vector<uint8_t> https_bytes(const std::string&url,size_t limit){
-    CURL*h=https_client(url);char detail[CURL_ERROR_SIZE]{};curl_easy_setopt(h,CURLOPT_ERRORBUFFER,detail);MemoryResponse data{{},limit};curl_easy_setopt(h,CURLOPT_TIMEOUT,45L);
+    CURL*h=https_client(url);if(url.find("https://api.github.com/")==0){curl_easy_setopt(h,CURLOPT_PROTOCOLS_STR,"https");curl_easy_setopt(h,CURLOPT_REDIR_PROTOCOLS_STR,"https");}char detail[CURL_ERROR_SIZE]{};curl_easy_setopt(h,CURLOPT_ERRORBUFFER,detail);MemoryResponse data{{},limit};curl_easy_setopt(h,CURLOPT_TIMEOUT,45L);
     curl_easy_setopt(h,CURLOPT_WRITEFUNCTION,memory_write);curl_easy_setopt(h,CURLOPT_WRITEDATA,&data);
     auto code=curl_easy_perform(h);curl_easy_cleanup(h);
     if(code!=CURLE_OK)throw std::runtime_error(transfer_error(code,detail));
     return std::move(data.bytes);
+}
+static void run_update(bool download){
+    if(!download){
+        auto bytes=https_bytes("https://api.github.com/repos/CarlosTuga/VitaStation/releases?per_page=100",2*1024*1024);
+        UpdateStatus found{};if(!update_select((const char*)bytes.data(),bytes.size(),&found))throw std::runtime_error("Resposta de atualizacoes invalida.");
+        lock();update_status=found;unlock();return;
+    }
+    lock();UpdateStatus selected=update_status;unlock();
+    /* Bound memory and require TLS also after GitHub's asset redirect. */
+    CURL*h=https_client(selected.url);curl_easy_setopt(h,CURLOPT_PROTOCOLS_STR,"https");curl_easy_setopt(h,CURLOPT_REDIR_PROTOCOLS_STR,"https");
+    MemoryResponse data{{},64*1024*1024};curl_easy_setopt(h,CURLOPT_TIMEOUT,600L);curl_easy_setopt(h,CURLOPT_WRITEFUNCTION,memory_write);curl_easy_setopt(h,CURLOPT_WRITEDATA,&data);
+    auto code=curl_easy_perform(h);curl_easy_cleanup(h);if(code!=CURLE_OK)throw std::runtime_error(transfer_error(code,""));
+    if(data.bytes.size()!=selected.size)throw std::runtime_error("Tamanho do VPK incorreto.");
+    unsigned char sum[32];SHA256(data.bytes.data(),data.bytes.size(),sum);char digest[65];for(unsigned i=0;i<32;i++)snprintf(digest+i*2,3,"%02x",sum[i]);
+    if(strcasecmp(digest,selected.digest))throw std::runtime_error("SHA-256 da atualizacao incorreto.");
+    const std::string dir="ux0:data/VitaStation/updates",tmp=dir+"/VitaStation.part",dest=dir+"/VitaStation.vpk";pkgi_mkdirs(dir.c_str());pkgi_save(tmp,data.bytes.data(),data.bytes.size());pkgi_rm(dest.c_str());pkgi_rename(tmp,dest);
+    lock();update_status.phase=3;snprintf(update_status.message,sizeof(update_status.message),"VPK verificado: ux0:data/VitaStation/updates/VitaStation.vpk. Instala no VitaShell.");unlock();
+}
+extern "C" void store_update_status(UpdateStatus*out){if(!out)return;if(lock_id<0){*out={};snprintf(out->message,sizeof(out->message),"Servico de atualizacoes indisponivel.");return;}lock();*out=update_status;if(!out->message[0])snprintf(out->message,sizeof(out->message),"X: procurar atualizacoes no GitHub.");unlock();}
+extern "C" void store_update_request(){
+    if(lock_id<0 || cover_thread_id<0)return;
+    lock();if(update_status.phase==1){unlock();return;}update_download=update_status.phase==2;update_pending=true;update_status.phase=1;snprintf(update_status.message,sizeof(update_status.message),update_download?"A descarregar e verificar o VPK...":"A procurar atualizacoes...");unlock();sceKernelSignalSema(cover_wake_id,1);
 }
 static void refresh_homebrew(){
     auto bytes=https_bytes("https://raw.githubusercontent.com/VegettoSan/PSVitaAlive/main/catalog.json",16*1024*1024);
@@ -369,6 +395,8 @@ static std::string install_game_bundle(const CatalogPackage&p){
 static int cover_worker(SceSize,void*){
     while(!stop_worker){
         sceKernelWaitSema(cover_wake_id,1,nullptr);if(stop_worker)break;
+        lock();bool updating=update_pending,download=update_download;update_pending=false;unlock();
+        if(updating){try{run_update(download);}catch(const std::exception&e){lock();update_status.phase=5;snprintf(update_status.message,sizeof(update_status.message),"%s",e.what());unlock();}}
         lock();bool refresh=homebrew_refresh_pending;homebrew_refresh_pending=false;unlock();
         if(refresh){try{refresh_homebrew();}catch(const std::exception&e){vs_log("homebrew-catalog",e.what(),-1);lock();snprintf(progress.homebrew_error,sizeof(progress.homebrew_error),"%s",e.what());unlock();}}
         lock();if(!cover_count){unlock();continue;}

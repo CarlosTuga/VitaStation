@@ -5,7 +5,7 @@
 #include "texture.h"
 #include "catalog.h"
 #include "plugins.h"
-#define UI_LOCAL_SETTINGS_COUNT 12
+#define UI_LOCAL_SETTINGS_COUNT 14
 #define UI_TAB_WIDTH 98
 #include <stdbool.h>
 

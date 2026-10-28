@@ -1,14 +1,9 @@
-# Ficheiros para GitHub Releases
+# Pacotes
 
-Esta pasta local reúne os dois VPKs atuais e um arquivo público de fontes completo, com checksums. Os binários/ZIP são ignorados pelo Git normal; este README e SHA256SUMS.txt podem acompanhar os fontes.
+VitaStation 1.6.1 beta: versão nas definições e consulta/descarga de atualizações do GitHub. Instalar o VPK no VitaShell. Atualizações descarregadas ficam em ux0:data/VitaStation/updates/VitaStation.vpk e requerem instalação manual no VitaShell.
 
-Anexar à Release:
+Pacote de carátulas 1.04 opcional disponível na Release v1.6.0-beta. Não precisa de reinstalar as carátulas nesta atualização.
 
-- VitaStation-1.6.0-beta.vpk
-- Caratulas-de-loja-1.04.vpk
-- VitaStation-1.6.0-public-source.zip (fontes dos dois projetos, documentação e licenças)
-- SHA256SUMS.txt
+Releases: https://github.com/CarlosTuga/VitaStation/releases
 
-O VPK de carátulas tem cerca de 269 MB, acima do limite de 100 MiB do Git normal. Não forçar a adição desse ficheiro ao histórico. Usar Releases ou um fluxo Git LFS definido separadamente.
-
-O arquivo público é gerado desta árvore limpa. Não reutilizar arquivos de trabalho que possam conter logs com caminhos locais, recibos ou backups privados. Repositório: https://github.com/CarlosTuga/VitaStation. Estes pacotes locais destinam-se a Releases; não são incluídos no histórico Git.
+O ZIP de fontes contém código e licenças. SHA256SUMS.txt verifica os pacotes da versão atual.

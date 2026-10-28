@@ -1,3 +1,5 @@
+> Atualização 1.6.1 beta: Definições do VitaStation → Versão da aplicação / Atualizações do VitaStation. Procura Releases públicas deste repositório (incluindo betas), descarrega o VPK após novo X e verifica SHA-256. Instalação final manual no VitaShell: `ux0:data/VitaStation/updates/VitaStation.vpk`. A ligação HTTPS nesta versão ainda não foi testada na consola física. Detalhes: [revisão 1.6.1](VitaStation/REVISAO_1.6.1_BETA.md).
+
 # VitaStation
 
 **Launcher para PlayStation Vita — desenvolvido por Carlos Tuga.**

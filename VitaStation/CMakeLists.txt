@@ -22,6 +22,7 @@ set(CMAKE_C_STANDARD 99)
 include_directories(include)
 
 set(SOURCES
+    src/updater.c
     src/log.c
     src/library.c
     src/psp_media.c
@@ -88,6 +89,7 @@ if(VITA)
     target_sources(VitaStation PRIVATE "${VS_BOOT_HASH}")
     target_include_directories(VitaStation PRIVATE third_party "${CMAKE_CURRENT_BINARY_DIR}")
     target_compile_definitions(VitaStation PRIVATE FMT_HEADER_ONLY)
+    target_link_options(VitaStation PRIVATE -Wl,--gc-sections)
     target_compile_options(VitaStation PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-O2;-Wall;-Wextra>)
 
     # libwebp so e necessaria nas versoes mais recentes da vita2d
@@ -144,7 +146,7 @@ if(VITA)
         list(APPEND VS_PLUGIN_ARGS -a "${alive_file}=assets/alive/${alive_name}")
     endforeach()
     add_custom_command(OUTPUT "${VS_SFO}"
-        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.60 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.61 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
         DEPENDS "${VS_SELF}" VERBATIM
     )
     add_custom_command(OUTPUT "${VS_VPK}"
