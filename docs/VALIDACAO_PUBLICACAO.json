@@ -1,5 +1,5 @@
 {
-  "version": "1.6.1-beta",
+  "version": "1.6.2-beta",
   "covers_version": "1.04",
   "date": "2026-10-28",
   "source_files_compared_with_current_project": 186,
@@ -16,5 +16,7 @@
   "remote_repository_created": false,
   "git_staging_checkout_verified": true,
   "embedded_vpk_personal_reference_check": "passed",
-  "note": "Atualizador: testes host/integracao/metadados e build VitaSDK passaram; HTTPS e instalacao fisica pendentes."
+  "note": "Testes host/integracao/carátulas/atualizador/manutencao e build VitaSDK passaram; HTTPS e desinstalacao fisica pendentes.",
+  "update_and_maintenance_tests": "passed with mocked ZIP/Vita I/O",
+  "physical_update_uninstall_validation": "pending"
 }

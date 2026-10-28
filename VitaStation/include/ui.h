@@ -5,7 +5,7 @@
 #include "texture.h"
 #include "catalog.h"
 #include "plugins.h"
-#define UI_LOCAL_SETTINGS_COUNT 14
+#define UI_LOCAL_SETTINGS_COUNT 15
 #define UI_TAB_WIDTH 98
 #include <stdbool.h>
 
@@ -14,7 +14,7 @@ typedef enum {
     UI_STATE_GAME_DETAILS = 1,
     UI_STATE_QUICK_MENU = 2,
     UI_STATE_SETTINGS = 3, UI_STATE_STORE = 4, UI_STATE_LOADING = 5, UI_STATE_SPLASH = 6, UI_STATE_CATALOG_DETAILS = 7,
-    UI_STATE_POWER=8, UI_STATE_PLUGINS=9, UI_STATE_SYSTEM_INFO=10
+    UI_STATE_POWER=8, UI_STATE_PLUGINS=9, UI_STATE_SYSTEM_INFO=10, UI_STATE_UNINSTALL=11
 } UIState;
 
 typedef struct {

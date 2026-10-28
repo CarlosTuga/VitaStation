@@ -1,4 +1,4 @@
-> Atualização 1.6.1 beta: Definições do VitaStation → Versão da aplicação / Atualizações do VitaStation. Procura Releases públicas deste repositório (incluindo betas), descarrega o VPK após novo X e verifica SHA-256. Instalação final manual no VitaShell: `ux0:data/VitaStation/updates/VitaStation.vpk`. A ligação HTTPS nesta versão ainda não foi testada na consola física. Detalhes: [revisão 1.6.1](VitaStation/REVISAO_1.6.1_BETA.md).
+> **1.6.2 beta:** a opção de atualização instala automaticamente as carátulas 1.04 quando faltam. Inclui «Desinstalar VitaStation e carátulas», com confirmação e reposição do arranque original. A instalação final de futuras atualizações do launcher continua no VitaShell. Descarga HTTPS e desinstalação física pendentes de teste. [Detalhes e limites](VitaStation/REVISAO_1.6.2_BETA.md).
 
 # VitaStation
 

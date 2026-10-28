@@ -1,9 +1,9 @@
-# Pacotes
+# Pacotes 1.6.2 beta
 
-VitaStation 1.6.1 beta: versão nas definições e consulta/descarga de atualizações do GitHub. Instalar o VPK no VitaShell. Atualizações descarregadas ficam em ux0:data/VitaStation/updates/VitaStation.vpk e requerem instalação manual no VitaShell.
+Instalar VitaStation-1.6.2-beta.vpk no VitaShell. A opção de atualização recupera e instala o pacote de carátulas 1.04 se as carátulas não estiverem presentes. Não precisa de reinstalar carátulas já existentes. Pacote original: Release v1.6.0-beta.
 
-Pacote de carátulas 1.04 opcional disponível na Release v1.6.0-beta. Não precisa de reinstalar as carátulas nesta atualização.
+Inclui desinstalação com confirmação e reposição do arranque. Descarga HTTPS e remoção física ainda pendentes de validação. Instruções e limitações: VitaStation/REVISAO_1.6.2_BETA.md.
 
 Releases: https://github.com/CarlosTuga/VitaStation/releases
 
-O ZIP de fontes contém código e licenças. SHA256SUMS.txt verifica os pacotes da versão atual.
+ZIP: fontes e licenças. SHA256SUMS.txt: verificação dos pacotes atuais.

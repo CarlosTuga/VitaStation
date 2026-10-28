@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     settings_ensure_dir("ux0:data");
 #endif
     settings_ensure_dir(VS_DATA_DIR);
-    vs_log("build","VitaStation 1.6.1 beta (01.61), permanent offline cover library",0);
+    vs_log("build","VitaStation 1.6.2 beta (01.62), permanent offline cover library",0);
     if(!render_init())return 1;
     input_init();
 

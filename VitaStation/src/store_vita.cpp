@@ -1,3 +1,5 @@
+#include "cover_pack.h"
+#include <zlib.h>
 #include "updater.h"
 #include "version.h"
 /* Native VitaStation adapter. PKG decoding: third_party/usagi (BSD-2-Clause).
@@ -44,7 +46,7 @@ static std::mutex network_init_mutex;
 static std::atomic<bool> stop_worker{false},cancel_job{false};
 static StoreProgress progress{};
 static UpdateStatus update_status{};
-static bool update_pending=false,update_download=false;
+static bool update_pending=false,update_download=false,update_busy=false;
 static CatalogPackage queue[8];
 static char active_content_id[64]{},active_title_id[10]{},active_url[1024]{};
 static unsigned first=0,count=0;
@@ -160,10 +162,10 @@ static void progress_bytes(uint64_t done,uint64_t total){lock();progress.downloa
 static CURL* https_client(const std::string&url);
 static std::vector<uint8_t> https_bytes(const std::string&url,size_t limit);
 #include "store_zip.inc"
-struct FileTransfer{void*file;sha256_ctx sha;uint64_t done=0;bool failed=false;};
+struct FileTransfer{void*file;sha256_ctx sha;uint64_t done=0,limit=(uint64_t(32)<<30);bool failed=false;};
 static size_t file_write(char*data,size_t size,size_t count,void*context){
     auto*t=(FileTransfer*)context;if(size && count>SIZE_MAX/size)return 0;size_t n=size*count;
-    if(cancel_job || stop_worker || n>(uint64_t(32)<<30)-t->done)return 0;
+    if(cancel_job || stop_worker || n>t->limit-t->done)return 0;
     try{pkgi_write(t->file,data,n);sha256_update(&t->sha,(const uint8_t*)data,n);t->done+=n;}catch(...){t->failed=true;return 0;}return n;
 }
 static int transfer_progress(void*,curl_off_t total,curl_off_t done,curl_off_t,curl_off_t){progress_bytes(done,total>0?total:0);return cancel_job || stop_worker;}
@@ -324,9 +326,11 @@ static std::vector<uint8_t> https_bytes(const std::string&url,size_t limit){
     if(code!=CURLE_OK)throw std::runtime_error(transfer_error(code,detail));
     return std::move(data.bytes);
 }
+#include "update_covers.inc"
 static void run_update(bool download){
     if(!download){
         auto bytes=https_bytes("https://api.github.com/repos/CarlosTuga/VitaStation/releases?per_page=100",2*1024*1024);
+        ensure_update_covers(bytes);
         UpdateStatus found{};if(!update_select((const char*)bytes.data(),bytes.size(),&found))throw std::runtime_error("Resposta de atualizacoes invalida.");
         lock();update_status=found;unlock();return;
     }
@@ -344,7 +348,7 @@ static void run_update(bool download){
 extern "C" void store_update_status(UpdateStatus*out){if(!out)return;if(lock_id<0){*out={};snprintf(out->message,sizeof(out->message),"Servico de atualizacoes indisponivel.");return;}lock();*out=update_status;if(!out->message[0])snprintf(out->message,sizeof(out->message),"X: procurar atualizacoes no GitHub.");unlock();}
 extern "C" void store_update_request(){
     if(lock_id<0 || cover_thread_id<0)return;
-    lock();if(update_status.phase==1){unlock();return;}update_download=update_status.phase==2;update_pending=true;update_status.phase=1;snprintf(update_status.message,sizeof(update_status.message),update_download?"A descarregar e verificar o VPK...":"A procurar atualizacoes...");unlock();sceKernelSignalSema(cover_wake_id,1);
+    lock();if(update_status.phase==1){unlock();return;}if(progress.active || count){snprintf(update_status.message,sizeof(update_status.message),"Aguarda a fila local antes de atualizar.");unlock();return;}update_busy=true;update_download=update_status.phase==2;update_pending=true;update_status.phase=1;snprintf(update_status.message,sizeof(update_status.message),update_download?"A descarregar e verificar o VPK...":"A procurar atualizacoes...");unlock();sceKernelSignalSema(cover_wake_id,1);
 }
 static void refresh_homebrew(){
     auto bytes=https_bytes("https://raw.githubusercontent.com/VegettoSan/PSVitaAlive/main/catalog.json",16*1024*1024);
@@ -396,7 +400,7 @@ static int cover_worker(SceSize,void*){
     while(!stop_worker){
         sceKernelWaitSema(cover_wake_id,1,nullptr);if(stop_worker)break;
         lock();bool updating=update_pending,download=update_download;update_pending=false;unlock();
-        if(updating){try{run_update(download);}catch(const std::exception&e){lock();update_status.phase=5;snprintf(update_status.message,sizeof(update_status.message),"%s",e.what());unlock();}}
+        if(updating){try{run_update(download);}catch(const std::exception&e){lock();update_status.phase=5;snprintf(update_status.message,sizeof(update_status.message),"%s",e.what());unlock();}lock();update_busy=false;unlock();}
         lock();bool refresh=homebrew_refresh_pending;homebrew_refresh_pending=false;unlock();
         if(refresh){try{refresh_homebrew();}catch(const std::exception&e){vs_log("homebrew-catalog",e.what(),-1);lock();snprintf(progress.homebrew_error,sizeof(progress.homebrew_error),"%s",e.what());unlock();}}
         lock();if(!cover_count){unlock();continue;}
@@ -482,7 +486,8 @@ extern "C" bool store_enqueue(const CatalogPackage*p,char*error,size_t size){
     else{
         if(!p->vpk && p->type!=CATALOG_HOMEBREW)return enqueue_system_bundle(*p,error,size);
         lock();
-        if(count>=8)message="A fila de descargas esta cheia.";
+        if(update_busy)message="Atualizacao ativa; aguarda a conclusao.";
+        else if(count>=8)message="A fila de descargas esta cheia.";
         else{
             for(unsigned i=0;i<count;i++)if(!strcmp(queue[(first+i)%8].url,p->url))message="O item ja esta na fila.";
             if(progress.active && !strcmp(active_url,p->url))message="Este item ja esta a ser instalado.";
@@ -494,7 +499,7 @@ extern "C" bool store_enqueue(const CatalogPackage*p,char*error,size_t size){
     return false;
 }
 extern "C" void store_progress(StoreProgress*p){if(!p)return;if(lock_id<0){*p={};return;}lock();*p=progress;unlock();}
-extern "C" bool store_busy(){StoreProgress p{};store_progress(&p);return p.active || p.queued;}
+extern "C" bool store_busy(){StoreProgress p{};store_progress(&p);UpdateStatus u{};store_update_status(&u);return p.active || p.queued || u.phase==1;}
 extern "C" void store_retry_covers(){if(lock_id<0)return;lock();memset(cover_history,0,sizeof(cover_history));cover_history_next=0;progress.covers_failed=0;progress.cover_error[0]=0;unlock();}
 extern "C" void store_request_image(CatalogType type,const char*id,const char*url){
     if(offline_covers)return; /* Permanent library: no network request, deletion or expiry. */

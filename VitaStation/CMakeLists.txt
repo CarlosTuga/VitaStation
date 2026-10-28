@@ -22,6 +22,7 @@ set(CMAKE_C_STANDARD 99)
 include_directories(include)
 
 set(SOURCES
+    src/maintenance.c
     src/updater.c
     src/log.c
     src/library.c
@@ -59,6 +60,10 @@ set(SOURCES
 if(VITA)
     # vita.cmake define vita_create_self / vita_create_vpk (NAO existe vita2d.cmake no VitaSDK)
     include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
+    add_executable(VitaStationMaintenance tools/maintenance/main.c)
+    target_link_libraries(VitaStationMaintenance SceAppMgr_stub vita2d freetype png16 jpeg z m c SceSysmem_stub SceDisplay_stub SceGxm_stub ScePgf_stub ScePvf_stub SceCommonDialog_stub SceLibKernel_stub SceKernelThreadMgr_stub SceProcessmgr_stub SceIofilemgr_stub SceCtrl_stub SceSysmodule_stub ScePromoterUtil_stub SceAppMgr_stub)
+    vita_create_self(maintenance.self VitaStationMaintenance UNSAFE)
+    set(VS_MAINT_SELF "${CMAKE_CURRENT_BINARY_DIR}/maintenance.self")
     # Decode PEM at build time; device imports individual DER roots directly.
     find_package(Python3 COMPONENTS Interpreter REQUIRED)
     set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/cacert.pem" "${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_ca.py" "${CMAKE_CURRENT_SOURCE_DIR}/tools/tls_roots.json")
@@ -146,13 +151,13 @@ if(VITA)
         list(APPEND VS_PLUGIN_ARGS -a "${alive_file}=assets/alive/${alive_name}")
     endforeach()
     add_custom_command(OUTPUT "${VS_SFO}"
-        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.61 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.62 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
         DEPENDS "${VS_SELF}" VERBATIM
     )
     add_custom_command(OUTPUT "${VS_VPK}"
-        COMMAND "${VITA_PACK_VPK}" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
+        COMMAND "${VITA_PACK_VPK}" -a "${VS_MAINT_SELF}=maintenance.self" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
         COMMAND "${CMAKE_COMMAND}" -E rename "${VS_VPK}.tmp" "${VS_VPK}"
-        DEPENDS "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} VERBATIM
+        DEPENDS "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} VERBATIM
     )
     add_custom_target(VitaStation-vpk ALL DEPENDS "${VS_VPK}")
 else()

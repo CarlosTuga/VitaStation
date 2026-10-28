@@ -43,3 +43,23 @@ unsigned char*cover_pack_read(const char*path,size_t*length){
  uint32_t crc=~0u;if(ok){for(unsigned i=0;i<size;i++){crc^=b[i];for(int j=0;j<8;j++)crc=(crc>>1)^((0u-(crc&1))&0xedb88320u);}ok=(~crc)==expected;}
  if(!ok){free(b);return NULL;}*length=size;return b;
 }
+
+void cover_pack_reload(void){
+ while(__sync_lock_test_and_set(&index_lock,1)){
+#if defined(__vita__)
+ sceKernelDelayThread(1000);
+#endif
+ }
+ free(entries);entries=NULL;count=0;attempted=false;load();__sync_lock_release(&index_lock);
+}
+bool cover_pack_available(void){
+ cover_pack_reload();char path[128]={0};
+ while(__sync_lock_test_and_set(&index_lock,1)){
+#if defined(__vita__)
+ sceKernelDelayThread(1000);
+#endif
+ }
+ if(count)snprintf(path,sizeof(path),"vspack:%u:%u:%u",entries[0].offset,entries[0].size,entries[0].crc);
+ __sync_lock_release(&index_lock);
+ size_t length=0;unsigned char*b=path[0]?cover_pack_read(path,&length):NULL;bool valid=b && length>0;free(b);return valid;
+}

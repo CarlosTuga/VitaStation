@@ -1,3 +1,4 @@
+#include "maintenance.h"
 #include "updater.h"
 #include "version.h"
 #include "system_ui.h"
@@ -38,6 +39,7 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
             }
             if(f && f->control>=SYS_INFO_NETWORK){u->information_page=f->control;u->information_count=system_info_read(u->information_page,u->information_lines);u->information_poll=1;u->state=UI_STATE_SYSTEM_INFO;return true;}
         }
+        if(u->settings_index==14){u->power_index=0;u->state=UI_STATE_UNINSTALL;return true;}
         if(u->settings_index==12){ui_show_toast(u,"VitaStation " VS_VERSION_LABEL);return true;}
         if(u->settings_index==13){store_update_request();return true;}
         if(u->settings_index==5){u->plugin_count=plugins_list(u->plugin_entries,96);u->plugin_index=0;u->state=UI_STATE_PLUGINS;return true;}
@@ -56,6 +58,18 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
             else ui_show_toast(u,u->auto_dlcs_enabled?"DLCs da mesma ID: descarga e instalacao automaticas.":"DLCs automaticos desligados.");
             return true;
         }
+    }
+    if(u->state==UI_STATE_UNINSTALL){
+        if(command==SYSTEM_UI_CANCEL){u->state=UI_STATE_SETTINGS;return true;}
+        if(command==SYSTEM_UI_LEFT || command==SYSTEM_UI_UP)u->power_index=0;
+        if(command==SYSTEM_UI_RIGHT || command==SYSTEM_UI_DOWN)u->power_index=1;
+        if(command==SYSTEM_UI_CONFIRM){if(!u->power_index)u->state=UI_STATE_SETTINGS;else{
+            if(store_busy()){ui_show_toast(u,"Aguarda as instalacoes antes de remover.");return true;}
+            bool before_boot=u->autoboot_enabled,before_ps=u->ps_routing_enabled;u->autoboot_enabled=false;u->ps_routing_enabled=false;
+            if(!settings_save(u,VS_CONFIG_PATH)){u->autoboot_enabled=before_boot;u->ps_routing_enabled=before_ps;ui_show_toast(u,"Nao foi possivel guardar a desativacao. Remocao cancelada.");return true;}
+            char error[256];maintenance_uninstall(error,sizeof(error));u->autoboot_enabled=autoboot_is_enabled();u->ps_routing_enabled=autoboot_marker_read(VS_DATA_DIR "/ps-routing.enabled");settings_save(u,VS_CONFIG_PATH);ui_show_toast(u,error);
+        }}
+        return true;
     }
     if(u->state==UI_STATE_SYSTEM_INFO){
         if(command==SYSTEM_UI_CANCEL)u->state=UI_STATE_SETTINGS;
@@ -89,6 +103,7 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
 bool system_ui_touch(UIContext*u,Library*lib,int x,int y){
     if(!u)return false;
     if(settings_menu_touch(u,lib,x,y))return true;
+    if(u->state==UI_STATE_UNINSTALL){if(y>=340 && y<410 && x>=100 && x<860){u->power_index=x>=500;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
     if(u->state==UI_STATE_SYSTEM_INFO){if(y>=410 && y<470)system_ui_input(u,lib,SYSTEM_UI_CONFIRM);return true;}
     if(u->state==UI_STATE_POWER){if(y>=280 && y<360 && x>=80 && x<880){u->power_index=(x-80)/270;if(u->power_index>2)u->power_index=2;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
     if(u->state==UI_STATE_PLUGINS){int first=u->plugin_index>5?u->plugin_index-5:0;
@@ -99,6 +114,15 @@ static void clipped(int x,int y,const char*text,size_t limit,float scale,uint32_
     char out[128];size_t n=strlen(text);if(n>limit)n=limit;while(n && (((unsigned char)text[n]&0xc0)==0x80))--n;memcpy(out,text,n);out[n]=0;if(strlen(text)>n)strcat(out,"...");render_draw_text(x,y,color,scale,out);
 }
 bool system_ui_render(UIContext*u){
+    if(u->state==UI_STATE_UNINSTALL){
+        render_fill_rect(0,60,960,444,0xFF111827);
+        render_draw_text(60,135,COLOR_WHITE,1.4f,"Desinstalar VitaStation e caratulas?");
+        render_draw_text(60,195,0xFFB8C7DC,.85f,"Remove o launcher, o instalador e todas as caratulas.");
+        render_draw_text(60,235,0xFFB8C7DC,.85f,"Desativa o arranque automatico e os atalhos PS / Power.");
+        render_draw_text(60,275,0xFFB8C7DC,.85f,"Jogos, Adrenaline e outros plugins sao preservados.");
+        for(int i=0;i<2;i++){bool selected=u->power_index==i;render_fill_rounded_rect(100+i*400,340,360,70,16,selected?0xFFF2F5FA:0xFF26364D);render_draw_text(135+i*400,385,selected?0xFF172136:COLOR_WHITE,1.0f,i?"Desinstalar tudo":"Cancelar");}
+        render_draw_text(60,465,0xFFB8C7DC,.8f,"Esquerda / Direita: escolher    X: confirmar    O: cancelar");return true;
+    }
     if(u->state==UI_STATE_SYSTEM_INFO){
         render_fill_rect(0,60,960,444,0xFF111827);
         const char*title=u->information_page==SYS_INFO_NETWORK?"Estado da ligacao":u->information_page==SYS_INFO_CONSOLE?"Informacoes da consola":u->information_page==SYS_INFO_STORAGE?"Armazenamento":u->information_page==SYS_INFO_CLOCK?"Relogio da consola":u->information_page==SYS_INFO_LOG?"Registo de erros":u->information_page==SYS_INFO_INPUT?"Diagnostico do comando":u->information_page==SYS_INFO_LICENSES?"Creditos e licencas":u->information_page==SYS_INFO_PERFORMANCE?"Estado do sistema":u->information_page==SYS_INFO_DOWNLOADS?"Descargas LiveArea":u->information_page==SYS_INFO_LANGUAGE?"Idioma e confirmacao":"Bateria";

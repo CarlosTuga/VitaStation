@@ -24,3 +24,19 @@ bool update_select(const char*json,size_t length,UpdateStatus*out){
  }
  cJSON_Delete(root);return true;
 }
+
+bool update_select_covers(const char*json,size_t length,UpdateStatus*out){
+ cJSON*root=cJSON_ParseWithLength(json,length);if(!root || !cJSON_IsArray(root)){cJSON_Delete(root);return false;}
+ memset(out,0,sizeof(*out));const cJSON*r;bool found=false;
+ cJSON_ArrayForEach(r,root){if(!cJSON_IsFalse(cJSON_GetObjectItemCaseSensitive(r,"draft")))continue;
+  const cJSON*a;cJSON_ArrayForEach(a,cJSON_GetObjectItemCaseSensitive(r,"assets")){
+   const char*n=text(a,"name"),*url=text(a,"browser_download_url"),*d=text(a,"digest");
+   if(strcmp(n,"Caratulas-de-loja-1.04.vpk"))continue;
+   const char*prefix="https://github.com/CarlosTuga/VitaStation/releases/download/";
+   if(strncmp(url,prefix,strlen(prefix)) || strlen(url)>=sizeof(out->url))continue;
+   if(strncmp(d,"sha256:",7) || strlen(d)!=71 || strspn(d+7,"0123456789abcdefABCDEF")!=64)continue;
+   const cJSON*s=cJSON_GetObjectItemCaseSensitive(a,"size");if(!cJSON_IsNumber(s) || s->valuedouble<1 || s->valuedouble>512*1024*1024)continue;
+   out->size=(unsigned long)s->valuedouble;snprintf(out->url,sizeof(out->url),"%s",url);snprintf(out->digest,sizeof(out->digest),"%s",d+7);found=true;break;
+  }if(found)break;
+ }cJSON_Delete(root);return found;
+}

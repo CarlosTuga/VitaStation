@@ -28,3 +28,9 @@ Pré-visualizações host usam comandos de desenho e métricas aproximadas de fo
 ## Repetir os testes
 
 Ver COMPILAR.md. Os resultados desta preparação verificam os ficheiros copiados e os testes executados na máquina de desenvolvimento; não substituem novos ensaios na consola alvo.
+
+## Validação adicional 1.6.2
+
+`python VitaStation/tests/run_update_maintenance.py` cobre seleção de Releases e do pacote de carátulas, preservação/backup da configuração taiHEN e o código real de instalação de carátulas com ZIP e I/O simulados (cópia, índice, CRC, falta de espaço e preservação). A integração cobre abrir a confirmação de desinstalação, cancelar por X e por O, e a seleção inicial em Cancelar. O teste de cover_pack cobre ausências, recarga e CRC.
+
+Build VitaSDK e validação de maintenance.self dentro do VPK concluídos. Não foram executadas na consola física a descarga HTTPS nem a desinstalação desta versão.

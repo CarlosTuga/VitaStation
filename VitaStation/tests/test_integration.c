@@ -132,6 +132,13 @@ int main(int argc,char**argv){
         if(f->control==SYS_ACTION_LIBRARY){u.state=UI_STATE_SETTINGS;u.settings_index=(int)index+UI_LOCAL_SETTINGS_COUNT;u.settings_group=settings_group_for(u.settings_index);assert(system_ui_input(&u,&library,SYSTEM_UI_CONFIRM) && u.state==UI_STATE_HOME && u.current_section==SECTION_GAMES);}
         if(f->control==SYS_ACTION_POWER){u.state=UI_STATE_SETTINGS;u.settings_index=(int)index+UI_LOCAL_SETTINGS_COUNT;u.settings_group=settings_group_for(u.settings_index);assert(system_ui_input(&u,&library,SYSTEM_UI_CONFIRM) && u.state==UI_STATE_POWER);}
     }
+    u.state=UI_STATE_SETTINGS;u.settings_index=14;u.settings_group=SETTINGS_VITASTATION;
+    assert(system_ui_input(&u,&library,SYSTEM_UI_CONFIRM) && u.state==UI_STATE_UNINSTALL && u.power_index==0);
+    ui_render(&u,&library,&cache);
+    assert(system_ui_input(&u,&library,SYSTEM_UI_CONFIRM) && u.state==UI_STATE_SETTINGS);
+    assert(system_ui_input(&u,&library,SYSTEM_UI_CONFIRM) && u.state==UI_STATE_UNINSTALL);
+    assert(system_ui_input(&u,&library,SYSTEM_UI_RIGHT) && u.power_index==1);
+    assert(system_ui_input(&u,&library,SYSTEM_UI_CANCEL) && u.state==UI_STATE_SETTINGS);
     int total=(int)system_feature_count()+UI_LOCAL_SETTINGS_COUNT,seen[256]={0};
     assert(total<256 && settings_group_count(SETTINGS_CONSOLE)>0 && settings_group_count(SETTINGS_VITASTATION)>0);
     for(int group=SETTINGS_CONSOLE;group<=SETTINGS_VITASTATION;group++){
