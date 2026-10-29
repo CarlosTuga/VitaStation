@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 int main(void){
+ assert(VS_LAUNCH_PLAY_FLAGS==0x20000);
  unsigned char data[32];char caller[10],target[10],uri[32];assert(vs_launch_pack(data,"VTST00001","PCSE00001",100));assert(vs_launch_unpack(data,caller,target,200));assert(!strcmp(caller,"VTST00001")&&!strcmp(target,"PCSE00001"));vs_launch_uri(uri,target);assert(!strcmp(uri,"psgm:play?titleid=PCSE00001"));assert(!vs_launch_unpack(data,caller,target,6000000));assert(!vs_launch_pack(data,"OTHER0001","PCSE00001",0));assert(!vs_launch_pack(data,"VTST00001","VTST00001",0));
  VitaStationPSRoute route={0};assert(vs_ps_route(&route,1,0,1000000,1)==VS_PS_NONE);assert(vs_ps_route(&route,0,0,1100000,1)==VS_PS_NONE);assert(vs_ps_route(&route,0,0,1500000,1)==VS_PS_SINGLE);
  memset(&route,0,sizeof(route));assert(vs_ps_route(&route,1,1,2000000,1)==VS_PS_LIVEAREA);assert(vs_ps_route(&route,1,1,2100000,1)==VS_PS_NONE);assert(vs_ps_route(&route,0,0,2200000,1)==VS_PS_NONE);assert(vs_ps_route(&route,0,0,3000000,1)==VS_PS_NONE);assert(vs_ps_route(&route,1,0,4000000,1)==VS_PS_NONE);assert(vs_ps_route(&route,0,0,4100000,1)==VS_PS_NONE);assert(vs_ps_route(&route,0,0,4500000,1)==VS_PS_SINGLE);

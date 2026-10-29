@@ -1,3 +1,7 @@
+> Estado atual: **1.6.6 beta**. Ver [revisão completa](../VitaStation/REVISAO_1.6.6_BETA.md) para funções, validação e limitações; secções de versões anteriores são históricas.
+
+> Estado atual: **1.6.6 beta**. Ver [revisão completa](../VitaStation/REVISAO_1.6.6_BETA.md) para funções, validação e limitações; secções de versões anteriores são históricas.
+
 > Estado atual: **1.6.5 beta**. Ver [revisão completa](../VitaStation/REVISAO_1.6.5_BETA.md) para funções, validação e limitações; secções de versões anteriores são históricas.
 
 > Estado atual: **1.6.4 beta**. Ver [revisão completa](../VitaStation/REVISAO_1.6.4_BETA.md) para funções, validação e limitações; secções de versões anteriores são históricas.

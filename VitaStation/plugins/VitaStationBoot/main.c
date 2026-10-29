@@ -41,7 +41,7 @@ static int boot_thread(SceSize argc,void*args){
     if(shell_ready){
         for(int i=0;i<10 && !stopping;i++){
             if(!enabled() || bypass())break;
-            if(sceAppMgrLaunchAppByUri(0xFFFFF,"psgm:play?titleid=VTST00001")>=0)break;
+            if(sceAppMgrLaunchAppByUri(VS_LAUNCH_PLAY_FLAGS,"psgm:play?titleid=VTST00001")>=0)break;
             sceKernelDelayThread(500000);
         }
     }
@@ -50,7 +50,7 @@ static int boot_thread(SceSize argc,void*args){
 static void route_ps(int event){
     if(event==VS_PS_NONE)return;
     const char*uri=event==VS_PS_SINGLE?"psgm:play?titleid=VTST00001":"psgm:open?titleid=VTST00001";
-    int result=sceAppMgrLaunchAppByUri(0xFFFFF,uri);
+    int result=sceAppMgrLaunchAppByUri(event==VS_PS_SINGLE?VS_LAUNCH_PLAY_FLAGS:0,uri);
     char status[2]={(char)(event==VS_PS_SINGLE?'1':'2'),(char)(result<0?'E':'A')};
     SceUID fd=sceIoOpen("ux0:data/VitaStation/bridge.status",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(fd>=0){sceIoWrite(fd,status,2);sceIoClose(fd);}
 }
@@ -61,7 +61,8 @@ static void process_launch(SceUInt64 now){
  if(marker("ux0:data/VitaStation/updates/installing"))return;
  char caller[10],target[10];
  if(launch_waiting){if(!vs_launch_unpack(launch_pending,caller,target,now)){cancel_launch();return;}if(!running(caller)){
-  char uri[32];vs_launch_uri(uri,target);cancel_launch();sceAppMgrLaunchAppByUri(0xFFFFF,uri);
+  char uri[32];vs_launch_uri(uri,target);cancel_launch();int code=sceAppMgrLaunchAppByUri(VS_LAUNCH_PLAY_FLAGS,uri);
+  SceUID status=sceIoOpen("ux0:data/VitaStation/launch-result.bin",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(status>=0){sceIoWrite(status,target,9);sceIoWrite(status,&code,sizeof(code));sceIoClose(status);}
  }return;}
  unsigned char bytes[33];SceUID f=sceIoOpen("ux0:data/VitaStation/launch.request",SCE_O_RDONLY,0);if(f<0)return;int n=sceIoRead(f,bytes,sizeof(bytes));sceIoClose(f);if(n!=32 || !vs_launch_unpack(bytes,caller,target,now)){cancel_launch();return;}
  f=sceIoOpen("ux0:data/VitaStation/launch.ack",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(f<0)return;int wrote=sceIoWrite(f,bytes,32);sceIoClose(f);if(wrote!=32)return;for(unsigned i=0;i<32;i++)launch_pending[i]=bytes[i];launch_waiting=1;
@@ -86,7 +87,7 @@ static int buttons_thread(SceSize argc,void*args){
                 if(!power_at)power_at=now;
                 if(!power_sent && now-power_at>=1500000){
                     SceUID fd=sceIoOpen("ux0:data/VitaStation/power.request",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);
-                    if(fd>=0){sceIoWrite(fd,"1",1);sceIoClose(fd);sceAppMgrLaunchAppByUri(0xFFFFF,"psgm:play?titleid=VTST00001");}
+                    if(fd>=0){sceIoWrite(fd,"1",1);sceIoClose(fd);sceAppMgrLaunchAppByUri(VS_LAUNCH_PLAY_FLAGS,"psgm:play?titleid=VTST00001");}
                     power_sent=1;
                 }
             }else{power_at=0;power_sent=0;}
@@ -99,6 +100,7 @@ static int buttons_thread(SceSize argc,void*args){
 int _start(SceSize argc,const void*args) __attribute__((weak,alias("module_start")));
 int module_start(SceSize argc,const void*args){
     (void)argc;(void)args;
+    SceUID version=sceIoOpen("ux0:data/VitaStation/bridge-version.txt",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(version>=0){sceIoWrite(version,"1.6.6\n",6);sceIoClose(version);}
     worker_id=sceKernelCreateThread("VitaStationBoot",boot_thread,0x80,64*1024,0,0,0);
     if(worker_id>=0 && sceKernelStartThread(worker_id,0,0)<0){sceKernelDeleteThread(worker_id);worker_id=-1;}
     buttons_id=sceKernelCreateThread("VitaStationButtons",buttons_thread,0x10000100,64*1024,0,0,0);

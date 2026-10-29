@@ -174,7 +174,7 @@ if(VITA)
         list(APPEND VS_PLUGIN_ARGS -a "${alive_file}=assets/alive/${alive_name}")
     endforeach()
     add_custom_command(OUTPUT "${VS_SFO}"
-        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.65 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.66 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
         DEPENDS "${VS_SELF}" VERBATIM
     )
     add_custom_command(OUTPUT "${VS_VPK}"

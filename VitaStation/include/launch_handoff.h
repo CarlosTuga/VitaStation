@@ -1,6 +1,8 @@
 #ifndef VS_LAUNCH_HANDOFF_H
 #define VS_LAUNCH_HANDOFF_H
 #include <stdint.h>
+/* VitaSDK: any flags value other than 0x20000 opens LiveArea instead. */
+#define VS_LAUNCH_PLAY_FLAGS 0x20000
 static inline int vs_launch_id(const char*id){if(!id)return 0;for(unsigned i=0;i<9;i++){unsigned char c=id[i];if(!((c>='A' && c<='Z') || (c>='a' && c<='z') || (c>='0' && c<='9')))return 0;}return !id[9];}
 static inline int vs_launch_same(const char*a,const char*b){for(unsigned i=0;i<10;i++)if(a[i]!=b[i])return 0;return 1;}
 static inline int vs_launch_pack(unsigned char*out,const char*caller,const char*target,uint64_t now){
