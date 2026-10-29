@@ -99,6 +99,25 @@ static bool readable_image(const char*path){
     size_t n=fread(bytes,1,sizeof(bytes),f);fclose(f);
     return (n==8 && !memcmp(bytes,"\x89PNG\r\n\x1a\n",8)) || (n>=3 && bytes[0]==0xff && bytes[1]==0xd8 && bytes[2]==0xff);
 }
+static void find_livearea_background(const char*base,char*out,size_t capacity){
+ char directory[256];if(snprintf(directory,sizeof(directory),"%s/livearea/contents",base)>=(int)sizeof(directory))return;
+ unsigned best=0;
+#if defined(__vita__)
+ SceUID d=sceIoDopen(directory);if(d<0)return;while(1){SceIoDirent entry;memset(&entry,0,sizeof(entry));int n=sceIoDread(d,&entry);if(n<=0)break;const char*name=entry.d_name;
+#else
+ DIR*d=opendir(directory);if(!d)return;struct dirent*entry;while((entry=readdir(d))){const char*name=entry->d_name;
+#endif
+ size_t length=strlen(name);if(length<5 || strstr(name,"..") || strcmp(name+length-4,".png"))continue;char path[256];if(snprintf(path,sizeof(path),"%s/%s",directory,name)>=(int)sizeof(path))continue;
+ unsigned char h[24];FILE*f=fopen(path,"rb");if(!f)continue;size_t nread=fread(h,1,sizeof(h),f);fclose(f);if(nread!=24 || memcmp(h,"\x89PNG\r\n\x1a\n",8))continue;
+ unsigned w=(unsigned)h[16]<<24|(unsigned)h[17]<<16|(unsigned)h[18]<<8|h[19],height=(unsigned)h[20]<<24|(unsigned)h[21]<<16|(unsigned)h[22]<<8|h[23];
+ if(w>=480 && w<=1920 && height>=200 && height<=1088 && w*height>best){best=w*height;snprintf(out,capacity,"%s",path);}
+ }
+#if defined(__vita__)
+ sceIoDclose(d);
+#else
+ closedir(d);
+#endif
+}
 static bool metadata(AppItem*item,const char*root,const char*id){
     char bases[3][MAX_PATH_LEN];unsigned count=0;
 #if defined(__vita__)
@@ -123,6 +142,7 @@ static bool metadata(AppItem*item,const char*root,const char*id){
             written=snprintf(path,sizeof(path),"%s/%s",bases[i],pictures[k]);if(written>0 && written<(int)sizeof(path) && readable_image(path))snprintf(item->pic_path,sizeof(item->pic_path),"%s",path);
         }
     }
+    if(!item->pic_path[0])for(unsigned i=0;i<count && !item->pic_path[0];i++)find_livearea_background(bases[i],item->pic_path,sizeof(item->pic_path));
     if(!item->icon_path[0]){
         const char*cover_roots[]={"ux0:data/VitaStation/covers","ux0:usagi-pkgj/cover","ur0:usagi-pkgj/cover","ux0:pkgj/cover"};
         const char*suffix[]={".png",".cover.jpg",".jpg"};

@@ -1,3 +1,7 @@
+#include "game_support.h"
+#include "safety_backup.h"
+#include "plugins.h"
+#include "../third_party/cJSON/cJSON.h"
 #include "cover_pack.h"
 #include <zlib.h>
 #include "updater.h"
@@ -46,6 +50,10 @@ static std::mutex network_init_mutex;
 static std::atomic<bool> stop_worker{false},cancel_job{false};
 static StoreProgress progress{};
 static UpdateStatus update_status{};
+static GameSupportStatus game_status{};
+static AppItem game_request{};static int game_action=0,game_selection=0;static bool game_pending=false;
+static char background_request[32]{},background_history[64][32]{};static unsigned background_next=0;
+static std::string mod_repos[5];
 static bool update_pending=false,update_download=false,update_busy=false;
 static CatalogPackage queue[8];
 static char active_content_id[64]{},active_title_id[10]{},active_url[1024]{};
@@ -320,13 +328,15 @@ static CURL* https_client(const std::string&url){
     curl_easy_setopt(h,CURLOPT_USERAGENT,"VitaStation/" VS_VERSION);return h;
 }
 static std::vector<uint8_t> https_bytes(const std::string&url,size_t limit){
-    CURL*h=https_client(url);if(url.find("https://api.github.com/")==0){curl_easy_setopt(h,CURLOPT_PROTOCOLS_STR,"https");curl_easy_setopt(h,CURLOPT_REDIR_PROTOCOLS_STR,"https");}char detail[CURL_ERROR_SIZE]{};curl_easy_setopt(h,CURLOPT_ERRORBUFFER,detail);MemoryResponse data{{},limit};curl_easy_setopt(h,CURLOPT_TIMEOUT,45L);
+    CURL*h=https_client(url);if(url.find("https://api.github.com/")==0 || url.find("https://raw.githubusercontent.com/")==0 || url.find("https://github.com/")==0){curl_easy_setopt(h,CURLOPT_PROTOCOLS_STR,"https");curl_easy_setopt(h,CURLOPT_REDIR_PROTOCOLS_STR,"https");}char detail[CURL_ERROR_SIZE]{};curl_easy_setopt(h,CURLOPT_ERRORBUFFER,detail);MemoryResponse data{{},limit};curl_easy_setopt(h,CURLOPT_TIMEOUT,45L);
     curl_easy_setopt(h,CURLOPT_WRITEFUNCTION,memory_write);curl_easy_setopt(h,CURLOPT_WRITEDATA,&data);
     auto code=curl_easy_perform(h);curl_easy_cleanup(h);
     if(code!=CURLE_OK)throw std::runtime_error(transfer_error(code,detail));
     return std::move(data.bytes);
 }
 #include "update_covers.inc"
+static unsigned submit_system_package(const CatalogPackage&p);
+#include "game_support.inc"
 static void run_update(bool download){
     if(!download){
         auto bytes=https_bytes("https://api.github.com/repos/CarlosTuga/VitaStation/releases?per_page=100",2*1024*1024);
@@ -348,7 +358,7 @@ static void run_update(bool download){
 extern "C" void store_update_status(UpdateStatus*out){if(!out)return;if(lock_id<0){*out={};snprintf(out->message,sizeof(out->message),"Servico de atualizacoes indisponivel.");return;}lock();*out=update_status;if(!out->message[0])snprintf(out->message,sizeof(out->message),"X: procurar atualizacoes no GitHub.");unlock();}
 extern "C" void store_update_request(){
     if(lock_id<0 || cover_thread_id<0)return;
-    lock();if(update_status.phase==1){unlock();return;}if(progress.active || count){snprintf(update_status.message,sizeof(update_status.message),"Aguarda a fila local antes de atualizar.");unlock();return;}update_busy=true;update_download=update_status.phase==2;update_pending=true;update_status.phase=1;snprintf(update_status.message,sizeof(update_status.message),update_download?"A descarregar e verificar o VPK...":"A procurar atualizacoes...");unlock();sceKernelSignalSema(cover_wake_id,1);
+    lock();if(update_status.phase==1){unlock();return;}if(progress.active || count || game_status.busy){snprintf(update_status.message,sizeof(update_status.message),"Aguarda a fila local antes de atualizar.");unlock();return;}update_busy=true;update_download=update_status.phase==2;update_pending=true;update_status.phase=1;snprintf(update_status.message,sizeof(update_status.message),update_download?"A descarregar e verificar o VPK...":"A procurar atualizacoes...");unlock();sceKernelSignalSema(cover_wake_id,1);
 }
 static void refresh_homebrew(){
     auto bytes=https_bytes("https://raw.githubusercontent.com/VegettoSan/PSVitaAlive/main/catalog.json",16*1024*1024);
@@ -401,6 +411,9 @@ static int cover_worker(SceSize,void*){
         sceKernelWaitSema(cover_wake_id,1,nullptr);if(stop_worker)break;
         lock();bool updating=update_pending,download=update_download;update_pending=false;unlock();
         if(updating){try{run_update(download);}catch(const std::exception&e){lock();update_status.phase=5;snprintf(update_status.message,sizeof(update_status.message),"%s",e.what());unlock();}lock();update_busy=false;unlock();}
+        lock();bool game=game_pending;AppItem app=game_request;int action=game_action,selection=game_selection;game_pending=false;char background[32];snprintf(background,sizeof(background),"%s",background_request);background_request[0]=0;unlock();
+        if(game){try{run_game_request(app,action,selection);}catch(const std::exception&e){game_message(e.what());}lock();game_status.busy=false;unlock();}
+        if(background[0]){try{fetch_game_background(background);}catch(const std::exception&e){vs_log("background",e.what(),-1);}}
         lock();bool refresh=homebrew_refresh_pending;homebrew_refresh_pending=false;unlock();
         if(refresh){try{refresh_homebrew();}catch(const std::exception&e){vs_log("homebrew-catalog",e.what(),-1);lock();snprintf(progress.homebrew_error,sizeof(progress.homebrew_error),"%s",e.what());unlock();}}
         lock();if(!cover_count){unlock();continue;}
@@ -486,7 +499,7 @@ extern "C" bool store_enqueue(const CatalogPackage*p,char*error,size_t size){
     else{
         if(!p->vpk && p->type!=CATALOG_HOMEBREW)return enqueue_system_bundle(*p,error,size);
         lock();
-        if(update_busy)message="Atualizacao ativa; aguarda a conclusao.";
+        if(update_busy || game_status.busy)message="Atualizacao ativa; aguarda a conclusao.";
         else if(count>=8)message="A fila de descargas esta cheia.";
         else{
             for(unsigned i=0;i<count;i++)if(!strcmp(queue[(first+i)%8].url,p->url))message="O item ja esta na fila.";
@@ -499,7 +512,7 @@ extern "C" bool store_enqueue(const CatalogPackage*p,char*error,size_t size){
     return false;
 }
 extern "C" void store_progress(StoreProgress*p){if(!p)return;if(lock_id<0){*p={};return;}lock();*p=progress;unlock();}
-extern "C" bool store_busy(){StoreProgress p{};store_progress(&p);UpdateStatus u{};store_update_status(&u);return p.active || p.queued || u.phase==1;}
+extern "C" bool store_busy(){StoreProgress p{};store_progress(&p);UpdateStatus u{};store_update_status(&u);GameSupportStatus g{};store_game_status(&g);return p.active || p.queued || u.phase==1 || g.busy;}
 extern "C" void store_retry_covers(){if(lock_id<0)return;lock();memset(cover_history,0,sizeof(cover_history));cover_history_next=0;progress.covers_failed=0;progress.cover_error[0]=0;unlock();}
 extern "C" void store_request_image(CatalogType type,const char*id,const char*url){
     if(offline_covers)return; /* Permanent library: no network request, deletion or expiry. */

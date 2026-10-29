@@ -1,3 +1,5 @@
+#include "game_support.h"
+#include "cover_pack.h"
 #include "updater.h"
 #include "version.h"
 #include "ui.h"
@@ -106,7 +108,7 @@ void ui_select_tab(UIContext *ui, AppSection section) {
     }
 }
 bool ui_handle_category_buttons(UIContext *ui,uint32_t pressed){
-    if(!ui || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS || ui->state==UI_STATE_SYSTEM_INFO || ui->state==UI_STATE_LOADING || ui->state==UI_STATE_SPLASH)return false;
+    if(!ui || ui->state==UI_STATE_GAME_SUPPORT || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS || ui->state==UI_STATE_SYSTEM_INFO || ui->state==UI_STATE_LOADING || ui->state==UI_STATE_SPLASH)return false;
     bool left=(pressed&BTN_L1)!=0,right=(pressed&BTN_R1)!=0;
     if(left==right)return false; /* Opposite simultaneous inputs cancel. */
     if(ui->state==UI_STATE_SETTINGS){settings_menu_input(ui,right?SYSTEM_UI_DOWN:SYSTEM_UI_UP);return true;}
@@ -172,7 +174,7 @@ void ui_navigate_right(UIContext *ui, Library *lib) {
     } else if (ui->state == UI_STATE_GAME_DETAILS) {
         if (ui->details_button_index < 2) ui->details_button_index++;
     } else if (ui->state == UI_STATE_QUICK_MENU) {
-        if (ui->quick_menu_index < 4) ui->quick_menu_index++;
+        if (ui->quick_menu_index < 3) ui->quick_menu_index++;
     } else if (ui->state == UI_STATE_SETTINGS) {
         if (ui->settings_index < (int)system_feature_count()+UI_LOCAL_SETTINGS_COUNT-1) ui->settings_index++;
     }
@@ -286,19 +288,10 @@ void ui_confirm(UIContext *ui, Library *lib) {
             }
         }
     } else if (ui->state == UI_STATE_QUICK_MENU) {
-        if (ui->quick_menu_index == 0) {
-            ui->state = UI_STATE_HOME;
-        } else if (ui->quick_menu_index == 1) {
-            settings_menu_open(ui);
-        } else if (ui->quick_menu_index == 2) {
-            ui->sound_enabled = !ui->sound_enabled;
-            audio_set_sfx_enabled(ui->sound_enabled);
-            ui_show_toast(ui, ui->sound_enabled ? "Sound: ON" : "Sound: OFF");
-        } else if (ui->quick_menu_index == 3) {
-            ui_select_tab(ui,SECTION_STORE);ui->state=UI_STATE_HOME;
-        } else if (ui->quick_menu_index == 4) {
-            ui->rescan_requested=true;ui->state=UI_STATE_LOADING;
-        }
+        if(ui->quick_menu_index==0)settings_menu_open(ui);
+        else if(ui->quick_menu_index==1){ui->sound_enabled=!ui->sound_enabled;audio_set_sfx_enabled(ui->sound_enabled);}
+        else if(ui->quick_menu_index==2){ui_select_tab(ui,SECTION_STORE);ui->state=UI_STATE_HOME;}
+        else{ui->rescan_requested=true;ui->state=UI_STATE_LOADING;}
     } else if (ui->state == UI_STATE_SETTINGS) {
         if(ui->settings_index==4){
             bool requested=!ui->autoboot_enabled;
@@ -347,6 +340,7 @@ void ui_cancel(UIContext *ui) {
 }
 
 void ui_toggle_favorite(UIContext *ui, Library *lib) {
+    if(ui && ui->state==UI_STATE_UNINSTALL){ui->uninstall_restore=!ui->uninstall_restore;return;}
     if (!ui || !lib) return;
     if(store_ui_input(ui,STORE_UI_REFRESH))return;
     AppItem *app = ui_selected_app(ui,lib);
@@ -361,13 +355,13 @@ void ui_open_options(UIContext *ui) {
     if (!ui) return;
     if(store_ui_input(ui,STORE_UI_INFO))return;
     if (ui->state == UI_STATE_HOME) {
-        settings_menu_open(ui);
+        ui->state=UI_STATE_GAME_SUPPORT;ui->game_option=0;ui->game_result=0;
     }
 }
 
 void ui_open_quick_menu(UIContext *ui) {
     if (!ui) return;
-    if(ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS)return;
+    if(ui->state==UI_STATE_GAME_SUPPORT || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS)return;
     if (ui->state == UI_STATE_QUICK_MENU) {
         ui->state = UI_STATE_HOME;
     } else {
@@ -388,7 +382,7 @@ void ui_handle_touch(UIContext *ui, Library *lib, int tx, int ty) {
         if(tx>=0 && tx<32){ui_handle_category_buttons(ui,BTN_L1);return;}
         if(tx>=648 && tx<680){ui_handle_category_buttons(ui,BTN_R1);return;}
         if(tx>=690 && tx<724){ui_open_quick_menu(ui);return;}
-        if(tx>=734 && tx<774){ui_open_options(ui);return;}
+        if(tx>=734 && tx<774){settings_menu_open(ui);return;}
         if(tx>=40 && tx<630) ui_select_tab(ui,(AppSection)((tx-40)/UI_TAB_WIDTH));
         return;
     }
@@ -431,9 +425,9 @@ void ui_handle_touch(UIContext *ui, Library *lib, int tx, int ty) {
     } else if (ui->state == UI_STATE_QUICK_MENU) {
         int panel_y = SCREEN_HEIGHT - 168;
         if (ty >= panel_y + 62 && ty <= panel_y + 111) {
-            for (int i = 0; i < 5; i++) {
-                int item_x = 60 + i * 170;
-                if (tx >= item_x - 10 && tx <= item_x + 150) {
+            for (int i = 0; i < 4; i++) {
+                int item_x = 60 + i * 215;
+                if (tx >= item_x - 10 && tx <= item_x + 205) {
                     ui->quick_menu_index = i;
                     ui_confirm(ui, lib);
                     break;
@@ -514,6 +508,13 @@ void ui_update(UIContext *ui, Library *lib, TextureCache *cache, float delta_tim
 #endif
     }
 
+    if(curr_app && !wanted){
+        char path[256];snprintf(path,sizeof(path),"ux0:data/VitaStation/backgrounds/%s.png",curr_app->title_id);FILE*f=fopen(path,"rb");if(f){fclose(f);wanted=texture_cache_load(cache,path);}
+        if(!wanted && curr_app->icon_path[0])wanted=texture_cache_load(cache,curr_app->icon_path);
+        if(!wanted){const char*suffixes[]={".png",".cover.jpg",".jpg"};for(unsigned i=0;i<3 && !wanted;i++){char name[96],key[128];snprintf(name,sizeof(name),"%s%s",curr_app->title_id,suffixes[i]);if(cover_pack_find(name,key,sizeof(key)))wanted=texture_cache_load(cache,key);}}
+        if(!curr_app->pic_path[0])store_request_background(curr_app->title_id);
+    }
+
     if (wanted != ui->target_bg) {          /* selecao mudou: recomecar a transicao */
         if(ui->target_bg)ui->target_bg->pins--;
         ui->target_bg = wanted;
@@ -556,7 +557,7 @@ static void draw_ps5_bottom_bar(UIContext *ui) {
     if(ui->state==UI_STATE_HOME && ui->current_section==SECTION_STORE){
         render_draw_text(40,SCREEN_HEIGHT-16,COLOR_WHITE,.7f,"X Confirmar    Esquerda/Direita Escolher acao    O Voltar    L/R Categorias");
     } else if (ui->state == UI_STATE_HOME) {
-        render_draw_text(40, SCREEN_HEIGHT - 16, COLOR_WHITE, 0.65f, "X Abrir    O Voltar    Quadrado Favorito    Triangulo Definicoes    START Centro de controlo");
+        render_draw_text(40, SCREEN_HEIGHT - 16, COLOR_WHITE, 0.65f, "X Abrir    O Voltar    Quadrado Favorito    Triangulo Opcoes do jogo    START Centro de controlo");
     } else if(ui->state==UI_STATE_SETTINGS){
         render_draw_text(40,SCREEN_HEIGHT-16,COLOR_WHITE,.75f,ui->settings_group==SETTINGS_ROOT?"X Abrir    O Voltar":"X Selecionar    O Categorias    Setas Navegar");
     } else if (ui->state == UI_STATE_GAME_DETAILS) {
@@ -768,15 +769,15 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
 
         render_draw_text(60, panel_y + 26, COLOR_WHITE, 1.1f, "Centro de controlo");
 
-        const char *items[] = {"Inicio", "Definicoes", "Som", "Loja", "Biblioteca"};
-        for (int i = 0; i < 5; i++) {
-            int item_x = 60 + i * 170;
+        const char *items[] = {"Definicoes", "Som", "Loja", "Atualizar Biblioteca"};
+        for (int i = 0; i < 4; i++) {
+            int item_x = 60 + i * 215;
             int item_y = panel_y + 86;
             uint32_t col = ui->quick_menu_index==i?0xFF151B25:COLOR_WHITE;
             if (ui->quick_menu_index == i) {
-                render_fill_rounded_rect(item_x-5,item_y-20,150,35,17,0xEDF1F4FA);
+                render_fill_rounded_rect(item_x-5,item_y-20,205,35,17,0xEDF1F4FA);
             }
-            render_draw_text(item_x, item_y, col, 0.9f, items[i]);
+            render_draw_text(item_x, item_y, col, 0.78f, items[i]);
         }
     } else if(ui->state==UI_STATE_STORE){
         render_fill_rounded_rect(100,110,760,300,20,COLOR_PANEL_BG);

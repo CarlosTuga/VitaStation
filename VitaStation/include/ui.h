@@ -14,7 +14,7 @@ typedef enum {
     UI_STATE_GAME_DETAILS = 1,
     UI_STATE_QUICK_MENU = 2,
     UI_STATE_SETTINGS = 3, UI_STATE_STORE = 4, UI_STATE_LOADING = 5, UI_STATE_SPLASH = 6, UI_STATE_CATALOG_DETAILS = 7,
-    UI_STATE_POWER=8, UI_STATE_PLUGINS=9, UI_STATE_SYSTEM_INFO=10, UI_STATE_UNINSTALL=11
+    UI_STATE_POWER=8, UI_STATE_PLUGINS=9, UI_STATE_SYSTEM_INFO=10, UI_STATE_UNINSTALL=11, UI_STATE_GAME_SUPPORT=12
 } UIState;
 
 typedef struct {
@@ -31,6 +31,9 @@ typedef struct {
     bool autoboot_enabled;
     bool ps_routing_enabled;
     bool auto_dlcs_enabled;
+    int game_option,game_result;
+    bool uninstall_restore;
+    int uninstall_scroll;size_t uninstall_count;char uninstall_lines[48][128];
     int power_index,plugin_index;
     UIState power_return_state;
     size_t plugin_count;

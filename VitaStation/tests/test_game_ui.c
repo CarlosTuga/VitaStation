@@ -1,0 +1,11 @@
+#include "ui.h"
+#include "system_ui.h"
+#include "settings_menu.h"
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+int main(){static Library lib;static UIContext u;static TextureCache cache;library_init(&lib);AppItem app={0};strcpy(app.title_id,"PCSE00001");strcpy(app.title,"Test game");app.exists=true;app.type=APP_TYPE_VITA;app.section=SECTION_GAMES;library_add_app(&lib,&app);ui_init(&u);texture_cache_init(&cache,4);
+ ui_open_options(&u);assert(u.state==UI_STATE_GAME_SUPPORT);for(int i=0;i<5;i++)ui_navigate_down(&u,&lib);assert(u.game_option==5);ui_render(&u,&lib,&cache);ui_cancel(&u);assert(u.state==UI_STATE_HOME);
+ ui_open_quick_menu(&u);ui_confirm(&u,&lib);assert(u.state==UI_STATE_SETTINGS);ui_cancel(&u);ui_open_quick_menu(&u);for(int i=0;i<8;i++)ui_navigate_right(&u,&lib);assert(u.quick_menu_index==3);ui_confirm(&u,&lib);assert(u.rescan_requested);
+ u.state=UI_STATE_SETTINGS;u.settings_group=SETTINGS_VITASTATION;u.settings_index=14;ui_confirm(&u,&lib);assert(u.state==UI_STATE_UNINSTALL && !u.uninstall_restore && u.power_index==0);ui_toggle_favorite(&u,&lib);assert(u.uninstall_restore && !lib.items[0].is_favorite);ui_cancel(&u);assert(u.state==UI_STATE_SETTINGS);
+ puts("Triangle: six game actions including all content; Start: settings first and refresh last; uninstall: explicit opt-in, cancel default, checkbox does not favorite game.");}

@@ -22,6 +22,7 @@ set(CMAKE_C_STANDARD 99)
 include_directories(include)
 
 set(SOURCES
+    src/safety_backup_host.c
     src/maintenance.c
     src/updater.c
     src/log.c
@@ -60,7 +61,11 @@ set(SOURCES
 if(VITA)
     # vita.cmake define vita_create_self / vita_create_vpk (NAO existe vita2d.cmake no VitaSDK)
     include("$ENV{VITASDK}/share/vita.cmake" REQUIRED)
-    add_executable(VitaStationMaintenance tools/maintenance/main.c)
+    add_executable(VitaStationMaintenance tools/maintenance/main.c src/safety_backup.cpp src/json_parser.c third_party/usagi/sha256.cpp)
+    set_target_properties(VitaStationMaintenance PROPERTIES CXX_STANDARD 17)
+    target_include_directories(VitaStationMaintenance PRIVATE third_party)
+    target_compile_definitions(VitaStationMaintenance PRIVATE FMT_HEADER_ONLY)
+    target_link_libraries(VitaStationMaintenance stdc++ pthread)
     target_link_libraries(VitaStationMaintenance SceAppMgr_stub vita2d freetype png16 jpeg z m c SceSysmem_stub SceDisplay_stub SceGxm_stub ScePgf_stub ScePvf_stub SceCommonDialog_stub SceLibKernel_stub SceKernelThreadMgr_stub SceProcessmgr_stub SceIofilemgr_stub SceCtrl_stub SceSysmodule_stub ScePromoterUtil_stub SceAppMgr_stub)
     vita_create_self(maintenance.self VitaStationMaintenance UNSAFE)
     set(VS_MAINT_SELF "${CMAKE_CURRENT_BINARY_DIR}/maintenance.self")
@@ -73,6 +78,7 @@ if(VITA)
     endif()
     enable_language(CXX)
     set(CMAKE_CXX_STANDARD 17)
+    set_source_files_properties(src/safety_backup.cpp src/store_vita.cpp PROPERTIES COMPILE_OPTIONS "-Os;-ffunction-sections;-fdata-sections")
     add_executable(VitaStationBoot plugins/VitaStationBoot/main.c)
     set_target_properties(VitaStationBoot PROPERTIES LINK_FLAGS "-nostdlib")
     target_link_libraries(VitaStationBoot SceAppMgr_stub SceCtrl_stub SceIofilemgr_stub SceLibKernel_stub SceKernelThreadMgr_stub)
@@ -87,7 +93,7 @@ if(VITA)
         DEPENDS "${VS_BOOT}" VERBATIM)
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -O2")
-    add_executable(VitaStation ${SOURCES} src/main.c src/store_vita.cpp src/plugins_vita.cpp src/psp_bubbles.cpp
+    add_executable(VitaStation ${SOURCES} src/main.c src/safety_backup.cpp src/store_vita.cpp src/plugins_vita.cpp src/psp_bubbles.cpp
         third_party/usagi/download.cpp third_party/usagi/bgdl.cpp third_party/usagi/aes128.cpp
         third_party/usagi/sha256.cpp third_party/usagi/zrif.cpp third_party/usagi/puff.c
         third_party/usagi/vitahttp.cpp third_party/usagi/vitafile.cpp)
@@ -133,7 +139,7 @@ if(VITA)
     file(GLOB VS_PLUGIN_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/plugin-sources/*")
     file(GLOB VS_ALIVE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/alive/*")
     file(GLOB_RECURSE VS_PSP_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/psp-runtime/*")
-    set(VS_PLUGIN_ARGS "")
+    set(VS_PLUGIN_ARGS -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json=assets/game-support/sources.json")
     foreach(psp_file IN LISTS VS_PSP_FILES)
         file(RELATIVE_PATH psp_name "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${psp_file}")
         list(APPEND VS_PLUGIN_ARGS -a "${psp_file}=assets/${psp_name}")
@@ -151,13 +157,13 @@ if(VITA)
         list(APPEND VS_PLUGIN_ARGS -a "${alive_file}=assets/alive/${alive_name}")
     endforeach()
     add_custom_command(OUTPUT "${VS_SFO}"
-        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.62 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.63 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
         DEPENDS "${VS_SELF}" VERBATIM
     )
     add_custom_command(OUTPUT "${VS_VPK}"
         COMMAND "${VITA_PACK_VPK}" -a "${VS_MAINT_SELF}=maintenance.self" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
         COMMAND "${CMAKE_COMMAND}" -E rename "${VS_VPK}.tmp" "${VS_VPK}"
-        DEPENDS "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} VERBATIM
+        DEPENDS "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json" VERBATIM
     )
     add_custom_target(VitaStation-vpk ALL DEPENDS "${VS_VPK}")
 else()

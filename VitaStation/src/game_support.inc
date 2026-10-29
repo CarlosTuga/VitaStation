@@ -1,0 +1,81 @@
+
+static bool game_id_ok(const char*id){return id && strlen(id)==9 && std::all_of(id,id+9,[](char c){return std::isalnum((unsigned char)c);});}
+static void game_message(const std::string&message){lock();snprintf(game_status.message,sizeof(game_status.message),"%s",message.c_str());unlock();}
+static std::vector<uint8_t> pinned_data(const std::string&url,const char*digest,size_t limit){auto bytes=https_bytes(url,limit);unsigned char sum[32];SHA256(bytes.data(),bytes.size(),sum);for(unsigned i=0;i<32;i++)if(sum[i]!=(hexvalue(digest[2*i])*16+hexvalue(digest[2*i+1])))throw std::runtime_error("O ficheiro de suporte falhou SHA-256.");return bytes;}
+static void save_support(const std::string&path,const std::vector<uint8_t>&data,bool keep_existing=false){
+ if(keep_existing && pkgi_file_exists(path))return;
+ pkgi_mkdirs(path.substr(0,path.find_last_of('/')).c_str());auto temp=path+".vst-new";pkgi_save(temp,data.data(),data.size());
+ if(pkgi_file_exists(path)){auto backup=path+".vst-"+std::to_string(sceKernelGetProcessTimeWide())+".bak";pkgi_rename(path,backup);try{pkgi_rename(temp,path);}catch(...){pkgi_rename(backup,path);throw;}}
+ else pkgi_rename(temp,path);
+ char error[256];if(!safety_backup_track_plugin(path.c_str(),error,sizeof(error)))throw std::runtime_error(error);
+}
+static void enable_support(const char*path){
+ auto config=pkgi_file_exists("ux0:tai/config.txt")?std::string("ux0:tai/config.txt"):std::string("ur0:tai/config.txt");auto old=pkgi_load(config);std::string input(old.begin(),old.end());std::vector<char>output(128*1024);
+ int changed=plugins_config_add(input.c_str(),"*KERNEL",path,output.data(),output.size());if(changed<0)throw std::runtime_error("Conflito com um plugin existente; configuracao preservada.");
+ if(changed){std::string text(output.data());save_support(config,std::vector<uint8_t>(text.begin(),text.end()));}
+}
+static bool existing_support_family(const char*family){std::vector<PluginEntry>entries(128);auto n=plugins_list(entries.data(),entries.size());for(size_t i=0;i<n;i++){std::string name=entries[i].path;auto slash=name.find_last_of('/');if(slash!=std::string::npos)name=name.substr(slash+1);std::transform(name.begin(),name.end(),name.begin(),[](unsigned char c){return (char)std::tolower(c);});if(name.find(family)!=std::string::npos && name.size()>6 && name.substr(name.size()-6)==".skprx" && entries[i].present){if(!entries[i].enabled)throw std::runtime_error("Plugin da mesma familia ja existe mas esta desativado. Usa Gerir plugins.");return true;}}return false;}
+static void prepare_cheats(){
+ char error[256];if(!safety_backup_ensure(error,sizeof(error)))throw std::runtime_error(error);
+ if(existing_support_family("vitacheat"))return;
+ if(pkgi_file_exists("ur0:tai/vitacheat.skprx") && pkgi_file_exists("ux0:vitacheat/vitacheat.suprx")){enable_support("ur0:tai/vitacheat.skprx");return;}
+ auto bytes=pinned_data("https://raw.githubusercontent.com/r0ah/vitacheat/master/plugin/v365-z06beta/FINALCHEAT-PSVITACHEAT-V365-Z06BETA.zip","9034634f00066fc41c8e1b5a2cfc9e72f785695117fc6a4c91a7d1f314052df4",8*1024*1024);
+ int error_zip=0;zip_source_t*source=zip_source_buffer_create(bytes.data(),bytes.size(),0,nullptr);if(!source)throw std::runtime_error("ZIP de cheats invalido.");zip_error_t detail;zip_error_init(&detail);zip_t*z=zip_open_from_source(source,ZIP_RDONLY,&detail);zip_error_fini(&detail);if(!z){zip_source_free(source);throw std::runtime_error("ZIP de cheats invalido.");}(void)error_zip;
+ try{for(const auto&pair:std::vector<std::pair<const char*,const char*>>{{"vitacheat/vitacheat.skprx","ur0:tai/vitacheat.skprx"},{"vitacheat/vitacheat.suprx","ux0:vitacheat/vitacheat.suprx"},{"vitacheat/font/font.dat","ux0:vitacheat/font/font.dat"}}){
+  zip_stat_t st{};if(zip_stat(z,pair.first,0,&st)<0 || st.size>4*1024*1024)throw std::runtime_error("Conteudo de cheats invalido.");std::vector<uint8_t>data(st.size);auto*f=zip_fopen(z,pair.first,0);if(!f)throw std::runtime_error("Ficheiro de cheats ausente.");size_t at=0;while(at<data.size()){auto n=zip_fread(f,data.data()+at,data.size()-at);if(n<=0){zip_fclose(f);throw std::runtime_error("Cheats incompletos.");}at+=n;}if(zip_fclose(f)<0)throw std::runtime_error("CRC de cheats invalido.");save_support(pair.second,data,true);
+ }zip_discard(z);}catch(...){zip_discard(z);throw;}enable_support("ur0:tai/vitacheat.skprx");
+}
+static void prepare_mods(){char error[256];if(!safety_backup_ensure(error,sizeof(error)))throw std::runtime_error(error);
+ if(existing_support_family("repatch"))return;
+ if(!pkgi_file_exists("ur0:tai/repatch.skprx")){auto data=pinned_data("https://github.com/dots-tb/rePatch-reDux0/releases/download/3.0/repatch.skprx","47c6841333a7f319c675932c57bac7ef87033ed8c562cdbbeb2ac33cbb2553fd",1024*1024);save_support("ur0:tai/repatch.skprx",data,true);}enable_support("ur0:tai/repatch.skprx");}
+static void fetch_game_background(const char*id){
+ auto path=std::string("ux0:data/VitaStation/backgrounds/")+id+".png";if(pkgi_file_exists(path))return;
+ auto data=https_bytes(std::string("https://raw.githubusercontent.com/Andiweli/HexFlow-Covers/main/Covers/PSVita/")+id+".png",2*1024*1024);
+ if(data.size()<24 || memcmp(data.data(),"\x89PNG\r\n\x1a\n",8))throw std::runtime_error("Imagem de fundo indisponivel para esta ID.");
+ unsigned w=get32be(data.data()+16),h=get32be(data.data()+20);if(!w || !h || w>1920 || h>1088)throw std::runtime_error("Imagem com dimensoes invalidas.");
+ save_support(path,data,true);lock();++progress.covers_revision;unlock();
+}
+static std::string attribute(const std::string&tag,const char*key){auto p=tag.find(std::string(key)+"=\"");if(p==std::string::npos)return {};p+=strlen(key)+2;auto end=tag.find('"',p);return end==std::string::npos?std::string{}:tag.substr(p,end-p);}
+static unsigned native_version(const std::string&s){unsigned a=0,b=0,c=0;if(sscanf(s.c_str(),"%u.%u.%u",&a,&b,&c)<2 || a>999 || b>999 || c>999)return 0;return a*1000000+b*1000+c;}
+static void update_game(const AppItem&app){
+ if(strncmp(app.title_id,"PCS",3))throw std::runtime_error("Atualizacao automatica nativa disponivel para jogos PS Vita (PCS...).");
+ const uint8_t key[32]={0xE5,0xE2,0x78,0xAA,0x1E,0xE3,0x40,0x82,0xA0,0x88,0x27,0x9C,0x83,0xF9,0xBB,0xC8,0x06,0x82,0x1C,0x52,0xF2,0xAB,0x5D,0x2B,0x4A,0xBD,0x99,0x54,0x50,0x35,0x51,0x14};
+ std::string id=app.title_id,uniq="np_"+id;uint8_t hmac[32];hmac_sha256(key,32,(const uint8_t*)uniq.data(),uniq.size(),hmac);char hash[65];for(unsigned i=0;i<32;i++)snprintf(hash+2*i,3,"%02x",hmac[i]);
+ init_legacy_http();VitaHttp http;http.start("https://gs-sec.ww.np.dl.playstation.net/pl/np/"+id+"/"+hash+"/"+id+"-ver.xml",0);if(http.get_status()==404){game_message("Nao existem atualizacoes publicadas para esta ID.");return;}std::string xml;uint8_t buffer[4096];while(true){auto n=http.read(buffer,sizeof(buffer));if(!n)break;if(n<0 || xml.size()+(size_t)n>1024*1024)throw std::runtime_error("Resposta de atualizacao invalida.");xml.append((const char*)buffer,n);if(stop_worker || cancel_job){http.abort();throw std::runtime_error("Consulta cancelada.");}}auto at=xml.rfind("<package");if(at==std::string::npos){game_message("Nao existem atualizacoes publicadas para esta ID.");return;}auto end=xml.find('>',at);auto tag=xml.substr(at,end-at);auto version=attribute(tag,"version"),url=attribute(tag,"url");if(version.empty() || url.empty())throw std::runtime_error("Metadados de atualizacao invalidos.");
+ auto path="ux0:patch/"+id+"/sce_sys/param.sfo";if(!pkgi_file_exists(path))path="ux0:app/"+id+"/sce_sys/param.sfo";auto installed=sfo_string(pkgi_load(path),"APP_VER");if(!installed.empty() && native_version(version)<=native_version(installed)){game_message("O jogo ja tem a versao "+installed+".");return;}
+ if(url.rfind("http://",0)==0)url.replace(0,7,"https://");
+ auto host_end=url.find('/',8);auto host=url.substr(8,host_end-8);if(url.rfind("https://",0)!=0 || host.size()<16 || host.compare(host.size()-16,16,".playstation.net"))throw std::runtime_error("Origem de atualizacao nao reconhecida.");
+ CatalogPackage p{};p.type=CATALOG_GAMES;snprintf(p.title_id,sizeof(p.title_id),"%s",id.c_str());snprintf(p.name,sizeof(p.name),"Atualizacao %s | %.150s",version.c_str(),app.title);snprintf(p.url,sizeof(p.url),"%s",url.c_str());snprintf(p.content_id,sizeof(p.content_id),"%s",app.content_id);submit_system_package(p);game_message("Atualizacao "+version+" enviada ao LiveArea.");
+}
+static void find_mods(const AppItem&app){
+ auto bytes=https_bytes(std::string("https://api.github.com/search/repositories?q=")+app.title_id+"+vita+in:readme+fork:false&per_page=5",1024*1024);std::string text(bytes.begin(),bytes.end());cJSON*j=cJSON_Parse(text.c_str());if(!j)throw std::runtime_error("Resposta de mods invalida.");lock();game_status.mod_count=0;const cJSON*item;cJSON_ArrayForEach(item,cJSON_GetObjectItemCaseSensitive(j,"items")){auto*full=cJSON_GetObjectItemCaseSensitive(item,"full_name");if(!cJSON_IsString(full) || game_status.mod_count>=5)continue;int i=game_status.mod_count++;mod_repos[i]=full->valuestring;snprintf(game_status.mods[i],128,"%s",full->valuestring);}bool found=game_status.mod_count>0;unlock();cJSON_Delete(j);game_message(found?"Repositorios encontrados. Setas escolhem; X tenta instalar ZIP rePatch verificado.":"Nenhum repositorio de mods encontrado para esta ID.");
+}
+static void install_mod(const AppItem&app,int index){
+ lock();std::string repo=index>=0 && index<game_status.mod_count?mod_repos[index]:"";unlock();if(repo.empty() || repo.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_/.")!=std::string::npos || repo.find("..")!=std::string::npos)throw std::runtime_error("Seleciona um repositorio valido.");
+ auto bytes=https_bytes("https://api.github.com/repos/"+repo+"/releases/latest",1024*1024);std::string json(bytes.begin(),bytes.end());cJSON*j=cJSON_Parse(json.c_str());UpdateStatus asset{};bool found=false;if(j){const cJSON*a;cJSON_ArrayForEach(a,cJSON_GetObjectItemCaseSensitive(j,"assets")){auto*n=cJSON_GetObjectItemCaseSensitive(a,"name"),*u=cJSON_GetObjectItemCaseSensitive(a,"browser_download_url"),*d=cJSON_GetObjectItemCaseSensitive(a,"digest"),*size=cJSON_GetObjectItemCaseSensitive(a,"size");if(!cJSON_IsString(n)||!cJSON_IsString(u)||!cJSON_IsString(d)||!cJSON_IsNumber(size))continue;std::string name=n->valuestring,digest=d->valuestring,url=u->valuestring;if(name.size()<4 || name.substr(name.size()-4)!=".zip" || digest.size()!=71 || digest.rfind("sha256:",0) || url.rfind("https://github.com/"+repo+"/releases/download/",0) || size->valuedouble<=0 || size->valuedouble>256*1024*1024)continue;snprintf(asset.url,sizeof(asset.url),"%s",url.c_str());snprintf(asset.digest,sizeof(asset.digest),"%s",digest.c_str()+7);asset.size=size->valuedouble;found=true;break;}cJSON_Delete(j);}if(!found)throw std::runtime_error("Sem ZIP com SHA-256 verificavel nesta Release. Mod indisponivel para instalacao automatica.");
+ const std::string root="ux0:data/VitaStation/pkg-staging/game-mod",archive=root+".zip",id=app.title_id;pkgi_mkdirs("ux0:data/VitaStation/pkg-staging");cancel_job=false;update_download_disk(asset,archive);
+ try{auto*z=open_vita_zip(archive);uint64_t expanded=0;for(zip_int64_t i=0;i<zip_get_num_entries(z,0);i++){zip_stat_t st{};if(zip_stat_index(z,i,0,&st)<0 || st.size>512*1024*1024-expanded){zip_discard(z);throw std::runtime_error("Mod excede o limite de 512 MiB.");}expanded+=st.size;}zip_discard(z);pkgi_delete_dir(root);pkgi_mkdirs(root.c_str());extract_archive(archive,root);pkgi_rm(archive.c_str());std::string source=root+"/rePatch/"+id;if(pkgi_get_inode_type(source)!=InodeType::Directory)source=root+"/"+id;if(pkgi_get_inode_type(source)!=InodeType::Directory)throw std::runtime_error("ZIP nao e um mod rePatch para esta ID; ficheiros do jogo preservados.");
+ auto stage=root+"-payload";pkgi_delete_dir(stage);pkgi_rename(source,stage);prepare_mods();auto dest="ux0:rePatch/"+id;pkgi_mkdirs(dest.c_str());/* Refuse to overwrite existing mods automatically. */std::vector<MergeFile>files;collect_merge(stage,"",files);for(auto&f:files)if(pkgi_get_inode_type(dest+"/"+f.relative)!=InodeType::NotExist)throw std::runtime_error("Ja existe um mod nesse caminho; preservado. Remove o conflito manualmente.");merge_psp_dlc(stage,dest);pkgi_delete_dir(root);game_message("Mod rePatch instalado. Reinicia para carregar o plugin se foi adicionado.");
+ }catch(...){pkgi_rm(archive.c_str());throw;}
+}
+static bool game_submit_dlc(const CatalogPackage*p,void*){try{submit_system_package(*p);return true;}catch(const std::exception&e){vs_log("game-content-dlc",e.what(),-1);return false;}}
+static void all_game_content(const AppItem&app){
+ if(strncmp(app.title_id,"PCS",3))throw std::runtime_error("Conteudo automatico disponivel para jogos nativos PS Vita.");
+ std::string update;try{update_game(app);lock();update=game_status.message;unlock();}catch(const std::exception&e){update=std::string("Atualizacao: ")+e.what();}
+ StoreCatalog catalog;catalog_init(&catalog);
+ if(!catalog_load_matching_auto(&catalog,CATALOG_DLCS,app.title_id)){catalog_clear(&catalog);game_message(update+" | Catalogo DLC indisponivel.");return;}
+ CatalogPackage game{};game.type=CATALOG_GAMES;game.auto_dlcs=true;snprintf(game.title_id,sizeof(game.title_id),"%.9s",app.title_id);snprintf(game.content_id,sizeof(game.content_id),"%s",app.content_id);
+ auto result=dlc_plan_run(&game,&catalog,game_submit_dlc,[](void*){return stop_worker.load() || cancel_job.load();},nullptr);catalog_clear(&catalog);
+ game_message(fmt::format("DLCs no LiveArea: {} aceites, {} falhas, {} indisponiveis. {}",result.installed,result.failed,result.unavailable,update));
+}
+static void run_game_request(const AppItem&app,int action,int selection){
+ if(action==5){cancel_job=false;all_game_content(app);return;}
+ if(action==0){update_game(app);return;}
+ if(action==1){if(strncmp(app.title_id,"PCS",3))throw std::runtime_error("Base VitaCheat disponivel para IDs nativas PS Vita.");auto bytes=https_bytes(std::string("https://raw.githubusercontent.com/r0ah/vitacheat/master/db/")+app.title_id+".psv",2*1024*1024);std::string text(bytes.begin(),bytes.end());if(text.find(app.title_id)==std::string::npos || text.find("_V")==std::string::npos)throw std::runtime_error("Cheats nao encontrados para esta ID.");for(size_t at=0;(at=text.find("_V1",at))!=std::string::npos;at+=3)text[at+2]='0';prepare_cheats();save_support(std::string("ux0:vitacheat/db/")+app.title_id+".psv",std::vector<uint8_t>(text.begin(),text.end()));game_message("Cheats guardados DESATIVADOS. Reinicia se instalou VitaCheat; ativa no jogo.");return;}
+ if(action==2){lock();bool known=game_status.mod_count>0 && !strcmp(game_request.title_id,app.title_id);unlock();if(known)install_mod(app,selection);else find_mods(app);return;}
+ if(action==3){fetch_game_background(app.title_id);game_message("Imagem guardada; usada como fundo quando falta arte local.");return;}
+ if(action==4){prepare_cheats();prepare_mods();game_message("Plugins preparados; anteriores preservados. Reinicia a consola.");}
+}
+extern "C" void store_game_status(GameSupportStatus*s){if(!s)return;if(lock_id<0){*s={};return;}lock();*s=game_status;if(!s->message[0])snprintf(s->message,sizeof(s->message),"Escolhe uma funcao para o jogo selecionado.");unlock();}
+extern "C" void store_game_request(const AppItem*app,int action,int selection){if(!app || !game_id_ok(app->title_id) || cover_thread_id<0)return;lock();if(game_status.busy || update_busy || progress.active || count){unlock();return;}if(strcmp(game_request.title_id,app->title_id)){game_status.mod_count=0;for(auto&r:mod_repos)r.clear();}game_request=*app;game_action=action;game_selection=selection;game_pending=true;game_status.busy=true;snprintf(game_status.message,sizeof(game_status.message),"A procurar informacao para %s...",app->title_id);unlock();sceKernelSignalSema(cover_wake_id,1);}
+extern "C" void store_request_background(const char*id){if(!game_id_ok(id) || strncmp(id,"PCS",3) || cover_thread_id<0)return;lock();for(auto&known:background_history)if(!strcmp(known,id)){unlock();return;}if(background_request[0]){unlock();return;}snprintf(background_history[background_next++%64],32,"%s",id);snprintf(background_request,sizeof(background_request),"%s",id);unlock();sceKernelSignalSema(cover_wake_id,1);}

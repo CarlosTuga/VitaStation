@@ -1,3 +1,4 @@
+#include "safety_backup.h"
 #include "library.h"
 #include "library_cache.h"
 #include "installation_watch.h"
@@ -43,13 +44,13 @@ int main(int argc, char *argv[]) {
     settings_ensure_dir("ux0:data");
 #endif
     settings_ensure_dir(VS_DATA_DIR);
-    vs_log("build","VitaStation 1.6.2 beta (01.62), permanent offline cover library",0);
+    vs_log("build","VitaStation 1.6.3 beta (01.63), permanent offline cover library",0);
     if(!render_init())return 1;
     input_init();
 
     library_init(&lib);
     bool cached=library_cache_load(&lib,VS_DATA_DIR "/library-cache.bin");
-    bool rebuild=library_cache_rebuild_due(cached,VS_DATA_DIR "/library-starts.txt") || installation_dirty() || installation_cache_changed(VS_DATA_DIR "/installation-state.txt");
+    bool rebuild=!safety_backup_exists() || library_cache_rebuild_due(cached,VS_DATA_DIR "/library-starts.txt") || installation_dirty() || installation_cache_changed(VS_DATA_DIR "/installation-state.txt");
     library_load_userdata(&lib,VS_USERDATA_PATH);
     texture_cache_init(&cache, 32);
     ui_init(&ui);

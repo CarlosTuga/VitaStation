@@ -1,3 +1,4 @@
+#include "safety_backup.h"
 #include "bootstrap.h"
 #include "library_cache.h"
 #include "settings.h"
@@ -16,7 +17,7 @@ static bool library_ready=false,plugins_ready=false;
 static int result=-1;
 static char message[256];
 static int load(SceSize size,void*arg){
- (void)size;(void)arg;uint64_t start=sceKernelGetProcessTimeWide();int scanned=library_scan(&pending,"ux0:app/");
+ (void)size;(void)arg;char backup[256];safety_backup_ensure(backup,sizeof(backup));uint64_t start=sceKernelGetProcessTimeWide();int scanned=library_scan(&pending,"ux0:app/");
  if(scanned>=0){library_load_userdata(&pending,VS_USERDATA_PATH);library_cache_save(&pending,VS_DATA_DIR "/library-cache.bin");}
  char timing[96];snprintf(timing,sizeof(timing),"library_ready_ms=%llu apps=%d",(unsigned long long)((sceKernelGetProcessTimeWide()-start)/1000),scanned);vs_log("startup",timing,scanned);
  sceKernelLockMutex(mutex,1,NULL);result=scanned;library_ready=true;sceKernelUnlockMutex(mutex,1);

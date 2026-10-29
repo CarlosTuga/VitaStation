@@ -1,3 +1,4 @@
+#include "safety_backup.h"
 /* VitaStation maintenance executable. Runs after replacing the launcher process. */
 #include <vita2d.h>
 #include <psp2/sysmodule.h>
@@ -39,8 +40,10 @@ static int remove_tree(const char*path,unsigned depth){
 }
 #include "config_cleanup.h"
 static int delete_installed(const char*id){char path[100];snprintf(path,sizeof(path),"ux0:app/%s/sce_sys/param.sfo",id);SceIoStat st;int n=sceIoGetstat(path,&st);if(n==NOT_FOUND)return 0;if(n<0)return n;return scePromoterUtilityDeletePkg(id);}
-int main(void){
- vita2d_init();font=vita2d_load_default_pgf();if(!font)return 1;draw("A repor o arranque original...",0);int result=disable_markers();bool reset=result>=0;
+int main(int argc,char**argv){
+ bool restore=argc>1 && !strcmp(argv[1],"restore");
+ vita2d_init();font=vita2d_load_default_pgf();if(!font)return 1;draw("A repor o arranque original...",0);int result=disable_markers();bool reset=result>=0;char backup_message[256]={0};
+ if(result>=0 && restore){draw("A verificar e repor o backup de plugins...",0);if(!safety_backup_restore(backup_message,sizeof(backup_message)) || !safety_backup_remove_additions(backup_message,sizeof(backup_message)))result=-1;}
  if(result>=0)result=disable_config("ur0:tai/config.txt");
  if(result>=0)result=disable_config("ux0:tai/config.txt");
  if(result>=0){uint32_t args[]={0x400000,0xea60,0x40000,0,1,0};int code=0;SceSysmoduleOpt opt;memset(&opt,0,sizeof(opt));opt.result=&code;result=sceSysmoduleLoadModuleInternalWithArg(SCE_SYSMODULE_INTERNAL_PAF,sizeof(args),args,&opt);}
@@ -50,6 +53,6 @@ int main(void){
  if(result>=0){remove_if_present("ux0:data/VitaStation/updates/Caratulas-de-loja-1.04.vpk.part");remove_if_present("ux0:data/VitaStation/updates/Caratulas-de-loja-1.04.vpk");draw("A remover todas as caratulas...",0);result=remove_tree("ux0:data/VitaStation/covers",0);}
  if(result>=0){remove_if_present("ur0:tai/VitaStation/VitaStationBoot.suprx");remove_if_present("ux0:tai/VitaStation/VitaStationBoot.suprx");sceIoSync("ux0:",0);sceIoSync("ur0:",0);draw("A remover o VitaStation...",0);result=delete_installed("VTST00001");}
  if(result>=0){draw("VitaStation removido. Reinicia para concluir a reposicao.",0);sceKernelDelayThread(2500000);}
- else{while(1){draw(reset?"Remocao incompleta; o arranque automatico fica desligado.":"Falha a repor o arranque; remocao cancelada.",result);SceCtrlData pad;memset(&pad,0,sizeof(pad));if(sceCtrlPeekBufferPositive(0,&pad,1)>0 && pad.buttons&SCE_CTRL_CIRCLE)break;}}
+ else{while(1){draw(reset?(backup_message[0]?backup_message:"Remocao incompleta; o arranque automatico fica desligado."):"Falha a repor o arranque; remocao cancelada.",result);SceCtrlData pad;memset(&pad,0,sizeof(pad));if(sceCtrlPeekBufferPositive(0,&pad,1)>0 && pad.buttons&SCE_CTRL_CIRCLE)break;}}
  sceKernelExitProcess(result<0?1:0);return 0;
 }

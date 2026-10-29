@@ -1,3 +1,4 @@
+#include "safety_backup.h"
 #include "plugins.h"
 #include "store.h"
 #include "../third_party/usagi/sha256.hpp"
@@ -30,6 +31,7 @@ static void write_new(const std::string&path,const std::vector<uint8_t>&data){
     FILE*f=fopen(path.c_str(),"wb");if(!f)throw std::runtime_error("Nao foi possivel guardar plugins.");
     bool ok=fwrite(data.data(),1,data.size(),f)==data.size() && fflush(f)==0;if(fclose(f))ok=false;
     if(!ok || read_file(path)!=data)throw std::runtime_error("A verificacao do ficheiro de plugins falhou.");
+    char backup[256];if(!safety_backup_track_plugin(path.c_str(),backup,sizeof(backup)))throw std::runtime_error(backup);
 }
 static bool verify_hash(const std::vector<uint8_t>&data,const char*expected){uint8_t hash[32];sha256_ctx s;sha256_init(&s);sha256_update(&s,data.data(),data.size());sha256_finish(&s,hash);for(unsigned i=0;i<32;i++)if(hash[i]!=hexvalue(expected[i*2])*16+hexvalue(expected[i*2+1]))return false;return true;}
 static void replace_config(const std::string&path,const std::vector<uint8_t>&before,const std::vector<uint8_t>&after){
@@ -59,6 +61,7 @@ static bool prepare_psp(){
 }
 extern "C" bool plugins_prepare(char*message,size_t size){
     try{
+        char backup[256];if(!safety_backup_ensure(backup,sizeof(backup)))throw std::runtime_error(backup);
         SceKernelSystemSwVersion fw{};fw.size=sizeof(fw);int result=sceKernelGetSystemSwVersion(&fw);
         if(result<0)throw std::runtime_error("Nao foi possivel consultar a versao do sistema.");
         /* HENkaku can spoof the public firmware query. This bridge has no firmware
@@ -107,6 +110,7 @@ extern "C" size_t plugins_list(PluginEntry*entries,size_t capacity){
 }
 extern "C" bool plugins_set_enabled(const PluginEntry*entry,bool enabled,char*message,size_t size){
     try{
+        char backup[256];if(!safety_backup_ensure(backup,sizeof(backup)))throw std::runtime_error(backup);
         if(!entry || store_busy())throw std::runtime_error("Aguarda a conclusao das instalacoes antes de alterar plugins.");
         if(entry->protected_entry)throw std::runtime_error("Plugin essencial ao arranque ou armazenamento; protegido.");
         if(enabled && !exists(entry->path))throw std::runtime_error("O ficheiro deste plugin nao foi encontrado.");
@@ -121,6 +125,7 @@ extern "C" bool plugins_set_enabled(const PluginEntry*entry,bool enabled,char*me
 /* Alive exposes explicit optional/required links. Install only the selected link. */
 extern "C" bool plugins_install_catalog(const char*staged,const char*filename,const char*section,char*message,size_t size){
     try{
+        char backup[256];if(!safety_backup_ensure(backup,sizeof(backup)))throw std::runtime_error(backup);
         bool known=false;for(const char*name:{"CapUnlocker.skprx","ttbr_remap.skprx","azaharnative.skprx","ioplus.skprx"})if(filename && !strcmp(name,filename))known=true;
         if(!known || !section || strcmp(section,"*KERNEL"))throw std::runtime_error("Este plugin do catalogo ainda nao foi validado.");
         auto data=read_file(staged);if(data.size()<4 || memcmp(data.data(),"SCE\0",4))throw std::runtime_error("O ficheiro descarregado nao e um modulo SCE valido.");

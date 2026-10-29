@@ -1,0 +1,12 @@
+{
+  "cheat_database": "https://raw.githubusercontent.com/r0ah/vitacheat/master/db/{title_id}.psv",
+  "vitacheat": {
+    "url": "https://raw.githubusercontent.com/r0ah/vitacheat/master/plugin/v365-z06beta/FINALCHEAT-PSVITACHEAT-V365-Z06BETA.zip",
+    "sha256": "9034634f00066fc41c8e1b5a2cfc9e72f785695117fc6a4c91a7d1f314052df4"
+  },
+  "repatch": {
+    "url": "https://github.com/dots-tb/rePatch-reDux0/releases/download/3.0/repatch.skprx",
+    "sha256": "47c6841333a7f319c675932c57bac7ef87033ed8c562cdbbeb2ac33cbb2553fd"
+  },
+  "mods": "https://api.github.com/search/repositories?q={title_id}+vita+in:readme+fork:false&per_page=5"
+}

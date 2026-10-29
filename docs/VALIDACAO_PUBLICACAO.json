@@ -1,8 +1,7 @@
 {
-  "version": "1.6.2-beta",
+  "version": "1.6.3-beta",
   "covers_version": "1.04",
-  "date": "2026-10-28",
-  "source_files_compared_with_current_project": 186,
+  "date": "2026-10-29",
   "source_code_modified": true,
   "line_endings_normalized": true,
   "public_asset_hash_metadata_refreshed": true,
@@ -18,5 +17,8 @@
   "embedded_vpk_personal_reference_check": "passed",
   "note": "Testes host/integracao/carátulas/atualizador/manutencao e build VitaSDK passaram; HTTPS e desinstalacao fisica pendentes.",
   "update_and_maintenance_tests": "passed with mocked ZIP/Vita I/O",
-  "physical_update_uninstall_validation": "pending"
+  "physical_update_uninstall_validation": "pending",
+  "safety_backup_tests": "passed",
+  "game_ui_background_tests": "passed",
+  "hardware_network_uninstall": "pending"
 }

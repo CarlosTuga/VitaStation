@@ -1,4 +1,4 @@
-> **1.6.2 beta:** a opção de atualização instala automaticamente as carátulas 1.04 quando faltam. Inclui «Desinstalar VitaStation e carátulas», com confirmação e reposição do arranque original. A instalação final de futuras atualizações do launcher continua no VitaShell. Descarga HTTPS e desinstalação física pendentes de teste. [Detalhes e limites](VitaStation/REVISAO_1.6.2_BETA.md).
+> **1.6.3 beta:** backup no primeiro arranque, limpeza opcional dos plugins novos sem downgrade, fundos e opcoes por jogo no Triangulo, atualizacoes e DLCs no LiveArea. Start sem Inicio e com Atualizar Biblioteca. [Instrucoes e limites](VitaStation/REVISAO_1.6.3_BETA.md). Rede, instalacao e desinstalacao fisica ainda pendentes de teste.
 
 # VitaStation
 

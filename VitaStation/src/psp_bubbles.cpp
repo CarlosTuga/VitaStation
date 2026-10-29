@@ -1,3 +1,4 @@
+#include "safety_backup.h"
 #include "psp_media.h"
 #include "psp_runtime_hashes.h"
 #include "installation_watch.h"
@@ -30,6 +31,7 @@ static unsigned crc(const std::vector<unsigned char>&b){return (unsigned)crc32(0
 static void write(const std::string&path,const std::vector<unsigned char>&b){FILE*f=fopen(path.c_str(),"wb");if(!f)throw std::runtime_error("Sem acesso para gravar "+path);bool ok=fwrite(b.data(),1,b.size(),f)==b.size();if(fclose(f))ok=false;if(!ok || read(path)!=b)throw std::runtime_error("A gravacao nao ficou completa");}
 static long long boot_epoch(){SceRtcTick tick;if(sceRtcGetCurrentTick(&tick)<0)throw std::runtime_error("Nao foi possivel confirmar o reinicio");return (long long)((tick.tick-sceKernelGetSystemTimeWide())/1000000);}
 static void prepare_runtime(){
+ char backup[256];if(!safety_backup_ensure(backup,sizeof(backup)))throw std::runtime_error(backup);
  bool current=true;for(unsigned i=0;i<5;i++)if(!exists(std::string(module_root)+module_names[i]) || crc(read(std::string(module_root)+module_names[i]))!=runtime_crc[i])current=false;
  const char*reboot=VS_DATA_DIR "/psp-runtime-reboot.txt";
  if(current){
@@ -54,7 +56,7 @@ static void prepare_runtime(){
 static unsigned le(const unsigned char*b){return b[0]|((unsigned)b[1]<<8)|((unsigned)b[2]<<16)|((unsigned)b[3]<<24);}
 static void put32(unsigned char*b,unsigned v){for(unsigned i=0;i<4;i++)b[i]=(unsigned char)(v>>(i*8));}
 static void field(std::vector<unsigned char>&sfo,const char*key,const char*value){unsigned k=le(sfo.data()+8),d=le(sfo.data()+12),n=le(sfo.data()+16);for(unsigned i=0;i<n;i++){unsigned char*e=sfo.data()+20+i*16;unsigned ko=e[0]|(e[1]<<8),cap=le(e+8),off=le(e+12);if(k+ko>=sfo.size() || d+off>sfo.size() || cap>sfo.size()-d-off)throw std::runtime_error("SFO de bolha invalido");if(!strcmp((char*)sfo.data()+k+ko,key)){size_t size=strlen(value);if(size>=cap)size=cap-1;while(size && ((unsigned char)value[size]&0xc0)==0x80)size--;memset(sfo.data()+d+off,0,cap);memcpy(sfo.data()+d+off,value,size);put32(e+4,size+1);return;}}throw std::runtime_error("Campo SFO ausente");}
-extern "C" int psp_prepare_runtime(char*message,size_t capacity){std::lock_guard<std::mutex> guard(psp_mutex);try{prepare_runtime();snprintf(message,capacity,"Arranque PSP pronto.");return 0;}catch(const std::exception&e){snprintf(message,capacity,"%s",e.what());return exists(VS_DATA_DIR "/psp-runtime-reboot.txt")?1:-1;}}
+extern "C" int psp_prepare_runtime(char*message,size_t capacity){std::lock_guard<std::mutex> guard(psp_mutex);try{char backup[256];if(!safety_backup_ensure(backup,sizeof(backup)))throw std::runtime_error(backup);prepare_runtime();snprintf(message,capacity,"Arranque PSP pronto.");return 0;}catch(const std::exception&e){snprintf(message,capacity,"%s",e.what());return exists(VS_DATA_DIR "/psp-runtime-reboot.txt")?1:-1;}}
 extern "C" bool psp_create_bubble(const AppItem*item,char*message,size_t capacity){
  std::lock_guard<std::mutex> guard(psp_mutex);
  try{

@@ -1,6 +1,6 @@
 # Falhas, limitações e validação pendente
 
-Estado de referência: VitaStation 1.6.2 beta e Carátulas de loja 1.04. Os relatórios antigos nas subpastas são históricos; não prevalecem sobre este estado.
+Estado de referência: VitaStation 1.6.3 beta e Carátulas de loja 1.04. Os relatórios antigos nas subpastas são históricos; não prevalecem sobre este estado.
 
 ## Funções realmente indisponíveis
 
@@ -58,3 +58,9 @@ Estas correções não equivalem a afirmar ausência de regressões nesta beta. 
 A recuperação das carátulas requer abrir a opção de atualização e manter o launcher aberto; exige cerca de 600 MiB livres e HTTPS funcional. Não ignora erros de certificado. A presença do bloco instalado é verificada pelo índice/tamanho e leitura de uma imagem, sem auditoria integral de todas as imagens existentes. A instalação do próprio launcher termina no VitaShell.
 
 A remoção executa-se em maintenance.self e usa o gestor de pacotes nativo. Ainda não foi validada fisicamente a remoção da própria aplicação neste contexto. Se o sistema recusar, é necessário remover a bolha pelo LiveArea/VitaShell; o arranque e os atalhos são desativados antes. Uma falha pode deixar remoção parcial. Preferências, backups de recuperação e outros plugins são preservados. Ver REVISAO_1.6.2_BETA.md.
+
+## Funcoes 1.6.3
+
+Backup criado no primeiro arranque antes das alteracoes, sem reconstruir historico de instalacoes antigas. Limpeza adicional opcional: repoe configuracoes e remove so plugins novos registados. Binarios anteriores, atualizados e modulos Adrenaline existentes sao mantidos. Configuracoes posteriores ao backup sao revertidas; before-uninstall preserva o estado encontrado. Originais ausentes podem ser recuperados sem sobrescrever um binario existente.
+
+Cheats/mods dependem da ID e versao. Mods exigem ZIP de Release com SHA-256 e estrutura rePatch reconhecida; nao sobrescreve mods existentes. Fundos alternativos podem ser capas/icones. Atualizacoes/conteudo automatico para jogos PCS... e DLCs presentes nos catalogos locais. Rede, instalacao de conteudo/plugins e desinstalacao/reposicao fisica pendentes de validacao. Ver REVISAO_1.6.3_BETA.md.

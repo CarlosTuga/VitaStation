@@ -34,3 +34,7 @@ Ver COMPILAR.md. Os resultados desta preparação verificam os ficheiros copiado
 `python VitaStation/tests/run_update_maintenance.py` cobre seleção de Releases e do pacote de carátulas, preservação/backup da configuração taiHEN e o código real de instalação de carátulas com ZIP e I/O simulados (cópia, índice, CRC, falta de espaço e preservação). A integração cobre abrir a confirmação de desinstalação, cancelar por X e por O, e a seleção inicial em Cancelar. O teste de cover_pack cobre ausências, recarga e CRC.
 
 Build VitaSDK e validação de maintenance.self dentro do VPK concluídos. Não foram executadas na consola física a descarga HTTPS nem a desinstalação desta versão.
+
+## Validacao 1.6.3
+
+run_safety_backup.py: copia/SHA-256, referencia imutavel, configuracoes repostas, anteriores/atualizados/Adrenaline e plugins manuais preservados, novo plugin registado removido, original ausente recuperado e corrupcao bloqueada. run_game_ui.py: seis acoes do Triangulo, Start e checkbox/confirmacao de desinstalacao, fundo LiveArea com nome arbitrario. Regressao host/integracao e compilacao/validacao VitaSDK aprovadas. Rede e operacoes reais na consola nao foram testadas nesta versao.
