@@ -1,5 +1,5 @@
-# Pacotes 1.6.11 beta
+# Pacotes 1.6.12 beta
 
-Atualizar pelo VitaStation ou instalar o VPK no VitaShell. Corrige espera pela pesquisa e persistência da preparação. Som confirmado mantido. Bridge 1.6.10 inalterado; instalar e voltar a abrir, sem novo reinício se esse bridge já estiver ativo. Teste físico pendente. Ver VitaStation/REVISAO_1.6.11_BETA.md. Carátulas 1.04 continuam na Release v1.6.0-beta.
+Atualizar pelo VitaStation ou instalar o VPK no VitaShell. Corrige a rota de abertura do Shell para usar a URI de execução. Som confirmado mantido. Bridge 1.6.12 alterado; instalar e reiniciar completamente a consola. Teste físico pendente. Ver VitaStation/REVISAO_1.6.12_BETA.md. Carátulas 1.04 continuam na Release v1.6.0-beta.
 
 Releases: https://github.com/CarlosTuga/VitaStation/releases

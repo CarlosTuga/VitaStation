@@ -75,8 +75,10 @@ static void process_launch(SceUInt64 now){
  char caller[10],target[10];
  if(launch_waiting){if(!request_still_pending() || !vs_launch_wait_unpack(launch_pending,caller,target,launch_accepted,now)){cancel_launch();return;}if(vs_launch_quiet_ready(&caller_gone_since,running(caller),now)){
   char uri[32];vs_launch_uri(uri,target);cancel_launch();handoff_blocked_until=now+3000000;handoff_release_needed=1;
-  int code=sceAppMgrLaunchAppByName2ForShell(target,0,0);bridge_log("launch-name",target,code);
-  if(code<0){code=sceAppMgrLaunchAppByUri(VS_LAUNCH_PLAY_FLAGS,uri);bridge_log("launch-uri",target,code);}
+  /* A positive Shell application ID did not start the target on the tested
+     3.65 console. Use the explicit play URI, as for boot/PS routing, only
+     after the caller has exited. Do not treat an allocated ID as execution. */
+  int code=sceAppMgrLaunchAppByUri(VS_LAUNCH_PLAY_FLAGS,uri);bridge_log("launch-uri",target,code);
   for(unsigned i=0;i<10;i++)probe_target[i]=target[i];probe_at=now+5000000;
   SceUID status=sceIoOpen("ux0:data/VitaStation/launch-result.bin",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(status>=0){sceIoWrite(status,target,9);sceIoWrite(status,&code,sizeof(code));sceIoClose(status);}
  }return;}

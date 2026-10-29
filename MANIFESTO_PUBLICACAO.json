@@ -1,5 +1,5 @@
 {
-  "version": "1.6.11-beta",
+  "version": "1.6.12-beta",
   "covers_version": "1.04",
   "scope": "Fontes/documentação/recursos; release-assets separado",
   "files": [
@@ -176,12 +176,12 @@
     {
       "path": "docs/FALHAS_E_LIMITACOES.md",
       "bytes": 7658,
-      "sha256": "baa3c4510680c0e7509f484fe595c7e7f0a2f7bf052bc6f4aee82f8fca5bcaa8"
+      "sha256": "e0370454d25a37f4bff943c7a230f1a2b42f3213f3209d2d0788054893dc9c43"
     },
     {
       "path": "docs/PLUGINS.md",
       "bytes": 5467,
-      "sha256": "838039ed030f0f34cbf0ce924a16562a4f516feee6c56d3acc4fa30ded9647cd"
+      "sha256": "982e3cd67a4a04e38a555af8f97106de4a6af283d4304afb1bc8c13b2ced9f4b"
     },
     {
       "path": "docs/PUBLICACAO_GITHUB.md",
@@ -191,12 +191,12 @@
     {
       "path": "docs/TESTES.md",
       "bytes": 3814,
-      "sha256": "7aee8f03c9d19e552568c6a21d8e8ad85ca756ce4a2cbaaa5bce94cffa41efa7"
+      "sha256": "e38ed25482a99593942ef50d7b33057d55317b12b09e1d3a40bb5183576a60c9"
     },
     {
       "path": "docs/VALIDACAO_PUBLICACAO.json",
       "bytes": 1031,
-      "sha256": "9b1a42f5cfaa6cee486c6f58f1fad5eb87aabddff7b5a9cfa9756c9d54b680ce"
+      "sha256": "deab52a030b1911d636a37af72c8852f0508273b7431901aabc13d8bccbd1b71"
     },
     {
       "path": "LICENSING.md",
@@ -205,8 +205,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 22903,
-      "sha256": "57d566ec23bb698f7ae460c614340401b9ba9ca26a645bde4bf02b69a6924007"
+      "bytes": 22937,
+      "sha256": "47905ef5f055cd499406e3829742c1c144e8e327aaf25a9e07e60f92fc5dc978"
     },
     {
       "path": "tools/verify_publication.py",
@@ -426,7 +426,7 @@
     {
       "path": "VitaStation/CMakeLists.txt",
       "bytes": 12753,
-      "sha256": "7a329d15ffd808e8e2801b055379a381c2279a84be7e50074fbf9de254b0145e"
+      "sha256": "1b4c56db536bff4429c77df41eb69f0f9acd49032bef96c124ea7b0b1120bafb"
     },
     {
       "path": "VitaStation/Compilar-VitaStation.cmd",
@@ -651,7 +651,7 @@
     {
       "path": "VitaStation/include/version.h",
       "bytes": 238,
-      "sha256": "b0a0a54c7ef094006edd794c62166aafe75144b312031afa543dba14241ea85a"
+      "sha256": "2fdbc67cb240cd83afc4cb498de0af72a035c95a3c6a71d7ac7df30f9ea85ab7"
     },
     {
       "path": "VitaStation/mapping/AUDITORIA_1.5.6.csv",
@@ -725,8 +725,8 @@
     },
     {
       "path": "VitaStation/plugins/VitaStationBoot/main.c",
-      "bytes": 10348,
-      "sha256": "4b42349b5cb2cc52f19b474ed8620cf84d8e309885a204f0c44cb616d67d224b"
+      "bytes": 10475,
+      "sha256": "e70b906722fd8659f3c2af1f58ddc142c933a39eee09e4257631a646444b9655"
     },
     {
       "path": "VitaStation/plugins/VitaStationBoot/shortcut.h",
@@ -887,6 +887,11 @@
       "path": "VitaStation/REVISAO_1.6.11_BETA.md",
       "bytes": 4482,
       "sha256": "d0a64daa90435e43d3d0ae7b95c57b19fc3107030c3e4038c37da3bf83d1214c"
+    },
+    {
+      "path": "VitaStation/REVISAO_1.6.12_BETA.md",
+      "bytes": 2958,
+      "sha256": "3878da83783ea1a0066b54b87241adf27aa5d1c3bc23946b176927e35e993eaf"
     },
     {
       "path": "VitaStation/REVISAO_1.6.1_BETA.md",
@@ -1339,6 +1344,11 @@
       "sha256": "8ee710527611b179ca7ca5439c51168fd84c0e8c76f65292b6725f697adcfa35"
     },
     {
+      "path": "VitaStation/tests/run_shell_bridge.py",
+      "bytes": 827,
+      "sha256": "ec9130afa7e17bfc2ad63bb608e8c6239a84a72c36e3571a385913a86701f03a"
+    },
+    {
       "path": "VitaStation/tests/run_update_maintenance.py",
       "bytes": 1044,
       "sha256": "bc736fc8fb1701c5c39e7fc0ac54b5fb9430d465143dbf66323492b61794bcf0"
@@ -1427,6 +1437,11 @@
       "path": "VitaStation/tests/test_self_update.cpp",
       "bytes": 1950,
       "sha256": "a9c773348e3cd57b2d4f7a9c15d006b83495dbd3c58159f6512377532d27466f"
+    },
+    {
+      "path": "VitaStation/tests/test_shell_bridge.c",
+      "bytes": 6274,
+      "sha256": "92ac2ab5274a9aad9b4248368becb1728b12165348442c33d81a853652277e06"
     },
     {
       "path": "VitaStation/tests/test_shell_shortcut.c",

@@ -1,4 +1,4 @@
-> **1.6.11 beta:** corrige a espera de abertura pela pesquisa da biblioteca e grava a preparação no próprio serviço. Componentes atuais usam verificação de leitura sem repetir o backup. Áudio confirmado e arranque rápido mantidos. Bridge 1.6.10 inalterado. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.11_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Teste físico pendente.
+> **1.6.12 beta:** altera a abertura pelo Shell para URI de execução direta após a saída do launcher. Os identificadores positivos da rota anterior não resultaram em processos ativos nos testes da consola. Áudio confirmado e arranque rápido mantidos. Bridge 1.6.12 requer reinício completo. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.12_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Teste físico pendente.
 
 # VitaStation
 
@@ -6,7 +6,7 @@
 
 VitaStation organiza e abre jogos, aplicações e homebrews numa interface inspirada na PS5. Integra biblioteca PSP/PS1, loja por catálogos locais, instalação de formatos suportados, carátulas permanentes e personalização visual.
 
-**Versão do launcher: 1.6.11 beta. Instalador de carátulas: 1.04.**
+**Versão do launcher: 1.6.12 beta. Instalador de carátulas: 1.04.**
 
 Este projeto é independente e não é um produto oficial Sony. A beta não substitui integralmente o sistema da Vita. “Implementado” descreve o código disponível; testes de PC e compilação não equivalem a validação física de todas as funções.
 
