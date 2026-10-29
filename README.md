@@ -1,4 +1,4 @@
-> **1.6.9 beta:** corrige o transporte do áudio de arranque, separa as integrações da fila de carátulas e usa encerramento confirmado pelo Shell em vez de EXIT_TO. Instalar e reiniciar completamente para carregar o plugin 1.6.9. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.9_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Teste físico pendente.
+> **1.6.10 beta:** repõe a prioridade compatível do áudio, abre destinos pela API do Shell e impede gestos PS antigos de interferirem na troca. Mantém o arranque rápido. Instalar e reiniciar completamente para carregar o plugin 1.6.10. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.10_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Teste físico pendente.
 
 # VitaStation
 
@@ -6,7 +6,7 @@
 
 VitaStation organiza e abre jogos, aplicações e homebrews numa interface inspirada na PS5. Integra biblioteca PSP/PS1, loja por catálogos locais, instalação de formatos suportados, carátulas permanentes e personalização visual.
 
-**Versão do launcher: 1.6.9 beta. Instalador de carátulas: 1.04.**
+**Versão do launcher: 1.6.10 beta. Instalador de carátulas: 1.04.**
 
 Este projeto é independente e não é um produto oficial Sony. A beta não substitui integralmente o sistema da Vita. “Implementado” descreve o código disponível; testes de PC e compilação não equivalem a validação física de todas as funções.
 

@@ -2,6 +2,7 @@
 #include "audio_queue.h"
 #include "audio_synth.h"
 #include "audio_clip.h"
+#include "log.h"
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -29,15 +30,19 @@ static void unlock(void){sceKernelUnlockMutex(g_mutex,1);}
 static int running(void){lock();int r=g_run;unlock();return r;}
 #include "audio_preview.inc"
 static bool play_startup(short*grain){
-    (void)grain;AudioClip clip;if(!audio_clip_load("app0:assets/audio/startup.pcm",&clip))return false;
-    if(sceAudioOutSetConfig(g_port,2048,AUDIO_RATE,SCE_AUDIO_OUT_MODE_STEREO)<0){audio_clip_free(&clip);return false;}
+    (void)grain;AudioClip clip;if(!audio_clip_load("app0:assets/audio/startup.pcm",&clip)){vs_log("audio-boot","PCM unavailable; original synthesized fallback",-1);return false;}
+    int config=sceAudioOutSetConfig(g_port,2048,AUDIO_RATE,SCE_AUDIO_OUT_MODE_STEREO);
+    if(config<0){vs_log("audio-boot","Cannot set startup block length",config);audio_clip_free(&clip);return false;}
     int volume[2]={24576,24576};sceAudioOutSetVolume(g_port,SCE_AUDIO_VOLUME_FLAG_L_CH|SCE_AUDIO_VOLUME_FLAG_R_CH,volume);
     for(size_t frame=0;frame<clip.padded_frames && running();frame+=2048){
         lock();bool interrupted=queue.count>0;unlock();if(interrupted)break;
-        if(sceAudioOutOutput(g_port,clip.samples+frame*2)<0)break;
+        int code=sceAudioOutOutput(g_port,clip.samples+frame*2);if(code<0){vs_log("audio-boot","Output rejected",code);break;}
     }
     sceAudioOutOutput(g_port,NULL);audio_clip_free(&clip);
-    volume[0]=volume[1]=32768;sceAudioOutSetVolume(g_port,3,volume);sceAudioOutSetConfig(g_port,AUDIO_GRAIN,AUDIO_RATE,SCE_AUDIO_OUT_MODE_STEREO);return true;
+    volume[0]=volume[1]=32768;sceAudioOutSetVolume(g_port,3,volume);
+    config=sceAudioOutSetConfig(g_port,AUDIO_GRAIN,AUDIO_RATE,SCE_AUDIO_OUT_MODE_STEREO);
+    if(config<0){vs_log("audio-boot","Restoring effects port configuration failed",config);sceAudioOutReleasePort(g_port);g_port=sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN,AUDIO_GRAIN,AUDIO_RATE,SCE_AUDIO_OUT_MODE_STEREO);vs_log("audio-port","Reopened effects port",g_port);}
+    return true;
 }
 
 /* Tocar um som NAO pode bloquear o thread da interface: sceAudioOutOutput espera pelo fim de cada
@@ -78,13 +83,16 @@ void audio_init(void) {
         }
     }
     g_port = sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_MAIN, AUDIO_GRAIN, AUDIO_RATE, SCE_AUDIO_OUT_MODE_STEREO);
-    if (g_port < 0) return;                      /* sem audio: as outras funcoes passam a ser no-ops */
+    if (g_port < 0){vs_log("audio-init","OpenPort failed",g_port);return;}
     audio_queue_init(&queue);
     g_mutex=sceKernelCreateMutex("vs_audio_lock",0,0,NULL);
     g_sema = sceKernelCreateSema("vs_audio_sema", 0, 0, 16, NULL);
     g_run = 1;
-    g_thread = sceKernelCreateThread("vs_audio", audio_thread, 0x10000080, 0x4000, 0, 0, NULL);
-    if (g_mutex < 0 || g_sema < 0 || g_thread < 0 || sceKernelStartThread(g_thread, 0, NULL) < 0) {
+    /* Restore the application priority used by the working pre-1.6.9 service. */
+    g_thread = sceKernelCreateThread("vs_audio", audio_thread, 0x10000100, 0x4000, 0, 0, NULL);
+    int started=(g_mutex>=0 && g_sema>=0 && g_thread>=0)?sceKernelStartThread(g_thread,0,NULL):-1;
+    if (g_mutex < 0 || g_sema < 0 || g_thread < 0 || started<0) {
+        vs_log("audio-init","CreateMutex",g_mutex);vs_log("audio-init","CreateSema",g_sema);vs_log("audio-init","CreateThread",g_thread);vs_log("audio-init","StartThread",started);
         g_run = 0;
         if (g_thread >= 0) { sceKernelDeleteThread(g_thread); g_thread = -1; }
         if (g_sema >= 0) { sceKernelDeleteSema(g_sema); g_sema = -1; }
@@ -92,6 +100,7 @@ void audio_init(void) {
         sceAudioOutReleasePort(g_port);
         g_port = -1;
     }
+    else vs_log("audio-init","Effects/startup service running",g_thread);
     if(g_port>=0){preview_sema=sceKernelCreateSema("vs-preview-wake",0,0,32,NULL);if(preview_sema>=0){preview_thread=sceKernelCreateThread("vs-game-preview",preview_worker,0x10000110,64*1024,0,0,NULL);if(preview_thread<0 || sceKernelStartThread(preview_thread,0,NULL)<0){if(preview_thread>=0)sceKernelDeleteThread(preview_thread);preview_thread=-1;sceKernelDeleteSema(preview_sema);preview_sema=-1;}}}
 #else
     printf("[Audio Mock] Audio initialized\n");

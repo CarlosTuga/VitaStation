@@ -22,6 +22,11 @@ static inline int vs_launch_wait_unpack(const unsigned char*in,char*caller,char*
  if(now<accepted || now-accepted>180000000)return 0;
  return vs_launch_unpack(in,caller,target,accepted);
 }
+static inline int vs_launch_quiet_ready(uint64_t*gone_since,int caller_running,uint64_t now){
+ if(caller_running){*gone_since=0;return 0;}
+ if(!*gone_since || now<*gone_since){*gone_since=now;return 0;}
+ return now-*gone_since>=200000;
+}
 static inline void vs_launch_uri(char*out,const char*target){const char prefix[]="psgm:play?titleid=";for(unsigned i=0;i<18;i++)out[i]=prefix[i];for(unsigned i=0;i<9;i++)out[18+i]=target[i];out[27]=0;}
 #ifdef __cplusplus
 extern "C" {
