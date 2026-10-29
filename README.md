@@ -1,4 +1,4 @@
-> **1.6.13 beta:** recupera abertura direta pelo próprio launcher, sem dependência de ACK do Shell. A URI é chamada na fronteira de saída e o processo termina após aceitação. Áudio confirmado e arranque rápido mantidos. Bridge 1.6.12 inalterado. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.13_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Teste físico pendente.
+> **1.6.13 beta:** recupera abertura direta pelo próprio launcher, sem dependência de ACK do Shell. A URI é chamada na fronteira de saída e o processo termina após aceitação. Áudio confirmado e arranque rápido mantidos. Bridge 1.6.12 inalterado. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.13_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Abertura confirmada pelo utilizador na consola, incluindo Need for Speed Most Wanted com X. Outras funções mantêm os limites documentados.
 
 # VitaStation
 

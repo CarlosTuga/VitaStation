@@ -195,8 +195,8 @@
     },
     {
       "path": "docs/VALIDACAO_PUBLICACAO.json",
-      "bytes": 1031,
-      "sha256": "c1de857f7c36fa3edb9b5d7b319b686da393fda5a867a0fdb663972d5b6604be"
+      "bytes": 1269,
+      "sha256": "0777b6ceb86c1db85aead80a41f94b7797ea5ca1cf0248768e01d9fd0a439e92"
     },
     {
       "path": "LICENSING.md",
@@ -205,8 +205,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 22893,
-      "sha256": "7f8db32c4e05284f1cad7bd9b0fa951a79fae4e9fa306ef4b655a63c4cdcd2fc"
+      "bytes": 23011,
+      "sha256": "7274d29750ac45d7eeb044043987d95d874073388b38f62d9496e103012edab2"
     },
     {
       "path": "tools/verify_publication.py",
@@ -895,8 +895,8 @@
     },
     {
       "path": "VitaStation/REVISAO_1.6.13_BETA.md",
-      "bytes": 3641,
-      "sha256": "ba2c9fbaf8fa4f3e02cc8e75e120152d39daea42e5d465da56edf71d9a9160cd"
+      "bytes": 5319,
+      "sha256": "f61cd879bcf16da176853d85bf7a59eb38ae211fde6cb7f9997ee21fa6e02ff0"
     },
     {
       "path": "VitaStation/REVISAO_1.6.1_BETA.md",

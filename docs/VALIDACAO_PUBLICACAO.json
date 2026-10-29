@@ -22,5 +22,8 @@
   "game_ui_background_tests": "passed",
   "hardware_network_uninstall": "pending",
   "self_update_tests": "passed: resource integrity and injected transaction backend",
-  "shortcut_parser_tests": "passed"
+  "shortcut_parser_tests": "passed",
+  "hardware_app_launch": "user confirmed: applications and Need for Speed Most Wanted open with one X on 1.6.13",
+  "hardware_audio": "user confirmed working from 1.6.10, unchanged",
+  "hardware_close_dialog": "not separately confirmed"
 }
