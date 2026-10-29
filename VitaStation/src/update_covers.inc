@@ -1,9 +1,12 @@
+#include "cover_inventory.h"
+#include <set>
 
 #define ROOT "ux0:data/VitaStation/covers"
 #include "cover_commit.inc"
-static void update_message(const char*message){lock();snprintf(update_status.message,sizeof(update_status.message),"%s",message);unlock();}
+static void update_message(const char*message){lock();snprintf(update_status.message,sizeof(update_status.message),"%s",message);update_status.done=update_status.total=0;unlock();}
+static void update_units(uint64_t done,uint64_t total){lock();update_status.done=done;update_status.total=total;unlock();}
 static int update_transfer_progress(void*,curl_off_t total,curl_off_t done,curl_off_t,curl_off_t){
-    char status[160];snprintf(status,sizeof(status),"A descarregar: %llu / %llu MiB. Mantem o launcher aberto.",(unsigned long long)done/1048576,(unsigned long long)total/1048576);update_message(status);sceKernelPowerTick(SCE_KERNEL_POWER_TICK_DEFAULT);return stop_worker.load();
+    char status[160];snprintf(status,sizeof(status),"A descarregar: %llu / %llu MiB. Mantem o launcher aberto.",(unsigned long long)done/1048576,(unsigned long long)total/1048576);update_message(status);update_units(done>0?(uint64_t)done:0,total>0?(uint64_t)total:0);sceKernelPowerTick(SCE_KERNEL_POWER_TICK_DEFAULT);return stop_worker.load();
 }
 static void update_download_disk(const UpdateStatus&asset,const std::string&path){
     free_space(asset.size);CURL*h=https_client(asset.url);FileTransfer t{};t.limit=asset.size;sha256_init(&t.sha);
@@ -17,20 +20,20 @@ static void update_download_disk(const UpdateStatus&asset,const std::string&path
     for(unsigned i=0;i<32;i++)if(sum[i]!=(hexvalue(asset.digest[i*2])*16+hexvalue(asset.digest[i*2+1]))){pkgi_rm(path.c_str());throw std::runtime_error("SHA-256 do pacote incorreto.");}
 }
 static bool installed_covers(){
-    if(cover_pack_available())return true;
+    size_t packed=cover_pack_installed_count();if(packed>=VS_COVER_EXPECTED_COUNT)return true;
     if(pkgi_get_inode_type(ROOT)!=InodeType::Directory)return false;
     SceUID dir=sceIoDopen(ROOT);if(dir<0)return false;
-    bool found=false;
+    std::set<std::string>names;bool found=false;
     for(;;){
         SceIoDirent entry{};int result=sceIoDread(dir,&entry);if(result<=0)break;
         std::string name=entry.d_name;
         if(!safe_relative(name) || name.find('/')!=std::string::npos)continue;
         if(name.size()<5 || (name.substr(name.size()-4)!=".png" && name.substr(name.size()-4)!=".jpg"))continue;
-        auto path=std::string(ROOT)+"/"+name;SceUID fd=sceIoOpen(path.c_str(),SCE_O_RDONLY,0);if(fd<0)continue;
-        unsigned char header[8]{};int n=sceIoRead(fd,header,8);sceIoClose(fd);
-        if(n==8 && (!memcmp(header,"\x89PNG\r\n\x1a\n",8) || (header[0]==0xff && header[1]==0xd8 && header[2]==0xff))){found=true;break;}
+        if(!SCE_S_ISREG(entry.d_stat.st_mode) || entry.d_stat.st_size<8)continue;
+        auto key=name.substr(0,name.size()-4);std::transform(key.begin(),key.end(),key.begin(),[](unsigned char c){return (char)std::tolower(c);});names.insert(key);
+        if(names.size()>=VS_COVER_EXPECTED_COUNT){found=true;break;}
     }
-    sceIoDclose(dir);return found;
+    sceIoDclose(dir);char message[160];snprintf(message,sizeof(message),"Caratulas: %u / %u. A preparar o pacote...",(unsigned)std::max(packed,names.size()),VS_COVER_EXPECTED_COUNT);if(!found)update_message(message);return found;
 }
 #include "cover_install.inc"
 static void ensure_update_covers(const std::vector<uint8_t>&releases){

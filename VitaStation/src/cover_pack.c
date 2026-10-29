@@ -23,7 +23,9 @@ static void load(void){
  }
  if(ferror(f))ok=false;
  fclose(f);f=fopen(VS_COVER_PACK_ROOT "/covers.bin","rb");if(!f)ok=false;else{if(fseek(f,0,SEEK_END) || ftell(f)!=(long)offset)ok=false;fclose(f);}
- if(!ok || !n){free(list);return;}qsort(list,n,sizeof(*list),compare);entries=list;count=n;
+ if(!ok || !n){free(list);return;}qsort(list,n,sizeof(*list),compare);
+ for(size_t i=1;i<n;i++)if(!strcmp(list[i-1].name,list[i].name)){free(list);return;}
+ entries=list;count=n;
 }
 bool cover_pack_find(const char*name,char*out,size_t cap){
  while(__sync_lock_test_and_set(&index_lock,1)){
@@ -61,4 +63,13 @@ bool cover_pack_available(void){
  if(!ok || sscanf(line,"%95s %llu %x %c",name,&size,&crc,&extra)!=3 || !size || size>8*1024*1024 || strstr(name,"..") || strchr(name,'/'))return false;
  char path[128];snprintf(path,sizeof(path),"vspack:0:%u:%u",(unsigned)size,crc);
  size_t length=0;unsigned char*b=cover_pack_read(path,&length);bool valid=b && length==size;free(b);return valid;
+}
+size_t cover_pack_installed_count(void){
+ cover_pack_reload();
+ while(__sync_lock_test_and_set(&index_lock,1)){
+#if defined(__vita__)
+ sceKernelDelayThread(1000);
+#endif
+ }
+ size_t result=count;__sync_lock_release(&index_lock);return result;
 }

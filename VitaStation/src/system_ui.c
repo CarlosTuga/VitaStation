@@ -44,7 +44,7 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
             if(f && f->control>=SYS_INFO_NETWORK){u->information_page=f->control;u->information_count=system_info_read(u->information_page,u->information_lines);u->information_poll=1;u->state=UI_STATE_SYSTEM_INFO;return true;}
         }
         if(u->settings_index==15){u->native_count=system_apps_scan(u->native_apps,16);u->native_index=0;u->state=UI_STATE_SYSTEM_APPS;return true;}
-        if(u->settings_index==16){u->online_plugin_index=0;u->state=UI_STATE_PLUGIN_CATALOG;store_autoplugin_request(-1);return true;}
+        if(u->settings_index==16){u->online_plugin_index=0;u->state=UI_STATE_PLUGIN_CATALOG;store_autoplugin_request(-3);return true;}
         if(u->settings_index==17){store_apollo_request();return true;}
         if(u->settings_index==14){u->uninstall_restore=false;u->uninstall_scroll=0;u->uninstall_count=safety_backup_plan(u->uninstall_lines,48);u->power_index=0;u->state=UI_STATE_UNINSTALL;return true;}
         if(u->settings_index==12){ui_show_toast(u,"VitaStation " VS_VERSION_LABEL);return true;}

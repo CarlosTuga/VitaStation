@@ -9,11 +9,16 @@
 #include <filesystem>
 #include <atomic>
 #include <cassert>
+#include <set>
 #include "cover_pack.h"
+/* Small archive fixture, independent of the real 21811-entry package. */
+#define VS_COVER_EXPECTED_COUNT 1u
+#define VS_COVER_EXPECTED_BYTES 12u
 #define ROOT "installed"
 #define SCE_KERNEL_POWER_TICK_DEFAULT 0
 static std::atomic<bool>stop_worker{false};
 static void lock(){} static void unlock(){} static void sceKernelPowerTick(int){} static void update_message(const char*){}
+static void update_units(uint64_t,uint64_t){}
 static struct {unsigned covers_revision=0;}progress;
 static bool no_space=false;
 static void free_space(uint64_t){if(no_space)throw std::runtime_error("No space");}
@@ -43,6 +48,7 @@ int main(){
  char manifest[128];snprintf(manifest,sizeof(manifest),"PCSE00001.jpg\t%u\t%08x\n",(unsigned)strlen(image),crc);
  pkgi_save("archive/assets/manifest.tsv",manifest,strlen(manifest));pkgi_save("archive/assets/covers.bin",image,strlen(image));
  assert(!cover_pack_available());install_cover_archive("archive");assert(cover_pack_available());assert(read("installed/covers.bin")==image);assert(progress.covers_revision==1);
+ std::string duplicate=std::string(manifest)+manifest;pkgi_save("archive/assets/manifest.tsv",duplicate.data(),duplicate.size());bool duplicate_failed=false;try{install_cover_archive("archive");}catch(...){duplicate_failed=true;}assert(duplicate_failed && read("installed/covers.bin")==image);pkgi_save("archive/assets/manifest.tsv",manifest,strlen(manifest));
  pkgi_save("archive/assets/covers.bin","damaged blob",strlen(image));bool failed=false;try{install_cover_archive("archive");}catch(...){failed=true;}assert(failed && read("installed/covers.bin")==image);assert(!std::filesystem::exists("installed/covers.bin.new"));
  no_space=true;failed=false;try{install_cover_archive("archive");}catch(...){failed=true;}assert(failed && read("installed/covers.bin")==image);
  puts("Production cover install: streamed copy/index, CRC, publication/reload, corrupt source and no-space preservation passed (mock ZIP and Vita I/O).");

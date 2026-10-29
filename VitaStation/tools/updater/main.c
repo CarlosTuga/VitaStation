@@ -16,11 +16,15 @@
 #include <stdint.h>
 #include <string.h>
 static vita2d_pgf *font;
-static void draw(const char*text,const char*detail){
+static SceUID stage_mutex=-1;static char stage_text[160]="A preparar a instalacao...",stage_detail[160];
+static void draw(const char*text,const char*detail){sceKernelLockMutex(stage_mutex,1,NULL);snprintf(stage_text,sizeof(stage_text),"%s",text);snprintf(stage_detail,sizeof(stage_detail),"%s",detail?detail:"");sceKernelUnlockMutex(stage_mutex,1);}
+static void render_stage(const char*text,const char*detail){
  vita2d_start_drawing();vita2d_clear_screen();vita2d_draw_rectangle(0,0,960,544,RGBA8(13,23,41,255));
  vita2d_pgf_draw_text(font,45,108,RGBA8(245,248,255,255),1.5f,"Atualizar VitaStation");
  vita2d_pgf_draw_text(font,45,200,RGBA8(235,244,255,255),.95f,text);
  if(detail){char line[102];snprintf(line,sizeof(line),"%.100s",detail);vita2d_pgf_draw_text(font,45,258,RGBA8(182,206,232,255),.72f,line);}
+ vita2d_draw_rectangle(45,320,870,12,RGBA8(48,68,94,255));
+ vita2d_draw_rectangle(45+(sceKernelGetSystemTimeWide()/10000)%750,320,120,12,RGBA8(103,185,245,255));
  vita2d_pgf_draw_text(font,45,410,RGBA8(182,206,232,255),.8f,"Instalacao automatica. Mantem a consola ligada.");
  vita2d_end_drawing();vita2d_swap_buffers();sceDisplayWaitVblankStart();
 }
@@ -43,15 +47,21 @@ static int restart_step(void*context){
  f=fopen("ux0:data/VitaStation/updates/cleanup-updater","wb");if(f){fputs("VSTUP0001\n",f);fclose(f);}sceIoSync("ux0:",0);
  draw("Atualizacao concluida. A abrir o VitaStation...",NULL);return shell_handoff_request(VS_UPDATER_ID,"VTST00001")?0:-0x7001;
 }
+static UpdateOutcome outcome;static int code;static bool finished=false;
+static int install_thread(SceSize size,void*args){(void)size;(void)args;UpdateBackend backend={NULL,verify_step,initialize_step,promote_step,restart_step,false};outcome=update_transaction(&backend,&code);sceKernelLockMutex(stage_mutex,1,NULL);finished=true;sceKernelUnlockMutex(stage_mutex,1);return sceKernelExitThread(0);}
 int main(void){
  vita2d_init();font=vita2d_load_default_pgf();if(!font)return 1;
- UpdateBackend backend={NULL,verify_step,initialize_step,promote_step,restart_step};int code=0;UpdateOutcome outcome=update_transaction(&backend,&code);
+ stage_mutex=sceKernelCreateMutex("vs-update-progress",0,0,NULL);if(stage_mutex<0)return 1;
+ SceUID worker=sceKernelCreateThread("vs-update-install",install_thread,0x10000100,256*1024,0,0,NULL);if(worker<0 || sceKernelStartThread(worker,0,NULL)<0)return 1;
+ for(;;){char text[160],detail[160];sceKernelLockMutex(stage_mutex,1,NULL);bool done=finished;snprintf(text,sizeof(text),"%s",stage_text);snprintf(detail,sizeof(detail),"%s",stage_detail);sceKernelUnlockMutex(stage_mutex,1);if(done)break;render_stage(text,detail);}
+ sceKernelWaitThreadEnd(worker,NULL,NULL);sceKernelDeleteThread(worker);sceKernelDeleteMutex(stage_mutex);
  if(outcome==UPDATE_OK)sceKernelExitProcess(0);
  if(outcome==UPDATE_RECOVERED)snprintf(failure,sizeof(failure),"Atualizacao falhou 0x%08X; versao anterior recuperada.",(unsigned)code);
  else if(outcome==UPDATE_RECOVERY_PENDING)snprintf(failure,sizeof(failure),"Atualizacao falhou 0x%08X; recuperacao preservada, mas pendente.",(unsigned)code);
+ else if(outcome==UPDATE_INSTALL_FAILED)snprintf(failure,sizeof(failure),"Instalacao recusada: 0x%08X. Sem copia da aplicacao; pacote preparado preservado.",(unsigned)code);
  else if(outcome==UPDATE_RESTART_FAILED)snprintf(failure,sizeof(failure),"Instalado. Abertura recusada: 0x%08X. Abre VitaStation no LiveArea.",(unsigned)code);
  else if(outcome==UPDATE_INSTALLER_ERROR)snprintf(failure,sizeof(failure),"O sistema recusou o instalador: 0x%08X.",(unsigned)code);
  result(failure);
- while(1){draw("Consulta o resultado. O: voltar ao LiveArea.",failure);SceCtrlData pad;memset(&pad,0,sizeof(pad));if(sceCtrlPeekBufferPositive(0,&pad,1)>0 && pad.buttons&SCE_CTRL_CIRCLE)break;}
+ while(1){render_stage("Consulta o resultado. O: voltar ao LiveArea.",failure);SceCtrlData pad;memset(&pad,0,sizeof(pad));if(sceCtrlPeekBufferPositive(0,&pad,1)>0 && pad.buttons&SCE_CTRL_CIRCLE)break;}
  sceKernelExitProcess(0);return 0;
 }

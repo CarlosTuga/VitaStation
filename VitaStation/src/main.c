@@ -48,14 +48,15 @@ int main(int argc, char *argv[]) {
     settings_ensure_dir("ux0:data");
 #endif
     settings_ensure_dir(VS_DATA_DIR);
-    vs_log("build","VitaStation 1.6.7 beta (01.67), permanent offline cover library",0);
+    vs_log("build","VitaStation 1.6.8 beta (01.68), permanent offline cover library",0);
     if(!render_init())return 1;
     input_init();
 
     library_init(&lib);
     bool cached=library_cache_load(&lib,VS_DATA_DIR "/library-cache.bin");
     FILE*prepared=fopen(VS_DATA_DIR "/prepared-" VS_VERSION ".done","rb");bool version_prepare=!prepared;if(prepared)fclose(prepared);
-    bool rebuild=version_prepare || !safety_backup_exists() || library_cache_rebuild_due(cached,VS_DATA_DIR "/library-starts.txt") || installation_dirty() || installation_cache_changed(VS_DATA_DIR "/installation-state.txt");
+    bool prepare_components=version_prepare || !safety_backup_exists();
+    bool rebuild=library_cache_rebuild_due(cached,VS_DATA_DIR "/library-starts.txt") || installation_dirty() || installation_cache_changed(VS_DATA_DIR "/installation-state.txt");
     library_load_userdata(&lib,VS_USERDATA_PATH);
     texture_cache_init(&cache, 32);
     ui_init(&ui);
@@ -67,10 +68,11 @@ int main(int argc, char *argv[]) {
 #if defined(__vita__)
     char first_frame[96];snprintf(first_frame,sizeof(first_frame),"first_frame_ms=%llu",(unsigned long long)((sceKernelGetProcessTimeWide()-boot_start)/1000));vs_log("startup",first_frame,0);
 #endif
-    audio_init();audio_set_sfx_enabled(ui.sound_enabled);
-    ui.library_loading=rebuild && bootstrap_start(&lib);
+    audio_init();audio_set_sfx_enabled(ui.sound_enabled);audio_play_sfx(SND_BOOT);
+    bool startup_worker=(rebuild || prepare_components) && bootstrap_start_mode(&lib,rebuild,prepare_components);
+    ui.library_loading=rebuild && startup_worker;
     if(rebuild && !ui.library_loading)ui_show_toast(&ui,"Usa Reconstruir base de dados nas definicoes.");
-    if(!rebuild)vs_log("startup","cached database: no background scan or plugin preparation",lib.count);
+    if(!rebuild)vs_log("startup",prepare_components?"cached database; preparing changed components only":"cached database: no background scan or plugin preparation",lib.count);
     bool running = true;
 #if defined(__vita__)
     uint64_t previous=sceKernelGetProcessTimeWide();
@@ -190,6 +192,8 @@ int main(int argc, char *argv[]) {
         float dt=0; running=false; /* host target is a smoke test, not a fake launcher */
 #endif
         ui_update(&ui, &lib, &cache, dt);
+        AppItem*audio_app=ui.state==UI_STATE_HOME && !ui.exit_requested && ui.audio_preview_pause<=0 && ui.current_section!=SECTION_STORE && ui.sound_enabled && !store_busy()?ui_selected_app(&ui,&lib):NULL;
+        audio_preview_select(audio_app && !audio_app->media_raw?audio_app->title_id:NULL);
         ui_render(&ui, &lib, &cache);
         if(ui.catalog_load_requested){
             if(ui.catalog_type==CATALOG_DEMOS)ui.catalog_type=CATALOG_GAMES;

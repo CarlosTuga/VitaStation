@@ -53,6 +53,8 @@ typedef struct {
     bool volume_error_logged;
     float volume_timer,volume_poll;
     float splash_time;
+    float updater_activity;
+    float audio_preview_pause;
     UIState state;
     AppSection current_section; // library categories and the configured Store
     int selected_card_index;

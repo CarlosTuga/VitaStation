@@ -2,8 +2,8 @@
 #include <math.h>
 
 unsigned audio_synth_frames(SoundEffect effect) {
-    static const unsigned frames[]={1536,2560,4608,3072,6144};
-    return (unsigned)effect<5?frames[effect]:0;
+    static const unsigned frames[]={1536,2560,4608,3072,6144,122880};
+    return (unsigned)effect<6?frames[effect]:0;
 }
 
 /* Original synthesized feedback: soft transients, glass harmonics and an airy tail.
@@ -14,6 +14,14 @@ int16_t audio_synth_sample(SoundEffect effect,unsigned frame) {
     static const float notes[]={760,1046.5f,659.25f,523.25f,392};
     const float pi=3.14159265358979323846f;
     float t=frame/(float)VS_AUDIO_RATE,u=frame/(float)(length-1);
+    if(effect==SND_BOOT){
+        /* Original startup chord, inspired by contemporary console ambience.
+           Generated incrementally on the audio worker; no boot-time PCM build. */
+        float envelope=(1-expf(-t*8))*(1-u)*(1-u);
+        float chord=.48f*sinf(2*pi*220*t)+.25f*sinf(2*pi*329.63f*t)+.18f*sinf(2*pi*554.37f*t);
+        float glass=.10f*sinf(2*pi*1108.74f*t)*expf(-t*2);
+        return (int16_t)((chord+glass)*envelope*6200);
+    }
     float attack=1-expf(-t*1800),release=(1-u)*(1-u);
     float decay=expf(-u*5.0f),frequency=notes[effect];
     float pitch=effect==SND_CANCEL?-.10f:effect==SND_CONFIRM?.12f:.015f;

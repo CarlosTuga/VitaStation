@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include <time.h>
+#if defined(__vita__)
+#include <psp2/kernel/threadmgr.h>
+#endif
 typedef struct {char magic[8];uint32_t item_size,count,checksum;} Header;
 static uint32_t hash(const unsigned char*b,size_t n){uint32_t h=2166136261u;for(size_t i=0;i<n;i++){h^=b[i];h*=16777619u;}return h;}
 static bool valid(const AppItem*a){
@@ -35,10 +39,23 @@ bool library_cache_save(const Library*lib,const char*path){
  return true;
 }
 
-/* Count launcher openings, not firmware boots. Missing/corrupt state rebuilds safely. */
-void library_cache_reset_counter(const char*path){FILE*f=fopen(path,"wb");if(f){fputs("0\n",f);fclose(f);}}
+/* Every second console boot. Reopening the launcher in the same boot is free.
+   The boot epoch is wall-clock seconds minus kernel uptime, with RTC jitter tolerance. */
+static int64_t active_boot;
+static void save_counter(const char*path,unsigned count,int64_t boot){FILE*f=fopen(path,"wb");if(f){fprintf(f,"V2 %u %lld\n",count,(long long)boot);fclose(f);}}
+void library_cache_reset_counter(const char*path){save_counter(path,0,active_boot);}
+bool library_cache_rebuild_due_boot(bool valid_cache,const char*path,int64_t boot){
+ unsigned count=0;long long previous=0;char extra;FILE*f=fopen(path,"rb");bool valid=f && fscanf(f,"V2 %u %lld %c",&count,&previous,&extra)==2 && count<=2;if(f)fclose(f);
+ bool same=valid && llabs((long long)boot-previous)<=3;
+ active_boot=same?previous:boot;
+ if(!valid_cache || !valid)count=2;else if(!same && count<2)count++;
+ save_counter(path,count,active_boot);return count>=2;
+}
 bool library_cache_rebuild_due(bool valid_cache,const char*path){
- unsigned count=0;FILE*f=fopen(path,"rb");bool valid=f && fscanf(f,"%u",&count)==1 && count<10;if(f)fclose(f);
- bool due=!valid_cache || !valid || ++count>=10;
- f=fopen(path,"wb");if(f){fprintf(f,"%u\n",due?9:count);fclose(f);}return due;
+#if defined(__vita__)
+ int64_t boot=(int64_t)time(NULL)-(int64_t)(sceKernelGetSystemTimeWide()/1000000);
+#else
+ int64_t boot=1000;
+#endif
+ return library_cache_rebuild_due_boot(valid_cache,path,boot);
 }

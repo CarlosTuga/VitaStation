@@ -10,7 +10,7 @@
 
 O logótipo PlayStation fornecido pelo utilizador não é uma licença sobre marcas Sony. O aspeto visual do launcher não implica associação oficial.
 
-Backups pessoais de plugins da consola não integram esta publicação. Os componentes redistribuídos são os descritos nos manifestos, com fontes e licenças incluídas.
+console-backup contém uma cópia pessoal de plugins da consola, não uma seleção de dependências redistribuíveis. Verificar as licenças de cada um antes de publicar esse backup.
 
 
 ## Integrações 1.5
@@ -26,3 +26,7 @@ Dependência de SDK taihen.tar.xz: https://github.com/vitasdk/packages/releases/
 
 ## PSP/PS1 runtime added in 1.6.0
 Runtime payload and per-bubble loader from RetroFlow v8.5.0. See assets/psp-runtime/CREDITS.txt, included licenses and ORIGINS.json. Public AdrBubbleBooter-oss source snapshot is bundled under third_party/plugin-sources/AdrBubbleBooter-oss-source.zip and inside the VPK. Original Sony firmware is not included.
+
+## Som de arranque PS5 (1.6.8)
+
+Recurso separado da licença do código. Origem: PS5 Sound Collection, Purrcival, https://archive.org/details/ps5_sound_collection. O arquivo declara CC BY-ND 4.0. Direitos dos respetivos titulares; autorização de redistribuição confirmada pelo responsável do projeto. Ver assets/audio/NOTICE.md e source.json para atribuição, formato e hash.

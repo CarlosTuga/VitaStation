@@ -229,6 +229,7 @@ static void launch_selected(UIContext *ui,Library *lib,AppItem *app){
         app->launch_count=previous_count;app->last_played=previous_time;
         ui_show_toast(ui,"Nao foi possivel guardar o historico");return;
     }
+    audio_preview_select(NULL);ui->audio_preview_pause=2.0f;
     if(launcher_launch_app(app->title_id)){ui->exit_requested=launcher_exit_required();ui_show_toast(ui,"Pedido de abertura enviado.");}
     else{app->launch_count=previous_count;app->last_played=previous_time;library_save_userdata(lib,VS_USERDATA_PATH);ui_show_toast(ui,launcher_error_message());}
 }
@@ -446,6 +447,8 @@ void ui_handle_touch(UIContext *ui, Library *lib, int tx, int ty) {
 }
 
 void ui_update(UIContext *ui, Library *lib, TextureCache *cache, float delta_time) {
+    if(ui)ui->updater_activity=fmodf(ui->updater_activity+delta_time,1000.0f);
+    if(ui && ui->audio_preview_pause>0)ui->audio_preview_pause=fmaxf(0,ui->audio_preview_pause-delta_time);
     if (!ui || !lib) return;
     if(!isfinite(delta_time) || delta_time<0)delta_time=0;
     if(delta_time>0.1f)delta_time=0.1f;
@@ -838,9 +841,14 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
             }
         }else{
             if(ui->settings_index>=12){
-                UpdateStatus status;store_update_status(&status);
+                UpdateStatus status;store_update_status(&status);IntegrationStatus provider;store_integration_status(&provider);
                 render_draw_text(465,220,COLOR_WHITE,1.0f,VS_VERSION_LABEL);
-                draw_title(465,270,.8f,ui->settings_index==12?"Desenvolvido por Carlos Tuga":ui->settings_index==14?"Remove o launcher e todas as caratulas":ui->settings_index==15?"Musica, video, fotografias, trofeus e navegador":ui->settings_index==16?"Procurar e obter plugins sem abrir AutoPlugin II":ui->settings_index==17?"Dados de patches e gestao avancada de saves":status.message,48);
+                draw_title(465,270,.8f,ui->settings_index==12?"Desenvolvido por Carlos Tuga":ui->settings_index==14?"Remove o launcher e todas as caratulas":ui->settings_index==15?"Musica, video, fotografias, trofeus e navegador":ui->settings_index==16?"Procurar e obter plugins sem abrir AutoPlugin II":ui->settings_index==17?(provider.message[0]?provider.message:"Dados de patches e gestao avancada de saves"):status.message,48);
+                if(ui->settings_index==13 && status.phase==1){
+                    render_fill_rounded_rect(465,292,420,12,6,0xFF30445E);
+                    if(status.total){double fraction=(double)status.done/(double)status.total;if(fraction>1)fraction=1;render_fill_rounded_rect(465,292,(float)(420*fraction),12,6,0xFF67B9F5);}
+                    else render_fill_rounded_rect(465+(int)(ui->updater_activity*90)%340,292,80,12,6,0xFF67B9F5);
+                }
                 if(ui->settings_index==13 && status.phase==3){render_draw_text(465,410,COLOR_WHITE,.65f,"A abrir o instalador automatico...");}
                 render_draw_text(465,322,0xFFB7C9E0,.65f,"GitHub: CarlosTuga/VitaStation (inclui betas)");
                 render_draw_text(465,370,COLOR_WHITE,.7f,ui->settings_index==14?"X: abrir confirmacao de desinstalacao":ui->settings_index>=15?"X: abrir a integracao":"X: procurar, descarregar e instalar automaticamente");

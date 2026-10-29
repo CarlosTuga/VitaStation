@@ -424,7 +424,7 @@ static int cover_worker(SceSize,void*){
         lock();bool cleanup=cleanup_pending;cleanup_pending=false;unlock();
         if(cleanup){try{cleanup_updater();}catch(const std::exception&e){vs_log("update-cleanup",e.what(),-1);}lock();update_busy=false;update_status.phase=0;unlock();}
         lock();bool provider=integration_pending;int provider_action=integration_action;integration_pending=false;unlock();
-        if(provider){try{if(provider_action==-2)prepare_apollo();else if(provider_action<0)refresh_autoplugin();else install_autoplugin(provider_action);}catch(const std::exception&e){integration_message(e.what());}lock();integration_status.busy=false;unlock();}
+        if(provider){try{if(provider_action==-2)prepare_apollo();else if(provider_action==-3){if(!load_autoplugin_catalog())refresh_autoplugin();}else if(provider_action<0)refresh_autoplugin();else install_autoplugin(provider_action);}catch(const std::exception&e){vs_log("integration-error",e.what(),-1);integration_message(e.what());}lock();integration_status.busy=false;unlock();}
         lock();bool refresh=homebrew_refresh_pending;homebrew_refresh_pending=false;unlock();
         if(refresh){try{refresh_homebrew();}catch(const std::exception&e){vs_log("homebrew-catalog",e.what(),-1);lock();snprintf(progress.homebrew_error,sizeof(progress.homebrew_error),"%s",e.what());unlock();}}
         lock();if(!cover_count){unlock();continue;}

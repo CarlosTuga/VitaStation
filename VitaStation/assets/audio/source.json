@@ -1,0 +1,12 @@
+{
+  "title": "PS5 startup",
+  "collection": "PS5 Sound Collection",
+  "collector": "Purrcival",
+  "source": "https://archive.org/details/ps5_sound_collection",
+  "file": "https://archive.org/download/ps5_sound_collection/PS5/startup.wav",
+  "declared_license": "https://creativecommons.org/licenses/by-nd/4.0/",
+  "rights_note": "PlayStation and PS5 belong to Sony Interactive Entertainment. Archive attribution is not an endorsement or an independently verified Sony license. User confirmed redistribution permission.",
+  "conversion": "WAV container removed; original 48000 Hz stereo signed 16-bit PCM unchanged",
+  "pcm_bytes": 1316488,
+  "sha256": "742f6d1ade2eba9a62b52be6f8bd78b27e8af57015b4406afabf13315f199f83"
+}

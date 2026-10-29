@@ -7,6 +7,7 @@
 extern "C" {
 #endif
 bool cover_pack_available(void);
+size_t cover_pack_installed_count(void);
 void cover_pack_reload(void);
 bool cover_pack_find(const char*name,char*out,size_t capacity);
 unsigned char*cover_pack_read(const char*path,size_t*size);

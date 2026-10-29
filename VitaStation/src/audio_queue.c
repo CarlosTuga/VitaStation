@@ -2,7 +2,7 @@
 #include <string.h>
 void audio_queue_init(AudioQueue*q){memset(q,0,sizeof(*q));q->enabled=true;}
 bool audio_queue_push(AudioQueue*q,int e){
-    if(q->stopped || !q->enabled || q->count==16 || e<0 || e>=5)return false;
+    if(q->stopped || !q->enabled || q->count==16 || e<0 || e>=6)return false;
     q->events[q->tail]=e;q->tail=(q->tail+1)%16;q->count++;return true;
 }
 bool audio_queue_pop(AudioQueue*q,int*e){

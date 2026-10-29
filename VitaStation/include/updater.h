@@ -2,10 +2,11 @@
 #define VS_UPDATER_H
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
-typedef struct {int phase;char message[256],version[32],url[1024],digest[65];unsigned long size;} UpdateStatus;
+typedef struct {int phase;char message[256],version[32],url[1024],digest[65];unsigned long size;uint64_t done,total;} UpdateStatus;
 /* phase: 0 idle, 1 checking/downloading, 2 available, 3 ready to install, 4 current, 5 error, 6 handoff/install */
 bool update_select_covers(const char *json,size_t length,UpdateStatus *result);
 bool update_select(const char *json,size_t length,UpdateStatus *result);

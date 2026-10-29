@@ -84,7 +84,7 @@ if(VITA)
     set(VS_UPDATER_SFO "${CMAKE_CURRENT_BINARY_DIR}/updater-param.sfo")
     add_custom_command(OUTPUT "${VS_UPDATER_SFO}"
         COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.00 -s TITLE_ID=VSTUP0001 "Atualizador VitaStation" "${VS_UPDATER_SFO}"
-        DEPENDS "${VS_UPDATER_SELF}" VERBATIM)
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/plugins.lua" "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/commit.txt" "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/NOTICE.md" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/NOTICE.md" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/source.json" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/startup.pcm" "${VS_UPDATER_SELF}" VERBATIM)
     # Decode PEM at build time; device imports individual DER roots directly.
     find_package(Python3 COMPONENTS Interpreter REQUIRED)
     set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/cacert.pem" "${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_ca.py" "${CMAKE_CURRENT_SOURCE_DIR}/tools/tls_roots.json")
@@ -139,7 +139,7 @@ if(VITA)
         SceDisplay_stub SceGxm_stub SceSysmodule_stub SceCtrl_stub
         ScePgf_stub ScePvf_stub SceCommonDialog_stub
         SceLibKernel_stub SceKernelThreadMgr_stub SceProcessmgr_stub SceIofilemgr_stub
-        SceAVConfig_stub SceTouch_stub SceAudio_stub ScePower_stub SceAppMgr_stub SceAppUtil_stub SceRtc_stub SceSqlite_stub
+        SceAVConfig_stub SceTouch_stub SceAtrac_stub SceAudio_stub ScePower_stub SceAppMgr_stub SceAppUtil_stub SceRtc_stub SceSqlite_stub
     )
 
     # UNSAFE: necessario para ler ux0:app/ de outras aplicacoes e lanca-las.
@@ -174,13 +174,13 @@ if(VITA)
         list(APPEND VS_PLUGIN_ARGS -a "${alive_file}=assets/alive/${alive_name}")
     endforeach()
     add_custom_command(OUTPUT "${VS_SFO}"
-        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.67 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.68 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
         DEPENDS "${VS_SELF}" VERBATIM
     )
     add_custom_command(OUTPUT "${VS_VPK}"
-        COMMAND "${VITA_PACK_VPK}" -a "${VS_UPDATER_SELF}=assets/updater/eboot.bin" -a "${VS_UPDATER_SFO}=assets/updater/param.sfo" -a "${VS_MAINT_SELF}=maintenance.self" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
+        COMMAND "${VITA_PACK_VPK}" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/plugins.lua=assets/autoplugin/plugins.lua" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/commit.txt=assets/autoplugin/commit.txt" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/NOTICE.md=assets/autoplugin/NOTICE.md" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/NOTICE.md=assets/audio/NOTICE.md" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/source.json=assets/audio/source.json" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/startup.pcm=assets/audio/startup.pcm" -a "${VS_UPDATER_SELF}=assets/updater/eboot.bin" -a "${VS_UPDATER_SFO}=assets/updater/param.sfo" -a "${VS_MAINT_SELF}=maintenance.self" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
         COMMAND "${CMAKE_COMMAND}" -E rename "${VS_VPK}.tmp" "${VS_VPK}"
-        DEPENDS "${VS_UPDATER_SELF}" "${VS_UPDATER_SFO}" "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json" VERBATIM
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/plugins.lua" "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/commit.txt" "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/NOTICE.md" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/NOTICE.md" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/source.json" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/startup.pcm" "${VS_UPDATER_SELF}" "${VS_UPDATER_SFO}" "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json" VERBATIM
     )
     add_custom_target(VitaStation-vpk ALL DEPENDS "${VS_VPK}")
 else()

@@ -22,6 +22,13 @@ typedef struct {
     int (*launch_uri)(int flags, const char *uri, void *context);
     void *context;
 } LauncherBackend;
+typedef struct {
+    int (*exit_to)(int flags,const char*id,void*context);
+    bool (*handoff)(const char*id,void*context);
+    void*context;
+    bool preparing;
+} LauncherRouteBackend;
+int launcher_route_app(const char*id,const LauncherRouteBackend*backend,bool*exit_caller);
 
 bool launcher_title_id_valid(const char *title_id);
 LauncherResult launcher_request_app(const char *title_id, const LauncherBackend *backend);

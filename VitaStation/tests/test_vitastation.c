@@ -418,6 +418,8 @@ static void test_revision12(void){
         for(unsigned frame=0;frame<frames;frame++){int value=audio_synth_sample((SoundEffect)effect,frame);assert(value>=-6000 && value<=6000);sums[effect]+=value<0?-value:value;}
         assert(sums[effect]>0);if(effect)assert(sums[effect]!=sums[effect-1]);
     }
+    assert(audio_synth_frames(SND_BOOT)==122880 && audio_synth_sample(SND_BOOT,0)==0 && audio_synth_sample(SND_BOOT,122879)==0);
+    long long boot_energy=0;for(unsigned i=0;i<audio_synth_frames(SND_BOOT);i++){int v=audio_synth_sample(SND_BOOT,i);assert(v>-10000 && v<10000);boot_energy+=v<0?-v:v;}assert(boot_energy>1000000);
     assert(!audio_synth_frames((SoundEffect)99));puts("Revision 1.2 tests PASSED.");
 }
 
@@ -432,7 +434,15 @@ static bool probe_installed(const char*id,void*context){
 static int probe_launch(int flags,const char*uri,void*context){
     LaunchProbe*p=context;p->uri_calls++;p->flags=flags;snprintf(p->uri,sizeof(p->uri),"%s",uri);return p->reply;
 }
+static bool probe_handoff(const char*id,void*context){(void)id;LaunchProbe*p=context;p->installed_checks++;return p->installed;}
 static void test_revision13(void){
+    LaunchProbe routing={0};routing.installed=true;bool close=true;LauncherRouteBackend route={probe_launch,probe_handoff,&routing,false};
+    assert(launcher_route_app("PCSG00001",&route,&close)==0 && !close && routing.flags==0x70000 && routing.uri_calls==1 && routing.installed_checks==0);
+    routing.reply=-10;assert(launcher_route_app("PCSG00001",&route,&close)==0 && close && routing.installed_checks==1);
+    route.preparing=true;assert(launcher_route_app("PCSG00001",&route,&close)==-10 && !close && routing.installed_checks==1);
+    route.preparing=false;routing.installed=false;assert(launcher_route_app("PCSG00001",&route,&close)==-10 && !close);
+    int calls=routing.uri_calls;assert(launcher_route_app("../bad",&route,&close)<0 && routing.uri_calls==calls);
+
     puts("Testing valid Title IDs actually reach the launch API boundary...");
     assert(launcher_title_id_valid("PCSG00001"));assert(launcher_title_id_valid("HBRW00001"));
     assert(!launcher_title_id_valid(NULL));assert(!launcher_title_id_valid(""));

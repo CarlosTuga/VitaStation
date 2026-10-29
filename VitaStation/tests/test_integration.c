@@ -113,12 +113,15 @@ int main(int argc,char**argv){
     FILE*badcache=fopen("library-cache.bin","r+b");assert(badcache);fputc('X',badcache);fclose(badcache);int old_count=cached.count;assert(!library_cache_load(&cached,"library-cache.bin") && cached.count==old_count);
     assert(library_cache_save(&library,"library-cache.bin") && library_cache_load(&cached,"library-cache.bin"));
     file("library-cache.bin","truncated");assert(!library_cache_load(&cached,"library-cache.bin") && cached.count==old_count);
-    remove("starts.txt");assert(library_cache_rebuild_due(false,"starts.txt"));
+    remove("starts.txt");assert(library_cache_rebuild_due_boot(false,"starts.txt",1000));
     library_cache_reset_counter("starts.txt");
-    for(int opening=1;opening<10;opening++)assert(!library_cache_rebuild_due(true,"starts.txt"));
-    assert(library_cache_rebuild_due(true,"starts.txt"));
-    assert(library_cache_rebuild_due(true,"starts.txt")); /* retry failed rebuild */
-    library_cache_reset_counter("starts.txt");assert(!library_cache_rebuild_due(true,"starts.txt"));
+    assert(!library_cache_rebuild_due_boot(true,"starts.txt",1000));
+    assert(!library_cache_rebuild_due_boot(true,"starts.txt",1002)); /* same boot, RTC rounding */
+    assert(!library_cache_rebuild_due_boot(true,"starts.txt",2000)); /* first new boot */
+    assert(!library_cache_rebuild_due_boot(true,"starts.txt",2000)); /* reopening does not count */
+    assert(library_cache_rebuild_due_boot(true,"starts.txt",3000)); /* second boot */
+    assert(library_cache_rebuild_due_boot(true,"starts.txt",3000)); /* failed scan retries */
+    library_cache_reset_counter("starts.txt");assert(!library_cache_rebuild_due_boot(true,"starts.txt",3000));
     puts("BGDL wire layout, metadata bounds and startup snapshot recovery passed.");
     UIContext u;ui_init(&u);u.catalog=&c;u.current_section=SECTION_STORE;
     assert(store_ui_input(&u,STORE_UI_CONFIRM));assert(u.state==UI_STATE_HOME && strstr(u.toast_msg,"PS Vita"));

@@ -1,10 +1,22 @@
 #include "autoplugin_parser.hpp"
-static void integration_message(const std::string&s){lock();snprintf(integration_status.message,sizeof(integration_status.message),"%s",s.c_str());unlock();}
+static void integration_message(const std::string&s){lock();snprintf(integration_status.message,sizeof(integration_status.message),"%s",s.c_str());unlock();vs_log("integration",s.c_str(),0);}
 static std::string json_text(const cJSON*j,const char*key){auto*v=cJSON_GetObjectItemCaseSensitive(j,key);return cJSON_IsString(v)?v->valuestring:"";}
+static bool load_autoplugin_catalog(){
+ for(const auto&root:std::vector<std::string>{"ux0:data/VitaStation/autoplugin","app0:assets/autoplugin"})try{
+  if(!pkgi_file_exists(root+"/plugins.lua") || !pkgi_file_exists(root+"/commit.txt"))continue;
+  auto bytes=pkgi_load(root+"/plugins.lua"),ref=pkgi_load(root+"/commit.txt");std::string commit(ref.begin(),ref.end());while(!commit.empty() && isspace((unsigned char)commit.back()))commit.pop_back();
+  if(commit.size()!=40 || commit.find_first_not_of("0123456789abcdef")!=std::string::npos)continue;
+  auto items=ap_parse(std::string(bytes.begin(),bytes.end()));if(items.empty())continue;
+  lock();online_plugins=std::move(items);autoplugin_commit=commit;integration_status.count=online_plugins.size();unlock();
+  integration_message("Catalogo local pronto. X: obter plugin; Triangulo: procurar versao nova.");return true;
+ }catch(const std::exception&e){vs_log("autoplugin-cache",e.what(),-1);}
+ return false;
+}
 static void refresh_autoplugin(){
  auto bytes=https_bytes("https://api.github.com/repos/ONElua/AutoPlugin2/commits/master",1024*1024);std::string json(bytes.begin(),bytes.end());cJSON*j=cJSON_Parse(json.c_str());if(!j)throw std::runtime_error("Resposta AutoPlugin II invalida.");auto commit=json_text(j,"sha");cJSON_Delete(j);if(commit.size()!=40 || commit.find_first_not_of("0123456789abcdef")!=std::string::npos)throw std::runtime_error("Versao AutoPlugin II invalida.");
  bytes=https_bytes("https://raw.githubusercontent.com/ONElua/AutoPlugin2/"+commit+"/plugins/plugins.lua",2*1024*1024);auto items=ap_parse(std::string(bytes.begin(),bytes.end()));if(items.empty())throw std::runtime_error("Catalogo AutoPlugin II vazio ou alterado.");
  pkgi_mkdirs("ux0:data/VitaStation/autoplugin");pkgi_save("ux0:data/VitaStation/autoplugin/plugins.lua",bytes.data(),bytes.size());
+ pkgi_save("ux0:data/VitaStation/autoplugin/commit.txt",commit.data(),commit.size());
  lock();online_plugins=std::move(items);autoplugin_commit=commit;integration_status.count=online_plugins.size();unlock();integration_message("Catalogo AutoPlugin II atualizado. X: obter plugin; Triangulo: atualizar lista.");
 }
 static void install_autoplugin(int index){
@@ -31,6 +43,7 @@ static void apollo_data_for_game(const AppItem&app){
  if(pkgi_file_exists("ux0:app/NP0APOLLO/sce_sys/param.sfo"))save_support("ux0:app/NP0APOLLO/data/"+file,bytes,true);
 }
 static void prepare_apollo(){
+ integration_message("A preparar o Apollo instalado e os dados de saves...");
  if(!pkgi_file_exists("ux0:app/NP0APOLLO/sce_sys/param.sfo")){
   integration_message("A procurar o Apollo e preparar a instalacao...");auto bytes=https_bytes("https://api.github.com/repos/bucanero/apollo-vita/releases/latest",2*1024*1024);std::string text(bytes.begin(),bytes.end());cJSON*j=cJSON_Parse(text.c_str());CatalogPackage p{};p.type=CATALOG_GAMES;p.vpk=true;snprintf(p.title_id,sizeof(p.title_id),"NP0APOLLO");snprintf(p.name,sizeof(p.name),"Apollo Save Tool");bool found=false;
   if(j){const cJSON*a;cJSON_ArrayForEach(a,cJSON_GetObjectItemCaseSensitive(j,"assets")){auto name=json_text(a,"name"),url=json_text(a,"browser_download_url"),digest=json_text(a,"digest");if(name.size()<4 || name.substr(name.size()-4)!=".vpk" || url.rfind("https://github.com/bucanero/apollo-vita/releases/download/",0) || digest.size()!=71 || digest.rfind("sha256:",0))continue;snprintf(p.url,sizeof(p.url),"%s",url.c_str());snprintf(p.digest,sizeof(p.digest),"%s",digest.c_str()+7);found=true;break;}cJSON_Delete(j);}if(!found)throw std::runtime_error("Apollo sem VPK verificavel nesta Release.");run_job(p);

@@ -13,6 +13,14 @@
 static LauncherResult last_result = {LAUNCH_PLATFORM_UNAVAILABLE, 0};
 static bool exit_required=false;
 bool launcher_exit_required(void){return exit_required;}
+int launcher_route_app(const char*id,const LauncherRouteBackend*b,bool*exit_caller){
+    if(exit_caller)*exit_caller=false;
+    if(!launcher_title_id_valid(id) || !b || !b->exit_to)return -1;
+    int code=b->exit_to(0x70000,id,b->context);
+    if(code>=0)return code;
+    if(!b->preparing && b->handoff && b->handoff(id,b->context)){if(exit_caller)*exit_caller=true;return 0;}
+    return code; /* No ordinary URI/confirmation fallback. */
+}
 
 bool launcher_title_id_valid(const char *id) {
     if (!id) return false;
@@ -51,15 +59,16 @@ static bool vita_is_installed(const char *id,void *context) {
     if (!f) return psp_native_installed(id);
     return fclose(f)==0;
 }
+static int vita_exit_to(int flags,const char*id,void*context){(void)context;int result=sceAppMgrLaunchAppByName(flags,id,NULL);vs_log("launcher-exit-to",id,result);return result;}
+static bool vita_handoff(const char*id,void*context){(void)context;return shell_handoff_request("VTST00001",id)!=0;}
 static int vita_launch_uri(int flags,const char *uri,void *context) {
     (void)context;
     const char*prefix="psgm:play?titleid=";
     if(!strncmp(uri,prefix,strlen(prefix)) && launcher_title_id_valid(uri+strlen(prefix))){
-        /* The shell opens the target only after this process has exited. */
-        if(!bootstrap_busy() && shell_handoff_request("VTST00001",uri+strlen(prefix))){exit_required=true;return 0;}
-        /* A missing/reloading bridge or optional preparation must not disable
-           ordinary app launch. Let the OS own the caller lifecycle here. */
-        return sceAppMgrLaunchAppByUri(flags,uri);
+        /* EXIT_TO authorizes replacing this launcher, rather than asking Shell
+           to open a second game while VTST00001 remains active. */
+        const LauncherRouteBackend route={vita_exit_to,vita_handoff,NULL,bootstrap_busy()};
+        return launcher_route_app(uri+strlen(prefix),&route,&exit_required);
     }
     return sceAppMgrLaunchAppByUri(flags,uri);
 }

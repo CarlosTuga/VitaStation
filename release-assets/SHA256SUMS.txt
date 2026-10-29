@@ -1,2 +1,2 @@
-02bada65c6baa884bfc3ea0a72c52eaf2550e99adb5f9b00e87fcc6ee0582605  VitaStation-1.6.7-beta.vpk
-59f8942e78fd3913935a4ecf443975f04dae89425d6e59f62a084bec6967dc61  VitaStation-1.6.7-public-source.zip
+961e5da068335c3c368b227ab70c026d910449e9c54e8e4ceb13049ada2d40f1  VitaStation-1.6.8-beta.vpk
+2fbec9a029584ab47133ba18d56789a89e70ec983ddaffc0eab918401b001dfb  VitaStation-1.6.8-public-source.zip

@@ -15,3 +15,7 @@ Esta preparação conserva as licenças originais. Não aplica indiscriminadamen
 Não apresentar o conjunto como integralmente MIT, nem aplicar a licença do código a imagens ou marcas de terceiros. As fontes correspondentes e os avisos devem acompanhar os binários publicados. Ver também VitaStation/THIRD_PARTY.md e Caratulas-de-loja/CREDITOS.txt.
 
 Não foi incluído o backup privado de plugins da consola como dependência redistribuível.
+
+## Recurso de áudio 1.6.8
+
+O som de arranque não é abrangido pela licença do código. Ver VitaStation/assets/audio/NOTICE.md e source.json: coleção PS5 Sound Collection, Purrcival, licença declarada CC BY-ND 4.0 e autorização de redistribuição confirmada pelo responsável do projeto.
