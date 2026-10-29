@@ -54,18 +54,19 @@ static void route_ps(int event){
     char status[2]={(char)(event==VS_PS_SINGLE?'1':'2'),(char)(result<0?'E':'A')};
     SceUID fd=sceIoOpen("ux0:data/VitaStation/bridge.status",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(fd>=0){sceIoWrite(fd,status,2);sceIoClose(fd);}
 }
-static unsigned char launch_pending[32];static int launch_waiting=0;
+static unsigned char launch_pending[32];static int launch_waiting=0;static SceUInt64 launch_accepted;
 static int running(const char*target){SceInt32 ids[16]={0};if(sceAppMgrGetRunningAppIdListForShell(ids,16)<0)return 1;for(unsigned i=0;i<16;i++)if(ids[i]>0){SceUID pid=sceAppMgrGetProcessIdByAppIdForShell(ids[i]);char name[16]={0};if(pid>0 && sceAppMgrGetNameById(pid,name)>=0 && vs_launch_same(name,target))return 1;}return 0;}
 static void cancel_launch(void){launch_waiting=0;sceIoRemove("ux0:data/VitaStation/launch.request");sceIoRemove("ux0:data/VitaStation/launch.ack");}
+static int request_still_pending(void){unsigned char bytes[33];SceUID f=sceIoOpen("ux0:data/VitaStation/launch.request",SCE_O_RDONLY,0);if(f<0)return 0;int n=sceIoRead(f,bytes,sizeof(bytes));sceIoClose(f);if(n!=32)return 0;for(unsigned i=0;i<32;i++)if(bytes[i]!=launch_pending[i])return 0;return 1;}
 static void process_launch(SceUInt64 now){
- if(marker("ux0:data/VitaStation/updates/installing"))return;
+ if(marker("ux0:data/VitaStation/updates/installing")){if(running("VSTUP0001"))return;sceIoRemove("ux0:data/VitaStation/updates/installing");}
  char caller[10],target[10];
- if(launch_waiting){if(!vs_launch_unpack(launch_pending,caller,target,now)){cancel_launch();return;}if(!running(caller)){
+ if(launch_waiting){if(!request_still_pending() || !vs_launch_wait_unpack(launch_pending,caller,target,launch_accepted,now)){cancel_launch();return;}if(!running(caller)){
   char uri[32];vs_launch_uri(uri,target);cancel_launch();int code=sceAppMgrLaunchAppByUri(VS_LAUNCH_PLAY_FLAGS,uri);
   SceUID status=sceIoOpen("ux0:data/VitaStation/launch-result.bin",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(status>=0){sceIoWrite(status,target,9);sceIoWrite(status,&code,sizeof(code));sceIoClose(status);}
  }return;}
  unsigned char bytes[33];SceUID f=sceIoOpen("ux0:data/VitaStation/launch.request",SCE_O_RDONLY,0);if(f<0)return;int n=sceIoRead(f,bytes,sizeof(bytes));sceIoClose(f);if(n!=32 || !vs_launch_unpack(bytes,caller,target,now)){cancel_launch();return;}
- f=sceIoOpen("ux0:data/VitaStation/launch.ack",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(f<0)return;int wrote=sceIoWrite(f,bytes,32);sceIoClose(f);if(wrote!=32)return;for(unsigned i=0;i<32;i++)launch_pending[i]=bytes[i];launch_waiting=1;
+ f=sceIoOpen("ux0:data/VitaStation/launch.ack",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(f<0)return;int wrote=sceIoWrite(f,bytes,32);sceIoClose(f);if(wrote!=32)return;for(unsigned i=0;i<32;i++)launch_pending[i]=bytes[i];launch_accepted=now;launch_waiting=1;
 }
 static void request_livearea(SceUInt64 now){cancel_launch();SceUID f=sceIoOpen("ux0:data/VitaStation/livearea.request",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(f>=0){sceIoWrite(f,&now,sizeof(now));sceIoClose(f);}}
 static int buttons_thread(SceSize argc,void*args){
@@ -73,6 +74,7 @@ static int buttons_thread(SceSize argc,void*args){
     VitaStationPSRoute routing={0};SceUInt64 latest=0,power_at=0,previous_poll=0;int power_sent=0,ps_enabled=0,power_enabled=0,routing_bypassed=0;unsigned poll=0;
     while(!stopping){
         SceUInt64 now=sceKernelGetSystemTimeWide();
+        static int version_written=0;if(!version_written){SceUID version=sceIoOpen("ux0:data/VitaStation/bridge-version.txt",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(version>=0){version_written=sceIoWrite(version,"1.6.9\n",6)==6;sceIoClose(version);}}
         if(now-previous_poll>250000){power_at=0;power_sent=0;}previous_poll=now;
         if(poll++%20==0){ps_enabled=!routing_bypassed && marker("ux0:data/VitaStation/ps-routing.enabled");power_enabled=marker("ux0:data/VitaStation/power-menu.enabled");}
         SceCtrlData pads[16];int n=sceCtrlPeekBufferPositive2(0,pads,16);
@@ -100,7 +102,6 @@ static int buttons_thread(SceSize argc,void*args){
 int _start(SceSize argc,const void*args) __attribute__((weak,alias("module_start")));
 int module_start(SceSize argc,const void*args){
     (void)argc;(void)args;
-    SceUID version=sceIoOpen("ux0:data/VitaStation/bridge-version.txt",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(version>=0){sceIoWrite(version,"1.6.6\n",6);sceIoClose(version);}
     worker_id=sceKernelCreateThread("VitaStationBoot",boot_thread,0x80,64*1024,0,0,0);
     if(worker_id>=0 && sceKernelStartThread(worker_id,0,0)<0){sceKernelDeleteThread(worker_id);worker_id=-1;}
     buttons_id=sceKernelCreateThread("VitaStationButtons",buttons_thread,0x10000100,64*1024,0,0,0);

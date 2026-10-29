@@ -51,8 +51,4 @@ static void prepare_apollo(){
  if(pkgi_get_inode_type("ux0:data/VitaStation/apollo")==InodeType::Directory)for(auto&file:pkgi_list_dir_contents("ux0:data/VitaStation/apollo")){if(!safe_relative(file) || file.find('/')!=std::string::npos || file.find(".savepatch")==std::string::npos)continue;auto bytes=pkgi_load("ux0:data/VitaStation/apollo/"+file);save_support("ux0:app/NP0APOLLO/data/"+file,bytes,true);}
  lock();apollo_ready=true;unlock();integration_message("Apollo preparado. A abrir a gestao de saves...");
 }
-extern "C" void store_integration_status(IntegrationStatus*out){if(!out)return;if(lock_id<0){*out={};return;}lock();*out=integration_status;unlock();}
-extern "C" bool store_autoplugin_item(int index,OnlinePlugin*out){if(!out || lock_id<0)return false;lock();bool ok=index>=0 && (size_t)index<online_plugins.size();if(ok)*out=online_plugins[index];unlock();return ok;}
-extern "C" void store_autoplugin_request(int index){if(lock_id<0 || cover_thread_id<0)return;lock();if(integration_status.busy || update_busy || game_status.busy || progress.active || count){unlock();return;}integration_status.busy=true;integration_pending=true;integration_action=index;snprintf(integration_status.message,sizeof(integration_status.message),"A consultar o AutoPlugin II...");unlock();sceKernelSignalSema(cover_wake_id,1);}
-extern "C" void store_apollo_request(){if(lock_id<0 || cover_thread_id<0)return;lock();if(integration_status.busy || update_busy || game_status.busy || progress.active || count){unlock();return;}integration_status.busy=true;integration_pending=true;integration_action=-2;unlock();sceKernelSignalSema(cover_wake_id,1);}
-extern "C" bool store_apollo_ready(){if(lock_id<0)return false;lock();bool ready=apollo_ready;apollo_ready=false;unlock();return ready;}
+#include "integration_requests.inc"

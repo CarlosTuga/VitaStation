@@ -16,6 +16,12 @@ static inline int vs_launch_unpack(const unsigned char*in,char*caller,char*targe
  if(now<issued || now-issued>5000000)return 0;
  for(unsigned i=0;i<9;i++){caller[i]=in[4+i];target[i]=in[13+i];}caller[9]=target[9]=0;unsigned char test[32];return vs_launch_pack(test,caller,target,issued);
 }
+/* The initial request must be fresh. Once acknowledged, allow safe shutdown
+   work to finish, but never launch after the bounded accepted lease expires. */
+static inline int vs_launch_wait_unpack(const unsigned char*in,char*caller,char*target,uint64_t accepted,uint64_t now){
+ if(now<accepted || now-accepted>180000000)return 0;
+ return vs_launch_unpack(in,caller,target,accepted);
+}
 static inline void vs_launch_uri(char*out,const char*target){const char prefix[]="psgm:play?titleid=";for(unsigned i=0;i<18;i++)out[i]=prefix[i];for(unsigned i=0;i<9;i++)out[18+i]=target[i];out[27]=0;}
 #ifdef __cplusplus
 extern "C" {

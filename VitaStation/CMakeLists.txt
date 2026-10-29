@@ -40,6 +40,7 @@ set(SOURCES
     src/render.c
     src/ui.c
     src/input.c
+    src/audio_clip.c
     src/audio_synth.c
     src/audio_queue.c
     src/audio.c
@@ -174,7 +175,7 @@ if(VITA)
         list(APPEND VS_PLUGIN_ARGS -a "${alive_file}=assets/alive/${alive_name}")
     endforeach()
     add_custom_command(OUTPUT "${VS_SFO}"
-        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.68 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.69 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
         DEPENDS "${VS_SELF}" VERBATIM
     )
     add_custom_command(OUTPUT "${VS_VPK}"

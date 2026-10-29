@@ -50,6 +50,7 @@
 
 static SceUID lock_id=-1,wake_id=-1,thread_id=-1;
 static SceUID cover_wake_id=-1,cover_thread_id=-1;
+static SceUID integration_wake_id=-1,integration_thread_id=-1;
 static std::mutex network_init_mutex;
 static std::atomic<bool> stop_worker{false},cancel_job{false};
 static StoreProgress progress{};
@@ -413,6 +414,16 @@ static std::string install_game_bundle(const CatalogPackage&p){
     lock();progress.failed+=(unsigned)result.failed;unlock();
     return fmt::format("Jogo instalado. DLCs: {} instalados, {} falhas, {} indisponiveis{}.",result.installed,result.failed,result.unavailable,result.canceled?", cancelado":"");
 }
+static int integration_worker(SceSize,void*){
+    while(!stop_worker){
+        sceKernelWaitSema(integration_wake_id,1,nullptr);if(stop_worker)break;
+        lock();bool pending=integration_pending;int action=integration_action;integration_pending=false;unlock();if(!pending)continue;
+        vs_log("integration-worker","begin",action);
+        try{if(action==-2)prepare_apollo();else if(action<0)refresh_autoplugin();else install_autoplugin(action);}
+        catch(const std::exception&e){vs_log("integration-error",e.what(),-1);integration_message(e.what());}
+        lock();integration_status.busy=false;unlock();vs_log("integration-worker","done",action);
+    }return sceKernelExitThread(0);
+}
 static int cover_worker(SceSize,void*){
     while(!stop_worker){
         sceKernelWaitSema(cover_wake_id,1,nullptr);if(stop_worker)break;
@@ -423,8 +434,6 @@ static int cover_worker(SceSize,void*){
         if(background[0]){try{fetch_game_background(background);}catch(const std::exception&e){vs_log("background",e.what(),-1);}}
         lock();bool cleanup=cleanup_pending;cleanup_pending=false;unlock();
         if(cleanup){try{cleanup_updater();}catch(const std::exception&e){vs_log("update-cleanup",e.what(),-1);}lock();update_busy=false;update_status.phase=0;unlock();}
-        lock();bool provider=integration_pending;int provider_action=integration_action;integration_pending=false;unlock();
-        if(provider){try{if(provider_action==-2)prepare_apollo();else if(provider_action==-3){if(!load_autoplugin_catalog())refresh_autoplugin();}else if(provider_action<0)refresh_autoplugin();else install_autoplugin(provider_action);}catch(const std::exception&e){vs_log("integration-error",e.what(),-1);integration_message(e.what());}lock();integration_status.busy=false;unlock();}
         lock();bool refresh=homebrew_refresh_pending;homebrew_refresh_pending=false;unlock();
         if(refresh){try{refresh_homebrew();}catch(const std::exception&e){vs_log("homebrew-catalog",e.what(),-1);lock();snprintf(progress.homebrew_error,sizeof(progress.homebrew_error),"%s",e.what());unlock();}}
         lock();if(!cover_count){unlock();continue;}
@@ -447,6 +456,9 @@ extern "C" bool store_start(){
     wake_id=sceKernelCreateSema("vs-store-wake",0,0,64,nullptr);if(wake_id<0){sceKernelDeleteMutex(lock_id);lock_id=-1;return false;}
     thread_id=sceKernelCreateThread("vs-store",worker,0x10000100,256*1024,0,0,nullptr);
     if(thread_id>=0 && sceKernelStartThread(thread_id,0,nullptr)>=0){
+        integration_wake_id=sceKernelCreateSema("vs-integrations-wake",0,0,32,nullptr);
+        if(integration_wake_id>=0){integration_thread_id=sceKernelCreateThread("vs-integrations",integration_worker,0x10000110,256*1024,0,0,nullptr);if(integration_thread_id>=0 && sceKernelStartThread(integration_thread_id,0,nullptr)<0){sceKernelDeleteThread(integration_thread_id);integration_thread_id=-1;}}
+        if(integration_thread_id<0)vs_log("integration-worker","Nao foi possivel iniciar o servico.",integration_thread_id);
         cover_wake_id=sceKernelCreateSema("vs-covers-wake",0,0,32,nullptr);
         if(cover_wake_id>=0){
             cover_thread_id=sceKernelCreateThread("vs-covers",cover_worker,0x10000100,256*1024,0,0,nullptr);
@@ -544,6 +556,8 @@ extern "C" void store_refresh_homebrew(bool force){
 }
 extern "C" void store_cancel(){cancel_job=true;if(lock_id>=0){lock();count=0;progress.queued=0;unlock();}}
 extern "C" void store_shutdown(){if(thread_id<0)return;stop_worker=true;
+    if(integration_thread_id>=0){sceKernelSignalSema(integration_wake_id,1);sceKernelWaitThreadEnd(integration_thread_id,nullptr,nullptr);sceKernelDeleteThread(integration_thread_id);integration_thread_id=-1;}
+    if(integration_wake_id>=0){sceKernelDeleteSema(integration_wake_id);integration_wake_id=-1;}
     if(cover_thread_id>=0){sceKernelSignalSema(cover_wake_id,1);sceKernelWaitThreadEnd(cover_thread_id,nullptr,nullptr);sceKernelDeleteThread(cover_thread_id);cover_thread_id=-1;}
     if(cover_wake_id>=0){sceKernelDeleteSema(cover_wake_id);cover_wake_id=-1;}
     sceKernelSignalSema(wake_id,1);sceKernelWaitThreadEnd(thread_id,nullptr,nullptr);sceKernelDeleteThread(thread_id);

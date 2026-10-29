@@ -1,6 +1,7 @@
 #include "audio.h"
 #include "audio_queue.h"
 #include "audio_synth.h"
+#include "audio_clip.h"
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -28,15 +29,15 @@ static void unlock(void){sceKernelUnlockMutex(g_mutex,1);}
 static int running(void){lock();int r=g_run;unlock();return r;}
 #include "audio_preview.inc"
 static bool play_startup(short*grain){
-    FILE*f=fopen("app0:assets/audio/startup.pcm","rb");if(!f)return false;
-    if(fseek(f,0,SEEK_END)){fclose(f);return false;}long bytes=ftell(f);
-    if(bytes<=0 || bytes>4*1024*1024 || bytes%4 || fseek(f,0,SEEK_SET)){fclose(f);return false;}
-    while(running()){
+    (void)grain;AudioClip clip;if(!audio_clip_load("app0:assets/audio/startup.pcm",&clip))return false;
+    if(sceAudioOutSetConfig(g_port,2048,AUDIO_RATE,SCE_AUDIO_OUT_MODE_STEREO)<0){audio_clip_free(&clip);return false;}
+    int volume[2]={24576,24576};sceAudioOutSetVolume(g_port,SCE_AUDIO_VOLUME_FLAG_L_CH|SCE_AUDIO_VOLUME_FLAG_R_CH,volume);
+    for(size_t frame=0;frame<clip.padded_frames && running();frame+=2048){
         lock();bool interrupted=queue.count>0;unlock();if(interrupted)break;
-        memset(grain,0,AUDIO_GRAIN*2*sizeof(short));size_t n=fread(grain,1,AUDIO_GRAIN*2*sizeof(short),f);if(!n)break;
-        if(sceAudioOutOutput(g_port,grain)<0)break;
+        if(sceAudioOutOutput(g_port,clip.samples+frame*2)<0)break;
     }
-    fclose(f);return true;
+    sceAudioOutOutput(g_port,NULL);audio_clip_free(&clip);
+    volume[0]=volume[1]=32768;sceAudioOutSetVolume(g_port,3,volume);sceAudioOutSetConfig(g_port,AUDIO_GRAIN,AUDIO_RATE,SCE_AUDIO_OUT_MODE_STEREO);return true;
 }
 
 /* Tocar um som NAO pode bloquear o thread da interface: sceAudioOutOutput espera pelo fim de cada
@@ -55,8 +56,8 @@ static int audio_thread(SceSize args, void *argp) {
         if(req==SND_BOOT){lock();boot_playing=true;unlock();bool played=play_startup(grain);lock();boot_playing=false;unlock();if(played)continue;}
         for (int pos = 0; pos < (int)audio_synth_frames((SoundEffect)req) && running(); pos += AUDIO_GRAIN) {
             if(req==SND_BOOT){for(unsigned i=0;i<AUDIO_GRAIN;i++){short sample=audio_synth_sample(SND_BOOT,pos+i);grain[2*i]=sample;grain[2*i+1]=(short)(sample*.94f);}}
-            else memcpy(grain, &g_pcm[req][pos * 2], sizeof(grain));
-            sceAudioOutOutput(g_port, grain);
+            if(req==SND_BOOT)sceAudioOutOutput(g_port,grain);
+            else sceAudioOutOutput(g_port,&g_pcm[req][pos*2]);
         }
     }
     return 0;
@@ -82,7 +83,7 @@ void audio_init(void) {
     g_mutex=sceKernelCreateMutex("vs_audio_lock",0,0,NULL);
     g_sema = sceKernelCreateSema("vs_audio_sema", 0, 0, 16, NULL);
     g_run = 1;
-    g_thread = sceKernelCreateThread("vs_audio", audio_thread, 0x10000100, 0x4000, 0, 0, NULL);
+    g_thread = sceKernelCreateThread("vs_audio", audio_thread, 0x10000080, 0x4000, 0, 0, NULL);
     if (g_mutex < 0 || g_sema < 0 || g_thread < 0 || sceKernelStartThread(g_thread, 0, NULL) < 0) {
         g_run = 0;
         if (g_thread >= 0) { sceKernelDeleteThread(g_thread); g_thread = -1; }

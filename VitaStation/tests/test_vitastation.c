@@ -7,6 +7,7 @@
 #include "audio.h"
 #include "audio_queue.h"
 #include "audio_synth.h"
+#include "audio_clip.h"
 #include "input.h"
 #include "render.h"
 #include <stdio.h>
@@ -387,6 +388,12 @@ static void test_hardened_cases(void) {
 }
 
 static void test_revision12(void){
+    unsigned char raw[8204];for(size_t i=0;i<sizeof(raw);i++)raw[i]=(unsigned char)i;
+    FILE*clip_file=fopen("startup-test.pcm","wb");assert(clip_file);assert(fwrite(raw,1,sizeof(raw),clip_file)==sizeof(raw));fclose(clip_file);
+    AudioClip clip;assert(audio_clip_load("startup-test.pcm",&clip));assert(clip.frames==2051 && clip.padded_frames==4096 && ((uintptr_t)clip.samples%64)==0);assert(!memcmp(clip.samples,raw,sizeof(raw)));
+    for(size_t i=sizeof(raw);i<clip.padded_frames*4;i++)assert(((unsigned char*)clip.samples)[i]==0);
+    audio_clip_free(&clip);assert(!clip.storage && !clip.samples);
+    clip_file=fopen("startup-test.pcm","wb");assert(clip_file);fputc(0,clip_file);fclose(clip_file);assert(!audio_clip_load("startup-test.pcm",&clip));remove("startup-test.pcm");assert(!audio_clip_load("startup-test.pcm",&clip));
     puts("Testing physical Vita L/R mapping and four-category cycling...");
     assert(input_map_buttons(0x100)==BTN_L1);assert(input_map_buttons(0x200)==BTN_R1);
     assert(input_map_buttons(0x400)==BTN_L1);assert(input_map_buttons(0x800)==BTN_R1);
@@ -436,13 +443,10 @@ static int probe_launch(int flags,const char*uri,void*context){
 }
 static bool probe_handoff(const char*id,void*context){(void)id;LaunchProbe*p=context;p->installed_checks++;return p->installed;}
 static void test_revision13(void){
-    LaunchProbe routing={0};routing.installed=true;bool close=true;LauncherRouteBackend route={probe_launch,probe_handoff,&routing,false};
-    assert(launcher_route_app("PCSG00001",&route,&close)==0 && !close && routing.flags==0x70000 && routing.uri_calls==1 && routing.installed_checks==0);
-    routing.reply=-10;assert(launcher_route_app("PCSG00001",&route,&close)==0 && close && routing.installed_checks==1);
-    route.preparing=true;assert(launcher_route_app("PCSG00001",&route,&close)==-10 && !close && routing.installed_checks==1);
-    route.preparing=false;routing.installed=false;assert(launcher_route_app("PCSG00001",&route,&close)==-10 && !close);
-    int calls=routing.uri_calls;assert(launcher_route_app("../bad",&route,&close)<0 && routing.uri_calls==calls);
-
+    LaunchProbe routing={0};routing.installed=true;bool close=false;LauncherRouteBackend route={probe_handoff,&routing};
+    assert(launcher_route_app("PCSG00001",&route,&close)==0 && close && routing.installed_checks==1 && routing.uri_calls==0);
+    routing.installed=false;assert(launcher_route_app("PCSG00001",&route,&close)==-0x7001 && !close && routing.uri_calls==0);
+    int calls=routing.installed_checks;assert(launcher_route_app("../bad",&route,&close)<0 && routing.installed_checks==calls);
     puts("Testing valid Title IDs actually reach the launch API boundary...");
     assert(launcher_title_id_valid("PCSG00001"));assert(launcher_title_id_valid("HBRW00001"));
     assert(!launcher_title_id_valid(NULL));assert(!launcher_title_id_valid(""));

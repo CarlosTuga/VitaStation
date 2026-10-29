@@ -26,15 +26,16 @@ static void preview_play(const char*id,unsigned generation){
   if(sceAtracGetContentInfo(handle,&info)>=0 && (info.channel==1 || info.channel==2) && (info.samplingRate==48000 || info.samplingRate==44100) && sceAtracSetOutputSamples(handle,2048)>=0){
    port=sceAudioOutOpenPort(SCE_AUDIO_OUT_PORT_TYPE_BGM,2048,info.samplingRate,info.channel==2?SCE_AUDIO_OUT_MODE_STEREO:SCE_AUDIO_OUT_MODE_MONO);
    if(port>=0){
-    short*pcm=memalign(256,2048*2*sizeof(short));int volume[2]={8192,8192};sceAudioOutSetVolume(port,3,volume);
-    unsigned empty=0;
-    while(pcm && preview_current(generation)){
+    short*buffers=memalign(256,2*2048*2*sizeof(short));int volume[2]={8192,8192};sceAudioOutSetVolume(port,3,volume);
+    unsigned empty=0,bank=0;
+    while(buffers && preview_current(generation)){
+     short*pcm=buffers+bank*2048*2;bank^=1;
      memset(pcm,0,2048*2*sizeof(short));SceUInt32 samples=0,status=0;int code=sceAtracDecode(handle,pcm,&samples,&status);
      if(code<0 || samples>2048)break;
      if(samples){empty=0;if(sceAudioOutOutput(port,pcm)<0)break;}else if(++empty>2)break;
      if(status&SCE_ATRAC_DECODER_STATUS_ALL_DATA_WAS_DECODED)if(sceAtracResetNextOutputPosition(handle,0)<0)break;
     }
-    free(pcm);sceAudioOutReleasePort(port);
+    sceAudioOutOutput(port,NULL);free(buffers);sceAudioOutReleasePort(port);
    }
   }
   sceAtracReleaseHandle(handle);

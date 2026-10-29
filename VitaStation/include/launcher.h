@@ -23,10 +23,8 @@ typedef struct {
     void *context;
 } LauncherBackend;
 typedef struct {
-    int (*exit_to)(int flags,const char*id,void*context);
     bool (*handoff)(const char*id,void*context);
     void*context;
-    bool preparing;
 } LauncherRouteBackend;
 int launcher_route_app(const char*id,const LauncherRouteBackend*backend,bool*exit_caller);
 
