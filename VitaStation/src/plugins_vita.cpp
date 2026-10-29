@@ -59,8 +59,10 @@ static bool prepare_psp(){
         if(result){std::string text=output.data();replace_config(path,before,std::vector<uint8_t>(text.begin(),text.end()));changed=true;}
     }return changed;
 }
+#include "plugins_readiness.inc"
 extern "C" bool plugins_prepare(char*message,size_t size){
     try{
+        if(safety_backup_exists() && configured_bundle_current()){snprintf(message,size,"Componentes atuais; sem alteracoes a plugins.");vs_log("plugins","read-only readiness: no plugin writes required",0);return true;}
         char backup[256];if(!safety_backup_ensure(backup,sizeof(backup)))throw std::runtime_error(backup);
         SceKernelSystemSwVersion fw{};fw.size=sizeof(fw);int result=sceKernelGetSystemSwVersion(&fw);
         if(result<0)throw std::runtime_error("Nao foi possivel consultar a versao do sistema.");

@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     settings_ensure_dir("ux0:data");
 #endif
     settings_ensure_dir(VS_DATA_DIR);
-    vs_log("build","VitaStation 1.6.10 beta (01.70), permanent offline cover library",0);
+    vs_log("build","VitaStation 1.6.11 beta (01.71), permanent offline cover library",0);
     if(!render_init())return 1;
     input_init();
 
@@ -82,10 +82,10 @@ int main(int argc, char *argv[]) {
 
     while (running) {
         int scanned=-1;unsigned startup=bootstrap_poll(&lib,&scanned,ui.plugins_message,sizeof(ui.plugins_message));
-        if(startup&1){if(scanned>=0){library_cache_reset_counter(VS_DATA_DIR "/library-starts.txt");installation_cache_commit(VS_DATA_DIR "/installation-state.txt");installation_clear_dirty();}ui.library_loading=false;texture_cache_retry(&cache);ui_show_toast(&ui,scanned<0?"Nao foi possivel atualizar a biblioteca.":"Biblioteca atualizada.");}
+        if(startup&1){ui.library_loading=false;texture_cache_retry(&cache);ui_show_toast(&ui,scanned<0?"Nao foi possivel atualizar a biblioteca.":"Biblioteca atualizada.");}
         if(startup&2){
             bootstrap_shutdown();
-            if(startup&8){FILE*f=fopen(VS_DATA_DIR "/prepared-" VS_COMPONENTS_VERSION ".done","wb");if(f){fputs("prepared\n",f);fclose(f);}if(version_prepare){ui.ps_routing_enabled=true;settings_save(&ui,VS_CONFIG_PATH);version_prepare=false;}}
+            if((startup&8) && version_prepare){ui.ps_routing_enabled=true;settings_save(&ui,VS_CONFIG_PATH);version_prepare=false;}
             if(strstr(ui.plugins_message,"Reinicia")){ui_show_toast(&ui,ui.plugins_message);ui.toast_timer=8;}
             ui.autoboot_enabled=autoboot_is_enabled();
             if(autoboot_bridge_available()){
@@ -111,7 +111,8 @@ int main(int argc, char *argv[]) {
         if(store_apollo_ready()){if(launcher_launch_app("NP0APOLLO"))ui.exit_requested=launcher_exit_required();else ui_show_toast(&ui,launcher_error_message());}
         if(ui.exit_requested){
 #if defined(__vita__)
-            bootstrap_shutdown();settings_save(&ui,VS_CONFIG_PATH);sceKernelExitProcess(0);
+            if(bootstrap_begin_exit()){ui_render(&ui,&lib,&cache);continue;}
+            settings_save(&ui,VS_CONFIG_PATH);sceKernelExitProcess(0);
 #endif
             running=false;break;
         }
