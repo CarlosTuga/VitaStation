@@ -53,13 +53,12 @@ void cover_pack_reload(void){
  free(entries);entries=NULL;count=0;attempted=false;load();__sync_lock_release(&index_lock);
 }
 bool cover_pack_available(void){
- cover_pack_reload();char path[128]={0};
- while(__sync_lock_test_and_set(&index_lock,1)){
-#if defined(__vita__)
- sceKernelDelayThread(1000);
-#endif
- }
- if(count)snprintf(path,sizeof(path),"vspack:%u:%u:%u",entries[0].offset,entries[0].size,entries[0].crc);
- __sync_lock_release(&index_lock);
- size_t length=0;unsigned char*b=path[0]?cover_pack_read(path,&length):NULL;bool valid=b && length>0;free(b);return valid;
+ /* Presence probe only: the shop validates the complete index on loading it.
+    Do not allocate/sort every cover or evict the live index on update checks. */
+ FILE*f=fopen(VS_COVER_PACK_ROOT "/manifest.tsv","rb");if(!f)return false;
+ char line[256],name[96],extra;unsigned long long size;unsigned crc;
+ bool ok=fgets(line,sizeof(line),f)!=NULL;fclose(f);
+ if(!ok || sscanf(line,"%95s %llu %x %c",name,&size,&crc,&extra)!=3 || !size || size>8*1024*1024 || strstr(name,"..") || strchr(name,'/'))return false;
+ char path[128];snprintf(path,sizeof(path),"vspack:0:%u:%u",(unsigned)size,crc);
+ size_t length=0;unsigned char*b=cover_pack_read(path,&length);bool valid=b && length==size;free(b);return valid;
 }

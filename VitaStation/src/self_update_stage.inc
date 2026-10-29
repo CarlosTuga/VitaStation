@@ -1,7 +1,9 @@
 #include "launch_handoff.h"
 static unsigned app_version_number(const std::string&s){unsigned a=0,b=0;if(sscanf(s.c_str(),"%u.%u",&a,&b)!=2 || a>99 || b>999)return 0;return a*1000+b;}
 static void stage_self_update(const UpdateStatus&selected){
- char error[256];if(!safety_backup_ensure(error,sizeof(error)))throw std::runtime_error(error);
+ /* App promotion does not change taiHEN configuration or plugin binaries.
+    Plugin writers retain their own mandatory immutable-backup guard. */
+ char error[256];
  const std::string archive="ux0:data/VitaStation/updates/VitaStation.vpk.part",root=VS_UPDATE_ROOT,rollback=VS_ROLLBACK_ROOT;
  pkgi_mkdirs("ux0:data/VitaStation/updates");pkgi_mkdirs("ux0:data/VitaStation/pkg-staging");
  cancel_job=false;update_download_disk(selected,archive);
@@ -18,11 +20,20 @@ static void stage_self_update(const UpdateStatus&selected){
     if(!pkgi_file_exists(root+"/assets/updater/eboot.bin") || !pkgi_file_exists(root+"/assets/updater/param.sfo"))throw std::runtime_error("Atualizacao sem recursos do atualizador automatico.");
     CatalogPackage app{};app.vpk=true;snprintf(app.title_id,sizeof(app.title_id),"VTST00001");homebrew_head(root,app,true);
     if(!self_update_prepare(root.c_str(),VS_UPDATE_TICKET,error,sizeof(error)))throw std::runtime_error(error);
-    update_message("A guardar uma copia da versao instalada para recuperacao...");
-    pkgi_delete_dir(rollback);
-    if(!self_update_copy("app0:",rollback.c_str(),error,sizeof(error)))throw std::runtime_error(error);
-    homebrew_head(rollback,app,true);
-    if(!self_update_prepare(rollback.c_str(),VS_ROLLBACK_TICKET,error,sizeof(error)))throw std::runtime_error(error);
+    update_message("A verificar a copia de recuperacao existente...");
+    uint64_t backup_start=sceKernelGetProcessTimeWide();char installed_version[32],backup_version[32];
+    /* Reuse only if both full trees still match the same verified ticket.
+       Version alone never authorizes trusting a stale/incomplete backup. */
+    bool reuse=self_update_verify("app0:",VS_ROLLBACK_TICKET,installed_version,sizeof(installed_version),error,sizeof(error)) &&
+        self_update_verify(rollback.c_str(),VS_ROLLBACK_TICKET,backup_version,sizeof(backup_version),error,sizeof(error));
+    if(!reuse){
+        update_message("A copiar e verificar a versao instalada para recuperacao...");
+        pkgi_delete_dir(rollback);
+        if(!self_update_copy("app0:",rollback.c_str(),error,sizeof(error)))throw std::runtime_error(error);
+        homebrew_head(rollback,app,true);
+        if(!self_update_prepare(rollback.c_str(),VS_ROLLBACK_TICKET,error,sizeof(error)))throw std::runtime_error(error);
+    }
+    char timing[120];snprintf(timing,sizeof(timing),"rollback_ms=%llu reused=%d",(unsigned long long)((sceKernelGetProcessTimeWide()-backup_start)/1000),reuse?1:0);vs_log("updater-timing",timing,0);
     const std::string helper="ux0:data/VitaStation/pkg-staging/updater-helper";pkgi_delete_dir(helper);pkgi_mkdirs((helper+"/sce_sys").c_str());
     for(const auto&pair:std::vector<std::pair<const char*,const char*>>{{"app0:assets/updater/eboot.bin","/eboot.bin"},{"app0:assets/updater/param.sfo","/sce_sys/param.sfo"},{"app0:sce_sys/icon0.png","/sce_sys/icon0.png"}}){auto data=pkgi_load(pair.first);pkgi_save(helper+pair.second,data.data(),data.size());}
     CatalogPackage tool{};tool.vpk=true;snprintf(tool.title_id,sizeof(tool.title_id),VS_UPDATER_ID);homebrew_head(helper,tool);init_services();install_package(tool,helper);

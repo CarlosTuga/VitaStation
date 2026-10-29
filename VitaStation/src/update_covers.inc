@@ -19,17 +19,23 @@ static void update_download_disk(const UpdateStatus&asset,const std::string&path
 static bool installed_covers(){
     if(cover_pack_available())return true;
     if(pkgi_get_inode_type(ROOT)!=InodeType::Directory)return false;
-    for(const auto&name:pkgi_list_dir_contents(ROOT)){
+    SceUID dir=sceIoDopen(ROOT);if(dir<0)return false;
+    bool found=false;
+    for(;;){
+        SceIoDirent entry{};int result=sceIoDread(dir,&entry);if(result<=0)break;
+        std::string name=entry.d_name;
         if(!safe_relative(name) || name.find('/')!=std::string::npos)continue;
         if(name.size()<5 || (name.substr(name.size()-4)!=".png" && name.substr(name.size()-4)!=".jpg"))continue;
         auto path=std::string(ROOT)+"/"+name;SceUID fd=sceIoOpen(path.c_str(),SCE_O_RDONLY,0);if(fd<0)continue;
         unsigned char header[8]{};int n=sceIoRead(fd,header,8);sceIoClose(fd);
-        if(n==8 && (!memcmp(header,"\x89PNG\r\n\x1a\n",8) || (header[0]==0xff && header[1]==0xd8 && header[2]==0xff)))return true;
-    }return false;
+        if(n==8 && (!memcmp(header,"\x89PNG\r\n\x1a\n",8) || (header[0]==0xff && header[1]==0xd8 && header[2]==0xff))){found=true;break;}
+    }
+    sceIoDclose(dir);return found;
 }
 #include "cover_install.inc"
 static void ensure_update_covers(const std::vector<uint8_t>&releases){
-    update_message("A verificar caratulas instaladas...");if(installed_covers())return;
+    update_message("A verificar caratulas instaladas...");uint64_t probe_start=sceKernelGetProcessTimeWide();bool present=installed_covers();
+    char timing[120];snprintf(timing,sizeof(timing),"covers_probe_ms=%llu present=%d",(unsigned long long)((sceKernelGetProcessTimeWide()-probe_start)/1000),present?1:0);vs_log("updater-timing",timing,0);if(present)return;
     UpdateStatus asset{};if(!update_select_covers((const char*)releases.data(),releases.size(),&asset)){
         auto release=https_bytes("https://api.github.com/repos/CarlosTuga/VitaStation/releases/tags/v1.6.0-beta",2*1024*1024);
         std::string wrapped="["+std::string(release.begin(),release.end())+"]";

@@ -1,4 +1,4 @@
-> **1.6.6 beta:** corrige abertura direta pelo Shell; mantém a correção da espera por componentes. A confirmação ao abrir bolhas diretamente pelo LiveArea continua pendente. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.6_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Teste físico pendente.
+> **1.6.7 beta:** otimiza deteção de carátulas e preparação da atualização; reutilização verificada da cópia de recuperação. Tempos físicos ainda por medir. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.7_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Teste físico pendente.
 
 # VitaStation
 
@@ -6,7 +6,7 @@
 
 VitaStation organiza e abre jogos, aplicações e homebrews numa interface inspirada na PS5. Integra biblioteca PSP/PS1, loja por catálogos locais, instalação de formatos suportados, carátulas permanentes e personalização visual.
 
-**Versão do launcher: 1.6.6 beta. Instalador de carátulas: 1.04.**
+**Versão do launcher: 1.6.7 beta. Instalador de carátulas: 1.04.**
 
 Este projeto é independente e não é um produto oficial Sony. A beta não substitui integralmente o sistema da Vita. “Implementado” descreve o código disponível; testes de PC e compilação não equivalem a validação física de todas as funções.
 

@@ -355,7 +355,7 @@ static void apollo_data_for_game(const AppItem&app);
 static void run_update(bool download){
     UpdateStatus selected{};
     if(!download){
-        auto bytes=https_bytes("https://api.github.com/repos/CarlosTuga/VitaStation/releases?per_page=100",2*1024*1024);
+        auto bytes=https_bytes("https://api.github.com/repos/CarlosTuga/VitaStation/releases?per_page=10",2*1024*1024);
         ensure_update_covers(bytes);
         if(!update_select((const char*)bytes.data(),bytes.size(),&selected))throw std::runtime_error("Resposta de atualizacoes invalida.");
         if(selected.phase!=2){lock();update_status=selected;unlock();return;}
