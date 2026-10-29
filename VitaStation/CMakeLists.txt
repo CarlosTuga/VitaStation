@@ -23,6 +23,10 @@ include_directories(include)
 
 set(SOURCES
     src/safety_backup_host.c
+    src/system_apps.c
+    src/shell_handoff.c
+    src/game_remove.c
+    src/update_transaction.c
     src/maintenance.c
     src/updater.c
     src/log.c
@@ -69,6 +73,18 @@ if(VITA)
     target_link_libraries(VitaStationMaintenance SceAppMgr_stub vita2d freetype png16 jpeg z m c SceSysmem_stub SceDisplay_stub SceGxm_stub ScePgf_stub ScePvf_stub SceCommonDialog_stub SceLibKernel_stub SceKernelThreadMgr_stub SceProcessmgr_stub SceIofilemgr_stub SceCtrl_stub SceSysmodule_stub ScePromoterUtil_stub SceAppMgr_stub)
     vita_create_self(maintenance.self VitaStationMaintenance UNSAFE)
     set(VS_MAINT_SELF "${CMAKE_CURRENT_BINARY_DIR}/maintenance.self")
+    add_executable(VitaStationUpdater tools/updater/main.c src/shell_handoff.c src/update_transaction.c src/self_update.cpp src/json_parser.c third_party/usagi/sha256.cpp)
+    set_target_properties(VitaStationUpdater PROPERTIES CXX_STANDARD 17)
+    target_include_directories(VitaStationUpdater PRIVATE third_party)
+    target_compile_definitions(VitaStationUpdater PRIVATE FMT_HEADER_ONLY)
+    target_link_options(VitaStationUpdater PRIVATE -Wl,--gc-sections)
+    target_link_libraries(VitaStationUpdater stdc++ pthread SceAppMgr_stub vita2d freetype png16 jpeg z m c SceSysmem_stub SceDisplay_stub SceGxm_stub ScePgf_stub ScePvf_stub SceCommonDialog_stub SceLibKernel_stub SceKernelThreadMgr_stub SceProcessmgr_stub SceIofilemgr_stub SceCtrl_stub SceSysmodule_stub ScePromoterUtil_stub SceAppMgr_stub)
+    vita_create_self(updater.self VitaStationUpdater UNSAFE)
+    set(VS_UPDATER_SELF "${CMAKE_CURRENT_BINARY_DIR}/updater.self")
+    set(VS_UPDATER_SFO "${CMAKE_CURRENT_BINARY_DIR}/updater-param.sfo")
+    add_custom_command(OUTPUT "${VS_UPDATER_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.00 -s TITLE_ID=VSTUP0001 "Atualizador VitaStation" "${VS_UPDATER_SFO}"
+        DEPENDS "${VS_UPDATER_SELF}" VERBATIM)
     # Decode PEM at build time; device imports individual DER roots directly.
     find_package(Python3 COMPONENTS Interpreter REQUIRED)
     set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/cacert.pem" "${CMAKE_CURRENT_SOURCE_DIR}/tools/embed_ca.py" "${CMAKE_CURRENT_SOURCE_DIR}/tools/tls_roots.json")
@@ -78,7 +94,7 @@ if(VITA)
     endif()
     enable_language(CXX)
     set(CMAKE_CXX_STANDARD 17)
-    set_source_files_properties(src/safety_backup.cpp src/store_vita.cpp PROPERTIES COMPILE_OPTIONS "-Os;-ffunction-sections;-fdata-sections")
+    set_source_files_properties(src/safety_backup.cpp src/self_update.cpp src/store_vita.cpp PROPERTIES COMPILE_OPTIONS "-Os;-ffunction-sections;-fdata-sections")
     add_executable(VitaStationBoot plugins/VitaStationBoot/main.c)
     set_target_properties(VitaStationBoot PROPERTIES LINK_FLAGS "-nostdlib")
     target_link_libraries(VitaStationBoot SceAppMgr_stub SceCtrl_stub SceIofilemgr_stub SceLibKernel_stub SceKernelThreadMgr_stub)
@@ -93,13 +109,14 @@ if(VITA)
         DEPENDS "${VS_BOOT}" VERBATIM)
 
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -O2")
-    add_executable(VitaStation ${SOURCES} src/main.c src/safety_backup.cpp src/store_vita.cpp src/plugins_vita.cpp src/psp_bubbles.cpp
+    add_executable(VitaStation ${SOURCES} src/main.c src/self_update.cpp src/safety_backup.cpp src/store_vita.cpp src/plugins_vita.cpp src/psp_bubbles.cpp
         third_party/usagi/download.cpp third_party/usagi/bgdl.cpp third_party/usagi/aes128.cpp
         third_party/usagi/sha256.cpp third_party/usagi/zrif.cpp third_party/usagi/puff.c
         third_party/usagi/vitahttp.cpp third_party/usagi/vitafile.cpp)
     target_sources(VitaStation PRIVATE "${VS_BOOT_HASH}")
     target_include_directories(VitaStation PRIVATE third_party "${CMAKE_CURRENT_BINARY_DIR}")
     target_compile_definitions(VitaStation PRIVATE FMT_HEADER_ONLY)
+    target_compile_options(VitaStation PRIVATE -ffunction-sections -fdata-sections $<$<COMPILE_LANGUAGE:C>:-Os>)
     target_link_options(VitaStation PRIVATE -Wl,--gc-sections)
     target_compile_options(VitaStation PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-O2;-Wall;-Wextra>)
 
@@ -157,13 +174,13 @@ if(VITA)
         list(APPEND VS_PLUGIN_ARGS -a "${alive_file}=assets/alive/${alive_name}")
     endforeach()
     add_custom_command(OUTPUT "${VS_SFO}"
-        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.63 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.64 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
         DEPENDS "${VS_SELF}" VERBATIM
     )
     add_custom_command(OUTPUT "${VS_VPK}"
-        COMMAND "${VITA_PACK_VPK}" -a "${VS_MAINT_SELF}=maintenance.self" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
+        COMMAND "${VITA_PACK_VPK}" -a "${VS_UPDATER_SELF}=assets/updater/eboot.bin" -a "${VS_UPDATER_SFO}=assets/updater/param.sfo" -a "${VS_MAINT_SELF}=maintenance.self" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
         COMMAND "${CMAKE_COMMAND}" -E rename "${VS_VPK}.tmp" "${VS_VPK}"
-        DEPENDS "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json" VERBATIM
+        DEPENDS "${VS_UPDATER_SELF}" "${VS_UPDATER_SFO}" "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json" VERBATIM
     )
     add_custom_target(VitaStation-vpk ALL DEPENDS "${VS_VPK}")
 else()

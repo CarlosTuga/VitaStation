@@ -13,7 +13,7 @@
 #include <psp2/kernel/processmgr.h>
 static SceUID thread=-1,mutex=-1;
 static Library pending;
-static bool library_ready=false,plugins_ready=false;
+static bool library_ready=false,plugins_ready=false,prepare_success=false;
 static int result=-1;
 static char message[256];
 static int load(SceSize size,void*arg){
@@ -21,7 +21,7 @@ static int load(SceSize size,void*arg){
  if(scanned>=0){library_load_userdata(&pending,VS_USERDATA_PATH);library_cache_save(&pending,VS_DATA_DIR "/library-cache.bin");}
  char timing[96];snprintf(timing,sizeof(timing),"library_ready_ms=%llu apps=%d",(unsigned long long)((sceKernelGetProcessTimeWide()-start)/1000),scanned);vs_log("startup",timing,scanned);
  sceKernelLockMutex(mutex,1,NULL);result=scanned;library_ready=true;sceKernelUnlockMutex(mutex,1);
- start=sceKernelGetProcessTimeWide();char text[256];plugins_prepare(text,sizeof(text));
+ start=sceKernelGetProcessTimeWide();char text[256];prepare_success=plugins_prepare(text,sizeof(text));
  system_settings_audit();
  char psp[256];int psp_result=psp_prepare_runtime(psp,sizeof(psp));vs_log("psp-runtime",psp,psp_result);if(psp_result==1)snprintf(text,sizeof(text),"%s",psp);
  snprintf(timing,sizeof(timing),"plugin_prepare_ms=%llu",(unsigned long long)((sceKernelGetProcessTimeWide()-start)/1000));vs_log("startup",timing,0);
@@ -30,7 +30,7 @@ static int load(SceSize size,void*arg){
 }
 bool bootstrap_start(const Library*initial){
  if(!initial || thread>=0)return false;
- pending=*initial;library_ready=plugins_ready=false;mutex=sceKernelCreateMutex("vs-startup",0,0,NULL);if(mutex<0)return false;
+ pending=*initial;library_ready=plugins_ready=prepare_success=false;mutex=sceKernelCreateMutex("vs-startup",0,0,NULL);if(mutex<0)return false;
  thread=sceKernelCreateThread("vs-library-loader",load,0x10000110,256*1024,0,0,NULL);
  if(thread>=0 && sceKernelStartThread(thread,0,NULL)>=0)return true;
  if(thread>=0)sceKernelDeleteThread(thread);
@@ -46,7 +46,7 @@ unsigned bootstrap_poll(Library*lib,int*out,char*text,size_t size){
   }
   library_update_indices(&pending);*lib=pending;
  }flags|=1;}
- if(plugins_ready){plugins_ready=false;if(text && size)snprintf(text,size,"%s",message);flags|=2;}
+ if(plugins_ready){plugins_ready=false;if(text && size)snprintf(text,size,"%s",message);flags|=2;if(prepare_success)flags|=8;}
  sceKernelUnlockMutex(mutex,1);return flags;
 }
 bool bootstrap_busy(void){return thread>=0;}

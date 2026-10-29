@@ -1,3 +1,7 @@
+#include "version.h"
+#include "integrations.h"
+#include "launcher.h"
+#include "updater.h"
 #include "safety_backup.h"
 #include "library.h"
 #include "library_cache.h"
@@ -44,13 +48,14 @@ int main(int argc, char *argv[]) {
     settings_ensure_dir("ux0:data");
 #endif
     settings_ensure_dir(VS_DATA_DIR);
-    vs_log("build","VitaStation 1.6.3 beta (01.63), permanent offline cover library",0);
+    vs_log("build","VitaStation 1.6.4 beta (01.64), permanent offline cover library",0);
     if(!render_init())return 1;
     input_init();
 
     library_init(&lib);
     bool cached=library_cache_load(&lib,VS_DATA_DIR "/library-cache.bin");
-    bool rebuild=!safety_backup_exists() || library_cache_rebuild_due(cached,VS_DATA_DIR "/library-starts.txt") || installation_dirty() || installation_cache_changed(VS_DATA_DIR "/installation-state.txt");
+    FILE*prepared=fopen(VS_DATA_DIR "/prepared-" VS_VERSION ".done","rb");bool version_prepare=!prepared;if(prepared)fclose(prepared);
+    bool rebuild=version_prepare || !safety_backup_exists() || library_cache_rebuild_due(cached,VS_DATA_DIR "/library-starts.txt") || installation_dirty() || installation_cache_changed(VS_DATA_DIR "/installation-state.txt");
     library_load_userdata(&lib,VS_USERDATA_PATH);
     texture_cache_init(&cache, 32);
     ui_init(&ui);
@@ -78,6 +83,7 @@ int main(int argc, char *argv[]) {
         if(startup&1){if(scanned>=0){library_cache_reset_counter(VS_DATA_DIR "/library-starts.txt");installation_cache_commit(VS_DATA_DIR "/installation-state.txt");installation_clear_dirty();}ui.library_loading=false;texture_cache_retry(&cache);ui_show_toast(&ui,scanned<0?"Nao foi possivel atualizar a biblioteca.":"Biblioteca atualizada.");}
         if(startup&2){
             bootstrap_shutdown();
+            if(startup&8){FILE*f=fopen(VS_DATA_DIR "/prepared-" VS_VERSION ".done","wb");if(f){fputs("prepared\n",f);fclose(f);}if(version_prepare){ui.ps_routing_enabled=true;settings_save(&ui,VS_CONFIG_PATH);version_prepare=false;}}
             if(strstr(ui.plugins_message,"Reinicia")){ui_show_toast(&ui,ui.plugins_message);ui.toast_timer=8;}
             ui.autoboot_enabled=autoboot_is_enabled();
             if(autoboot_bridge_available()){
@@ -89,6 +95,18 @@ int main(int argc, char *argv[]) {
                 autoboot_marker_write(VS_DATA_DIR "/ps-routing.enabled",ui.ps_routing_enabled);autoboot_marker_write(VS_DATA_DIR "/power-menu.enabled",true);}
             ui_finish_pending_launch(&ui,&lib);
         }
+#if defined(__vita__)
+        UpdateStatus update;store_update_status(&update);
+        if(update.phase==3){
+            bootstrap_shutdown();
+            if(!settings_save(&ui,VS_CONFIG_PATH) || ((lib.scan_complete || lib.count>0) && !library_save_userdata(&lib,VS_USERDATA_PATH))){store_update_fail("Nao foi possivel guardar os dados antes da atualizacao.");ui_show_toast(&ui,"Nao foi possivel guardar os dados antes da atualizacao.");}
+            else{char error[256];if(!store_update_install(error,sizeof(error)))ui_show_toast(&ui,error);}
+        }
+        static unsigned update_cleanup_frames=0;
+        if(update_cleanup_frames<180)update_cleanup_frames++;
+        if(update_cleanup_frames==180 && !bootstrap_busy() && !store_busy()){store_update_cleanup();update_cleanup_frames++;}
+#endif
+        if(store_apollo_ready()){if(launcher_launch_app("NP0APOLLO"))ui.exit_requested=true;else ui_show_toast(&ui,launcher_error_message());}
         if(ui.exit_requested){
 #if defined(__vita__)
             bootstrap_shutdown();settings_save(&ui,VS_CONFIG_PATH);sceKernelExitProcess(0);
@@ -96,6 +114,12 @@ int main(int argc, char *argv[]) {
             running=false;break;
         }
         input_poll(&input);
+#if defined(__vita__)
+        bool livearea=(input.buttons_held&(BTN_PS|BTN_L1))==(BTN_PS|BTN_L1);
+        static unsigned livearea_poll=0;
+        if(++livearea_poll%8==0){FILE*f=fopen(VS_DATA_DIR "/livearea.request","rb");if(f){uint64_t time=0;size_t n=fread(&time,1,sizeof(time),f);fclose(f);remove(VS_DATA_DIR "/livearea.request");uint64_t now=sceKernelGetSystemTimeWide();if(n==sizeof(time) && now>=time && now-time<1500000)livearea=true;}}
+        if(livearea){input.buttons_pressed&=~BTN_L1;if(store_busy())ui_show_toast(&ui,"Aguarda a instalacao antes de sair.");else{ui.pending_launch_id[0]=0;ui.exit_requested=true;continue;}}
+#endif
         if(input.buttons_pressed & BTN_POWER)ui_open_power_menu(&ui);
 #if defined(__vita__)
         static unsigned bridge_poll=0;

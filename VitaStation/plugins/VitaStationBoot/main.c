@@ -8,7 +8,8 @@
 #include <psp2/kernel/threadmgr.h>
 #include <psp2/kernel/modulemgr.h>
 #include <psp2/kernel/clib.h>
-#include "gesture.h"
+#include "shortcut.h"
+#include "../../include/launch_handoff.h"
 void *memset(void *p,int value,__SIZE_TYPE__ size){return sceClibMemset(p,value,size);}
 static volatile int stopping=0;
 static SceUID worker_id=-1;
@@ -53,9 +54,22 @@ static void route_ps(int event){
     char status[2]={(char)(event==VS_PS_SINGLE?'1':'2'),(char)(result<0?'E':'A')};
     SceUID fd=sceIoOpen("ux0:data/VitaStation/bridge.status",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(fd>=0){sceIoWrite(fd,status,2);sceIoClose(fd);}
 }
+static unsigned char launch_pending[32];static int launch_waiting=0;
+static int running(const char*target){SceInt32 ids[16]={0};if(sceAppMgrGetRunningAppIdListForShell(ids,16)<0)return 1;for(unsigned i=0;i<16;i++)if(ids[i]>0){SceUID pid=sceAppMgrGetProcessIdByAppIdForShell(ids[i]);char name[16]={0};if(pid>0 && sceAppMgrGetNameById(pid,name)>=0 && vs_launch_same(name,target))return 1;}return 0;}
+static void cancel_launch(void){launch_waiting=0;sceIoRemove("ux0:data/VitaStation/launch.request");sceIoRemove("ux0:data/VitaStation/launch.ack");}
+static void process_launch(SceUInt64 now){
+ if(marker("ux0:data/VitaStation/updates/installing"))return;
+ char caller[10],target[10];
+ if(launch_waiting){if(!vs_launch_unpack(launch_pending,caller,target,now)){cancel_launch();return;}if(!running(caller)){
+  char uri[32];vs_launch_uri(uri,target);cancel_launch();sceAppMgrLaunchAppByUri(0xFFFFF,uri);
+ }return;}
+ unsigned char bytes[33];SceUID f=sceIoOpen("ux0:data/VitaStation/launch.request",SCE_O_RDONLY,0);if(f<0)return;int n=sceIoRead(f,bytes,sizeof(bytes));sceIoClose(f);if(n!=32 || !vs_launch_unpack(bytes,caller,target,now)){cancel_launch();return;}
+ f=sceIoOpen("ux0:data/VitaStation/launch.ack",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(f<0)return;int wrote=sceIoWrite(f,bytes,32);sceIoClose(f);if(wrote!=32)return;for(unsigned i=0;i<32;i++)launch_pending[i]=bytes[i];launch_waiting=1;
+}
+static void request_livearea(SceUInt64 now){cancel_launch();SceUID f=sceIoOpen("ux0:data/VitaStation/livearea.request",SCE_O_WRONLY|SCE_O_CREAT|SCE_O_TRUNC,0666);if(f>=0){sceIoWrite(f,&now,sizeof(now));sceIoClose(f);}}
 static int buttons_thread(SceSize argc,void*args){
     (void)argc;(void)args;
-    VitaStationPSGesture gesture={0};SceUInt64 latest=0,power_at=0,previous_poll=0;int power_sent=0,ps_enabled=0,power_enabled=0,routing_bypassed=0;unsigned poll=0;
+    VitaStationPSRoute routing={0};SceUInt64 latest=0,power_at=0,previous_poll=0;int power_sent=0,ps_enabled=0,power_enabled=0,routing_bypassed=0;unsigned poll=0;
     while(!stopping){
         SceUInt64 now=sceKernelGetSystemTimeWide();
         if(now-previous_poll>250000){power_at=0;power_sent=0;}previous_poll=now;
@@ -66,8 +80,8 @@ static int buttons_thread(SceSize argc,void*args){
             if(pads[i].timeStamp<=latest)continue;
             latest=pads[i].timeStamp;
             if((pads[i].buttons&(SCE_CTRL_SELECT|SCE_CTRL_LTRIGGER|SCE_CTRL_RTRIGGER))==(SCE_CTRL_SELECT|SCE_CTRL_LTRIGGER|SCE_CTRL_RTRIGGER)){routing_bypassed=1;ps_enabled=0;}
-            if(ps_enabled)route_ps(vs_ps_gesture(&gesture,(pads[i].buttons&SCE_CTRL_PSBUTTON)!=0,pads[i].timeStamp));
-            else memset(&gesture,0,sizeof(gesture));
+            int event=vs_ps_route(&routing,(pads[i].buttons&SCE_CTRL_PSBUTTON)!=0,(pads[i].buttons&(SCE_CTRL_LTRIGGER|SCE_CTRL_L1))!=0,pads[i].timeStamp,ps_enabled && !marker("ux0:data/VitaStation/updates/installing"));
+            if(event==VS_PS_LIVEAREA)request_livearea(now);else route_ps(event);
             if(power_enabled && (pads[i].buttons&SCE_CTRL_POWER)){
                 if(!power_at)power_at=now;
                 if(!power_sent && now-power_at>=1500000){
@@ -77,7 +91,8 @@ static int buttons_thread(SceSize argc,void*args){
                 }
             }else{power_at=0;power_sent=0;}
         }
-        if(ps_enabled)route_ps(vs_ps_gesture(&gesture,gesture.down,now));
+        if(ps_enabled && !marker("ux0:data/VitaStation/updates/installing"))route_ps(vs_ps_route(&routing,routing.ps.down,routing.left,now,ps_enabled));
+        process_launch(now);
         sceKernelDelayThread(50000);
     }return sceKernelExitThread(0);
 }

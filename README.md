@@ -1,4 +1,4 @@
-> **1.6.3 beta:** backup no primeiro arranque, limpeza opcional dos plugins novos sem downgrade, fundos e opcoes por jogo no Triangulo, atualizacoes e DLCs no LiveArea. Start sem Inicio e com Atualizar Biblioteca. [Instrucoes e limites](VitaStation/REVISAO_1.6.3_BETA.md). Rede, instalacao e desinstalacao fisica ainda pendentes de teste.
+> **1.6.4 beta:** atualização automática, PS+L para LiveArea, ações de jogo consolidadas, catálogo AutoPlugin II e integração opcional Apollo. Instalar uma vez pelo VitaShell e reiniciar. [Instruções, funções e limites atuais](VitaStation/REVISAO_1.6.4_BETA.md). A revisão desta versão prevalece sobre descrições históricas abaixo. Teste físico pendente.
 
 # VitaStation
 
@@ -6,7 +6,7 @@
 
 VitaStation organiza e abre jogos, aplicações e homebrews numa interface inspirada na PS5. Integra biblioteca PSP/PS1, loja por catálogos locais, instalação de formatos suportados, carátulas permanentes e personalização visual.
 
-**Versão do launcher: 1.6.0 beta. Instalador de carátulas: 1.04.**
+**Versão do launcher: 1.6.4 beta. Instalador de carátulas: 1.04.**
 
 Este projeto é independente e não é um produto oficial Sony. A beta não substitui integralmente o sistema da Vita. “Implementado” descreve o código disponível; testes de PC e compilação não equivalem a validação física de todas as funções.
 

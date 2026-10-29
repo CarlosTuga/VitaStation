@@ -33,8 +33,8 @@ typedef char check_right_shoulder[(SCE_CTRL_R1==0x800)?1:-1];
 #endif
 uint32_t input_map_buttons(uint32_t raw) {
     uint32_t mapped=0;
-    static const uint32_t physical[]={0x10,0x40,0x80,0x20,0x4000,0x2000,0x8000,0x1000,0x500,0xA00,0x8,0x1,0x100000,0x200000,0x40000000};
-    static const uint32_t logical[]={BTN_UP,BTN_DOWN,BTN_LEFT,BTN_RIGHT,BTN_CROSS,BTN_CIRCLE,BTN_SQUARE,BTN_TRIANGLE,BTN_L1,BTN_R1,BTN_START,BTN_SELECT,BTN_VOLUME_UP,BTN_VOLUME_DOWN,BTN_POWER};
+    static const uint32_t physical[]={0x10,0x40,0x80,0x20,0x4000,0x2000,0x8000,0x1000,0x500,0xA00,0x8,0x1,0x100000,0x200000,0x40000000,0x10000};
+    static const uint32_t logical[]={BTN_UP,BTN_DOWN,BTN_LEFT,BTN_RIGHT,BTN_CROSS,BTN_CIRCLE,BTN_SQUARE,BTN_TRIANGLE,BTN_L1,BTN_R1,BTN_START,BTN_SELECT,BTN_VOLUME_UP,BTN_VOLUME_DOWN,BTN_POWER,BTN_PS};
     for(unsigned i=0;i<sizeof(physical)/sizeof(physical[0]);i++)if(raw&physical[i])mapped|=logical[i];
     return mapped;
 }

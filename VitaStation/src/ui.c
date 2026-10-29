@@ -1,3 +1,4 @@
+#include "integrations.h"
 #include "game_support.h"
 #include "cover_pack.h"
 #include "updater.h"
@@ -108,7 +109,7 @@ void ui_select_tab(UIContext *ui, AppSection section) {
     }
 }
 bool ui_handle_category_buttons(UIContext *ui,uint32_t pressed){
-    if(!ui || ui->state==UI_STATE_GAME_SUPPORT || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS || ui->state==UI_STATE_SYSTEM_INFO || ui->state==UI_STATE_LOADING || ui->state==UI_STATE_SPLASH)return false;
+    if(!ui || ui->state==UI_STATE_SYSTEM_APPS || ui->state==UI_STATE_PLUGIN_CATALOG || ui->state==UI_STATE_REMOVE_GAME || ui->state==UI_STATE_GAME_SUPPORT || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS || ui->state==UI_STATE_SYSTEM_INFO || ui->state==UI_STATE_LOADING || ui->state==UI_STATE_SPLASH)return false;
     bool left=(pressed&BTN_L1)!=0,right=(pressed&BTN_R1)!=0;
     if(left==right)return false; /* Opposite simultaneous inputs cancel. */
     if(ui->state==UI_STATE_SETTINGS){settings_menu_input(ui,right?SYSTEM_UI_DOWN:SYSTEM_UI_UP);return true;}
@@ -340,6 +341,7 @@ void ui_cancel(UIContext *ui) {
 }
 
 void ui_toggle_favorite(UIContext *ui, Library *lib) {
+    if(ui && ui->state==UI_STATE_REMOVE_GAME)return;
     if(ui && ui->state==UI_STATE_UNINSTALL){ui->uninstall_restore=!ui->uninstall_restore;return;}
     if (!ui || !lib) return;
     if(store_ui_input(ui,STORE_UI_REFRESH))return;
@@ -353,6 +355,7 @@ void ui_toggle_favorite(UIContext *ui, Library *lib) {
 
 void ui_open_options(UIContext *ui) {
     if (!ui) return;
+    if(ui->state==UI_STATE_PLUGIN_CATALOG){store_autoplugin_request(-1);return;}
     if(store_ui_input(ui,STORE_UI_INFO))return;
     if (ui->state == UI_STATE_HOME) {
         ui->state=UI_STATE_GAME_SUPPORT;ui->game_option=0;ui->game_result=0;
@@ -361,7 +364,7 @@ void ui_open_options(UIContext *ui) {
 
 void ui_open_quick_menu(UIContext *ui) {
     if (!ui) return;
-    if(ui->state==UI_STATE_GAME_SUPPORT || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS)return;
+    if(ui->state==UI_STATE_SYSTEM_APPS || ui->state==UI_STATE_PLUGIN_CATALOG || ui->state==UI_STATE_REMOVE_GAME || ui->state==UI_STATE_GAME_SUPPORT || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS)return;
     if (ui->state == UI_STATE_QUICK_MENU) {
         ui->state = UI_STATE_HOME;
     } else {
@@ -797,7 +800,7 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
         render_draw_text(46,126,0xFF9DB5CE,.65f,"O: categorias  |  Cima / Baixo: escolher");
         int position=settings_group_position(ui->settings_group,ui->settings_index);
         int first=position>5?position-5:0;
-        const char*local[]={"Som do VitaStation","Loja externa predefinida","Animações do launcher","Voltar ao início","Iniciar VitaStation com a consola","Gerir plugins","Comportamento do botão PS","Desligar ou reiniciar","Instalar DLCs com o jogo","Cor do ambiente","Cor das letras","Alto contraste","Versão da aplicação","Atualizações do VitaStation","Desinstalar VitaStation e carátulas"};
+        const char*local[]={"Som do VitaStation","Loja externa predefinida","Animações do launcher","Voltar ao início","Iniciar VitaStation com a consola","Gerir plugins","Comportamento do botão PS","Desligar ou reiniciar","Instalar DLCs com o jogo","Cor do ambiente","Cor das letras","Alto contraste","Versão da aplicação","Atualizações do VitaStation","Desinstalar VitaStation e carátulas","Aplicacoes da consola","Catalogo AutoPlugin II","Apollo: gestao de saves"};
         int total=settings_group_count(ui->settings_group);
         for(int row=first;row<first+7 && row<total;row++){
             int i=settings_group_item(ui->settings_group,row),y=164+(row-first)*46;bool sel=i==ui->settings_index;
@@ -837,10 +840,10 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
             if(ui->settings_index>=12){
                 UpdateStatus status;store_update_status(&status);
                 render_draw_text(465,220,COLOR_WHITE,1.0f,VS_VERSION_LABEL);
-                draw_title(465,270,.8f,ui->settings_index==12?"Desenvolvido por Carlos Tuga":ui->settings_index==14?"Remove o launcher e todas as caratulas":status.message,48);
-                if(ui->settings_index==13 && status.phase==3){render_draw_text(465,410,COLOR_WHITE,.65f,"ux0:data/VitaStation/updates/VitaStation.vpk");}
+                draw_title(465,270,.8f,ui->settings_index==12?"Desenvolvido por Carlos Tuga":ui->settings_index==14?"Remove o launcher e todas as caratulas":ui->settings_index==15?"Musica, video, fotografias, trofeus e navegador":ui->settings_index==16?"Procurar e obter plugins sem abrir AutoPlugin II":ui->settings_index==17?"Dados de patches e gestao avancada de saves":status.message,48);
+                if(ui->settings_index==13 && status.phase==3){render_draw_text(465,410,COLOR_WHITE,.65f,"A abrir o instalador automatico...");}
                 render_draw_text(465,322,0xFFB7C9E0,.65f,"GitHub: CarlosTuga/VitaStation (inclui betas)");
-                render_draw_text(465,370,COLOR_WHITE,.7f,ui->settings_index==14?"X: abrir confirmacao de desinstalacao":"X: procurar / descarregar; instalar no VitaShell");
+                render_draw_text(465,370,COLOR_WHITE,.7f,ui->settings_index==14?"X: abrir confirmacao de desinstalacao":ui->settings_index>=15?"X: abrir a integracao":"X: procurar, descarregar e instalar automaticamente");
             }else{
             render_draw_text(520,165,0xFF9EBDDF,.75f,"VitaStation");
             draw_title(520,215,.95f,local[ui->settings_index],31);

@@ -1,9 +1,5 @@
-# Pacotes 1.6.3 beta
+# Pacotes 1.6.4 beta
 
-Instalar o VPK no VitaShell e abrir o VitaStation para criar o backup antes das alteracoes a plugins. Limpeza adicional opcional, preservando anteriores/atualizados e Adrenaline. Novas opcoes no Triangulo e Atualizar Biblioteca no Start. Rede e desinstalacao fisica pendentes de teste. Instrucoes completas em VitaStation/REVISAO_1.6.3_BETA.md.
-
-Caratulas 1.04 permanecem na Release v1.6.0-beta.
+Instalar esta versão pelo VitaShell, abrir e reiniciar uma vez para carregar o novo plugin. Atualizações futuras usam o instalador automático. Teste físico pendente. Ver VitaStation/REVISAO_1.6.4_BETA.md. Carátulas 1.04 continuam na Release v1.6.0-beta.
 
 Releases: https://github.com/CarlosTuga/VitaStation/releases
-
-ZIP: fontes/licencas; SHA256SUMS.txt: pacotes atuais.

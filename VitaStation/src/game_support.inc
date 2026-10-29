@@ -45,7 +45,8 @@ static void update_game(const AppItem&app){
  auto path="ux0:patch/"+id+"/sce_sys/param.sfo";if(!pkgi_file_exists(path))path="ux0:app/"+id+"/sce_sys/param.sfo";auto installed=sfo_string(pkgi_load(path),"APP_VER");if(!installed.empty() && native_version(version)<=native_version(installed)){game_message("O jogo ja tem a versao "+installed+".");return;}
  if(url.rfind("http://",0)==0)url.replace(0,7,"https://");
  auto host_end=url.find('/',8);auto host=url.substr(8,host_end-8);if(url.rfind("https://",0)!=0 || host.size()<16 || host.compare(host.size()-16,16,".playstation.net"))throw std::runtime_error("Origem de atualizacao nao reconhecida.");
- CatalogPackage p{};p.type=CATALOG_GAMES;snprintf(p.title_id,sizeof(p.title_id),"%s",id.c_str());snprintf(p.name,sizeof(p.name),"Atualizacao %s | %.150s",version.c_str(),app.title);snprintf(p.url,sizeof(p.url),"%s",url.c_str());snprintf(p.content_id,sizeof(p.content_id),"%s",app.content_id);submit_system_package(p);game_message("Atualizacao "+version+" enviada ao LiveArea.");
+ CatalogPackage p{};p.type=CATALOG_GAMES;snprintf(p.title_id,sizeof(p.title_id),"%s",id.c_str());snprintf(p.name,sizeof(p.name),"Atualizacao %s | %.150s",version.c_str(),app.title);snprintf(p.url,sizeof(p.url),"%s",url.c_str());snprintf(p.content_id,sizeof(p.content_id),"%s",app.content_id);if(strlen(p.content_id)<16)throw std::runtime_error("Content ID do jogo indisponivel para instalacao local.");
+ game_message("A descarregar e instalar a atualizacao "+version+". Mantem o VitaStation aberto.");run_job(p,true);installation_mark_dirty();game_message("Atualizacao "+version+" instalada automaticamente.");
 }
 static void find_mods(const AppItem&app){
  auto bytes=https_bytes(std::string("https://api.github.com/search/repositories?q=")+app.title_id+"+vita+in:readme+fork:false&per_page=5",1024*1024);std::string text(bytes.begin(),bytes.end());cJSON*j=cJSON_Parse(text.c_str());if(!j)throw std::runtime_error("Resposta de mods invalida.");lock();game_status.mod_count=0;const cJSON*item;cJSON_ArrayForEach(item,cJSON_GetObjectItemCaseSensitive(j,"items")){auto*full=cJSON_GetObjectItemCaseSensitive(item,"full_name");if(!cJSON_IsString(full) || game_status.mod_count>=5)continue;int i=game_status.mod_count++;mod_repos[i]=full->valuestring;snprintf(game_status.mods[i],128,"%s",full->valuestring);}bool found=game_status.mod_count>0;unlock();cJSON_Delete(j);game_message(found?"Repositorios encontrados. Setas escolhem; X tenta instalar ZIP rePatch verificado.":"Nenhum repositorio de mods encontrado para esta ID.");
@@ -58,7 +59,7 @@ static void install_mod(const AppItem&app,int index){
  auto stage=root+"-payload";pkgi_delete_dir(stage);pkgi_rename(source,stage);prepare_mods();auto dest="ux0:rePatch/"+id;pkgi_mkdirs(dest.c_str());/* Refuse to overwrite existing mods automatically. */std::vector<MergeFile>files;collect_merge(stage,"",files);for(auto&f:files)if(pkgi_get_inode_type(dest+"/"+f.relative)!=InodeType::NotExist)throw std::runtime_error("Ja existe um mod nesse caminho; preservado. Remove o conflito manualmente.");merge_psp_dlc(stage,dest);pkgi_delete_dir(root);game_message("Mod rePatch instalado. Reinicia para carregar o plugin se foi adicionado.");
  }catch(...){pkgi_rm(archive.c_str());throw;}
 }
-static bool game_submit_dlc(const CatalogPackage*p,void*){try{submit_system_package(*p);return true;}catch(const std::exception&e){vs_log("game-content-dlc",e.what(),-1);return false;}}
+static bool game_submit_dlc(const CatalogPackage*p,void*){try{game_message(std::string("A descarregar e instalar DLC: ")+p->name);run_job(*p);installation_mark_dirty();return true;}catch(const std::exception&e){vs_log("game-content-dlc",e.what(),-1);return false;}}
 static void all_game_content(const AppItem&app){
  if(strncmp(app.title_id,"PCS",3))throw std::runtime_error("Conteudo automatico disponivel para jogos nativos PS Vita.");
  std::string update;try{update_game(app);lock();update=game_status.message;unlock();}catch(const std::exception&e){update=std::string("Atualizacao: ")+e.what();}
@@ -66,16 +67,35 @@ static void all_game_content(const AppItem&app){
  if(!catalog_load_matching_auto(&catalog,CATALOG_DLCS,app.title_id)){catalog_clear(&catalog);game_message(update+" | Catalogo DLC indisponivel.");return;}
  CatalogPackage game{};game.type=CATALOG_GAMES;game.auto_dlcs=true;snprintf(game.title_id,sizeof(game.title_id),"%.9s",app.title_id);snprintf(game.content_id,sizeof(game.content_id),"%s",app.content_id);
  auto result=dlc_plan_run(&game,&catalog,game_submit_dlc,[](void*){return stop_worker.load() || cancel_job.load();},nullptr);catalog_clear(&catalog);
- game_message(fmt::format("DLCs no LiveArea: {} aceites, {} falhas, {} indisponiveis. {}",result.installed,result.failed,result.unavailable,update));
+ game_message(fmt::format("DLCs instalados: {} concluidos, {} falhas, {} indisponiveis. {}",result.installed,result.failed,result.unavailable,update));
+}
+static void install_game_cheats(const AppItem&app){if(strncmp(app.title_id,"PCS",3))throw std::runtime_error("Base VitaCheat disponivel para IDs nativas PS Vita.");auto bytes=https_bytes(std::string("https://raw.githubusercontent.com/r0ah/vitacheat/master/db/")+app.title_id+".psv",2*1024*1024);std::string text(bytes.begin(),bytes.end());if(text.find(app.title_id)==std::string::npos || text.find("_V")==std::string::npos)throw std::runtime_error("Cheats nao encontrados para esta ID.");for(size_t at=0;(at=text.find("_V1",at))!=std::string::npos;at+=3)text[at+2]='0';prepare_cheats();save_support(std::string("ux0:vitacheat/db/")+app.title_id+".psv",std::vector<uint8_t>(text.begin(),text.end()));game_message("Cheats guardados DESATIVADOS. Reinicia se instalou VitaCheat; ativa no jogo.");}
+static void remove_media_tree(const std::string&root,const std::string&path,unsigned depth=0){
+ if(depth>16 || (path!=root && path.rfind(root+"/",0)!=0) || !safe_relative(path.substr(path.find(':')+1)))throw std::runtime_error("Caminho de remocao recusado.");
+ auto t=pkgi_get_inode_type(path);if(t==InodeType::NotExist)return;if(t!=InodeType::Directory){check(sceIoRemove(path.c_str()),"Remove game media");return;}
+ for(auto&name:pkgi_list_dir_contents(path)){if(!safe_relative(name) || name.find('/')!=std::string::npos)throw std::runtime_error("Ficheiro de jogo invalido.");remove_media_tree(root,path+"/"+name,depth+1);}check(sceIoRmdir(path.c_str()),"Remove game directory");
+}
+static void uninstall_game(const AppItem&app){
+ if(!game_remove_id_allowed(app.title_id) || app.type==APP_TYPE_SYSTEM)throw std::runtime_error("Esta aplicacao esta protegida.");
+ char target[256];bool directory=false;bool media=game_remove_media_target(app.media_path,target,sizeof(target),&directory);
+ if(app.media_raw && !media)throw std::runtime_error("Caminho ISO/PBP nao autorizado; nada foi removido.");
+ if(!app.media_raw){init_services();check(scePromoterUtilityDeletePkg(app.title_id),"Uninstall game");}
+ if(media){if(directory)remove_media_tree(target,target);else if(pkgi_get_inode_type(target)!=InodeType::NotExist)check(sceIoRemove(target),"Remove ISO");}
+ installation_mark_dirty();game_message("Jogo removido. A atualizar a biblioteca...");
 }
 static void run_game_request(const AppItem&app,int action,int selection){
- if(action==5){cancel_job=false;all_game_content(app);return;}
- if(action==0){update_game(app);return;}
- if(action==1){if(strncmp(app.title_id,"PCS",3))throw std::runtime_error("Base VitaCheat disponivel para IDs nativas PS Vita.");auto bytes=https_bytes(std::string("https://raw.githubusercontent.com/r0ah/vitacheat/master/db/")+app.title_id+".psv",2*1024*1024);std::string text(bytes.begin(),bytes.end());if(text.find(app.title_id)==std::string::npos || text.find("_V")==std::string::npos)throw std::runtime_error("Cheats nao encontrados para esta ID.");for(size_t at=0;(at=text.find("_V1",at))!=std::string::npos;at+=3)text[at+2]='0';prepare_cheats();save_support(std::string("ux0:vitacheat/db/")+app.title_id+".psv",std::vector<uint8_t>(text.begin(),text.end()));game_message("Cheats guardados DESATIVADOS. Reinicia se instalou VitaCheat; ativa no jogo.");return;}
- if(action==2){lock();bool known=game_status.mod_count>0 && !strcmp(game_request.title_id,app.title_id);unlock();if(known)install_mod(app,selection);else find_mods(app);return;}
- if(action==3){fetch_game_background(app.title_id);game_message("Imagem guardada; usada como fundo quando falta arte local.");return;}
- if(action==4){prepare_cheats();prepare_mods();game_message("Plugins preparados; anteriores preservados. Reinicia a consola.");}
+ cancel_job=false;
+ if(action==0){all_game_content(app);return;}
+ if(action==1){
+  lock();bool known=game_status.mod_count>0;unlock();
+  if(known){install_mod(app,selection);return;}
+  std::string cheats;try{install_game_cheats(app);cheats="Cheats guardados desativados. ";}catch(const std::exception&e){cheats=std::string("Cheats: ")+e.what()+". ";}
+  try{apollo_data_for_game(app);cheats+="Dados Apollo em cache. ";}catch(const std::exception&e){vs_log("apollo-data",e.what(),-1);}
+  try{find_mods(app);lock();std::string mods=game_status.message;unlock();game_message(cheats+mods);}catch(const std::exception&e){game_message(cheats+"Mods: "+e.what());}return;
+ }
+ if(action==2){prepare_cheats();prepare_mods();game_message("Plugins preparados; anteriores preservados. Reinicia a consola.");return;}
+ if(action==3)uninstall_game(app);
 }
 extern "C" void store_game_status(GameSupportStatus*s){if(!s)return;if(lock_id<0){*s={};return;}lock();*s=game_status;if(!s->message[0])snprintf(s->message,sizeof(s->message),"Escolhe uma funcao para o jogo selecionado.");unlock();}
-extern "C" void store_game_request(const AppItem*app,int action,int selection){if(!app || !game_id_ok(app->title_id) || cover_thread_id<0)return;lock();if(game_status.busy || update_busy || progress.active || count){unlock();return;}if(strcmp(game_request.title_id,app->title_id)){game_status.mod_count=0;for(auto&r:mod_repos)r.clear();}game_request=*app;game_action=action;game_selection=selection;game_pending=true;game_status.busy=true;snprintf(game_status.message,sizeof(game_status.message),"A procurar informacao para %s...",app->title_id);unlock();sceKernelSignalSema(cover_wake_id,1);}
+extern "C" void store_game_request(const AppItem*app,int action,int selection){if(!app || !game_id_ok(app->title_id) || cover_thread_id<0)return;lock();if(game_status.busy || update_busy || integration_status.busy || progress.active || count){unlock();return;}if(strcmp(game_request.title_id,app->title_id)){game_status.mod_count=0;for(auto&r:mod_repos)r.clear();}game_request=*app;game_action=action;game_selection=selection;game_pending=true;game_status.busy=true;snprintf(game_status.message,sizeof(game_status.message),"A procurar informacao para %s...",app->title_id);unlock();sceKernelSignalSema(cover_wake_id,1);}
 extern "C" void store_request_background(const char*id){if(!game_id_ok(id) || strncmp(id,"PCS",3) || cover_thread_id<0)return;lock();for(auto&known:background_history)if(!strcmp(known,id)){unlock();return;}if(background_request[0]){unlock();return;}snprintf(background_history[background_next++%64],32,"%s",id);snprintf(background_request,sizeof(background_request),"%s",id);unlock();sceKernelSignalSema(cover_wake_id,1);}

@@ -3,17 +3,30 @@
 #include "system_info.h"
 #include "render.h"
 #include <string.h>
+static bool available[512],availability_ready=false;
 int settings_group_for(int index){
  if(index<0)return SETTINGS_ROOT;
  if(index<UI_LOCAL_SETTINGS_COUNT)return SETTINGS_VITASTATION;
- const SystemFeature*f=system_feature_get((size_t)(index-UI_LOCAL_SETTINGS_COUNT));if(!f)return SETTINGS_ROOT;
+ const SystemFeature*f=system_feature_get((size_t)(index-UI_LOCAL_SETTINGS_COUNT));if(!f || f->control<0)return SETTINGS_ROOT;
+ if(availability_ready && (size_t)(index-UI_LOCAL_SETTINGS_COUNT)<512 && !available[index-UI_LOCAL_SETTINGS_COUNT])return SETTINGS_ROOT;
  if((f->control>=SYS_ACTION_LIBRARY && f->control!=SYS_ACTION_SUSPEND) || f->control==SYS_INFO_DOWNLOADS || f->control==SYS_INFO_LOG || f->control==SYS_INFO_LICENSES || !strcmp(f->category,"Integração do launcher") || !strcmp(f->category,"VitaStation"))return SETTINGS_VITASTATION;
  return SETTINGS_CONSOLE;
 }
 int settings_group_count(int group){int count=0;for(int i=0;i<UI_LOCAL_SETTINGS_COUNT+(int)system_feature_count();i++)if(settings_group_for(i)==group)count++;return count;}
 int settings_group_item(int group,int position){for(int i=0;i<UI_LOCAL_SETTINGS_COUNT+(int)system_feature_count();i++)if(settings_group_for(i)==group && position--==0)return i;return -1;}
 int settings_group_position(int group,int raw){int position=0;for(int i=0;i<UI_LOCAL_SETTINGS_COUNT+(int)system_feature_count();i++)if(settings_group_for(i)==group){if(i==raw)return position;position++;}return -1;}
-void settings_menu_open(UIContext*u){u->state=UI_STATE_SETTINGS;u->settings_group=SETTINGS_ROOT;u->settings_root_index=0;}
+static void refresh_available(void){
+ availability_ready=false;for(size_t i=0;i<system_feature_count() && i<512;i++){
+  const SystemFeature*f=system_feature_get(i);available[i]=f && f->control>=0;
+#if defined(__vita__)
+  if(available[i] && settings_group_for((int)i+UI_LOCAL_SETTINGS_COUNT)==SETTINGS_CONSOLE){
+   if(f->control>=100 && f->control<200){char lines[6][128];available[i]=system_info_read(f->control,lines)>0;}
+   else if(f->control==SYS_VOLUME || f->control==SYS_BRIGHTNESS){SystemControlResult r=system_control_read((SystemControl)f->control);available[i]=r.status==SYS_APPLIED || r.status==SYS_BRIGHTNESS_SAVED;}
+  }
+#endif
+ }availability_ready=true;
+}
+void settings_menu_open(UIContext*u){refresh_available();u->state=UI_STATE_SETTINGS;u->settings_group=SETTINGS_ROOT;u->settings_root_index=0;}
 bool settings_menu_input(UIContext*u,SystemUICommand command){
  if(u->state!=UI_STATE_SETTINGS)return false;
  if(u->settings_group==SETTINGS_ROOT){
@@ -83,7 +96,7 @@ void settings_menu_root(UIContext*u){
 void settings_option_icon(int x,int y,int size,int raw,uint32_t color){
  enum {GEAR,NET,PERSON,TROPHY,BT,SOUND,DISPLAY,CLOCK,ACCESS,POWER,STORAGE,LIBRARY,STORE,DOWNLOAD,PICTURE,CONTROL,PLUGIN,REFRESH,PALETTE,TEXT,CONTRAST};
  int kind=GEAR;
- if(raw<UI_LOCAL_SETTINGS_COUNT){const int local[]={SOUND,STORE,PICTURE,LIBRARY,POWER,PLUGIN,CONTROL,POWER,DOWNLOAD,PALETTE,TEXT,CONTRAST,GEAR,DOWNLOAD,STORAGE};if(raw>=0)kind=local[raw];}
+ if(raw<UI_LOCAL_SETTINGS_COUNT){const int local[]={SOUND,STORE,PICTURE,LIBRARY,POWER,PLUGIN,CONTROL,POWER,DOWNLOAD,PALETTE,TEXT,CONTRAST,GEAR,DOWNLOAD,STORAGE,LIBRARY,PLUGIN,PERSON};if(raw>=0)kind=local[raw];}
  else{const SystemFeature*f=system_feature_get((size_t)(raw-UI_LOCAL_SETTINGS_COUNT));if(f){
   if(f->control==SYS_ACTION_REFRESH)kind=REFRESH;
   else if(f->control==SYS_ACTION_PLUGINS || f->control==SYS_ACTION_PLUGIN_PREPARE)kind=PLUGIN;

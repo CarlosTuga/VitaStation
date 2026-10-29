@@ -1,5 +1,5 @@
 #ifndef VS_VERSION_H
 #define VS_VERSION_H
-#define VS_VERSION "1.6.3"
-#define VS_VERSION_LABEL "1.6.3 beta"
+#define VS_VERSION "1.6.4"
+#define VS_VERSION_LABEL "1.6.4 beta"
 #endif

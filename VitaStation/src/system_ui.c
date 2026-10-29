@@ -1,3 +1,5 @@
+#include "integrations.h"
+#include "launcher.h"
 #include "game_support.h"
 #include "safety_backup.h"
 #include "maintenance.h"
@@ -41,6 +43,9 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
             }
             if(f && f->control>=SYS_INFO_NETWORK){u->information_page=f->control;u->information_count=system_info_read(u->information_page,u->information_lines);u->information_poll=1;u->state=UI_STATE_SYSTEM_INFO;return true;}
         }
+        if(u->settings_index==15){u->native_count=system_apps_scan(u->native_apps,16);u->native_index=0;u->state=UI_STATE_SYSTEM_APPS;return true;}
+        if(u->settings_index==16){u->online_plugin_index=0;u->state=UI_STATE_PLUGIN_CATALOG;store_autoplugin_request(-1);return true;}
+        if(u->settings_index==17){store_apollo_request();return true;}
         if(u->settings_index==14){u->uninstall_restore=false;u->uninstall_scroll=0;u->uninstall_count=safety_backup_plan(u->uninstall_lines,48);u->power_index=0;u->state=UI_STATE_UNINSTALL;return true;}
         if(u->settings_index==12){ui_show_toast(u,"VitaStation " VS_VERSION_LABEL);return true;}
         if(u->settings_index==13){store_update_request();return true;}
@@ -61,14 +66,30 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
             return true;
         }
     }
+    if(u->state==UI_STATE_SYSTEM_APPS || u->state==UI_STATE_PLUGIN_CATALOG){
+        if(command==SYSTEM_UI_CANCEL){u->state=UI_STATE_SETTINGS;return true;}
+        IntegrationStatus online;store_integration_status(&online);int*selected=u->state==UI_STATE_SYSTEM_APPS?&u->native_index:&u->online_plugin_index;int count=u->state==UI_STATE_SYSTEM_APPS?(int)u->native_count:(int)online.count;
+        if(*selected>=count)*selected=count?count-1:0;
+        if(command==SYSTEM_UI_UP && *selected>0)(*selected)--;
+        if(command==SYSTEM_UI_DOWN && *selected+1<count)(*selected)++;
+        if(command==SYSTEM_UI_CONFIRM && count){if(u->state==UI_STATE_SYSTEM_APPS){if(launcher_launch_app(u->native_apps[*selected].title_id))u->exit_requested=true;else ui_show_toast(u,launcher_error_message());}else store_autoplugin_request(*selected);}
+        return true;
+    }
     if(u->state==UI_STATE_GAME_SUPPORT){
         if(command==SYSTEM_UI_CANCEL){u->state=UI_STATE_HOME;return true;}
         if(command==SYSTEM_UI_UP && u->game_option>0)u->game_option--;
-        if(command==SYSTEM_UI_DOWN && u->game_option<5)u->game_option++;
+        if(command==SYSTEM_UI_DOWN && u->game_option<3)u->game_option++;
         GameSupportStatus status;store_game_status(&status);
         if(command==SYSTEM_UI_LEFT && u->game_result>0)u->game_result--;
         if(command==SYSTEM_UI_RIGHT && u->game_result+1<status.mod_count)u->game_result++;
-        if(command==SYSTEM_UI_CONFIRM && lib){AppItem*app=ui_selected_app(u,lib);if(app)store_game_request(app,u->game_option,u->game_result);else ui_show_toast(u,"Seleciona um jogo na biblioteca.");}
+        if(command==SYSTEM_UI_CONFIRM && lib){AppItem*app=ui_selected_app(u,lib);if(app){if(u->game_option==3){snprintf(u->remove_game_id,sizeof(u->remove_game_id),"%s",app->title_id);snprintf(u->remove_game_title,sizeof(u->remove_game_title),"%s",app->title);u->power_index=0;u->state=UI_STATE_REMOVE_GAME;}else store_game_request(app,u->game_option,u->game_result);}else ui_show_toast(u,"Seleciona um jogo na biblioteca.");}
+        return true;
+    }
+    if(u->state==UI_STATE_REMOVE_GAME){
+        if(command==SYSTEM_UI_CANCEL){u->state=UI_STATE_GAME_SUPPORT;return true;}
+        if(command==SYSTEM_UI_LEFT || command==SYSTEM_UI_UP)u->power_index=0;
+        if(command==SYSTEM_UI_RIGHT || command==SYSTEM_UI_DOWN)u->power_index=1;
+        if(command==SYSTEM_UI_CONFIRM){if(!u->power_index)u->state=UI_STATE_GAME_SUPPORT;else if(store_busy())ui_show_toast(u,"Aguarda a conclusao das descargas.");else if(lib){for(int i=0;i<lib->count;i++)if(!strcmp(lib->items[i].title_id,u->remove_game_id)){store_game_request(&lib->items[i],3,0);break;}u->state=UI_STATE_GAME_SUPPORT;}}
         return true;
     }
     if(u->state==UI_STATE_UNINSTALL){
@@ -117,7 +138,9 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
 bool system_ui_touch(UIContext*u,Library*lib,int x,int y){
     if(!u)return false;
     if(settings_menu_touch(u,lib,x,y))return true;
-    if(u->state==UI_STATE_GAME_SUPPORT){if(x<435 && y>=158 && y<398){int option=(y-158)/40;if(option==u->game_option)system_ui_input(u,lib,SYSTEM_UI_CONFIRM);else u->game_option=option;}return true;}
+    if(u->state==UI_STATE_SYSTEM_APPS || u->state==UI_STATE_PLUGIN_CATALOG){if(y>=145 && y<397){int*selection=u->state==UI_STATE_SYSTEM_APPS?&u->native_index:&u->online_plugin_index;int first=*selection>4?*selection-4:0;*selection=first+(y-145)/42;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
+    if(u->state==UI_STATE_REMOVE_GAME){if(y>=345 && y<410 && x>=100 && x<860){u->power_index=x>=500;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
+    if(u->state==UI_STATE_GAME_SUPPORT){if(x<435 && y>=158 && y<318){int option=(y-158)/40;if(option==u->game_option)system_ui_input(u,lib,SYSTEM_UI_CONFIRM);else u->game_option=option;}return true;}
     if(u->state==UI_STATE_UNINSTALL){if(y>=350 && y<415 && x>=100 && x<860){u->power_index=x>=500;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
     if(u->state==UI_STATE_SYSTEM_INFO){if(y>=410 && y<470)system_ui_input(u,lib,SYSTEM_UI_CONFIRM);return true;}
     if(u->state==UI_STATE_POWER){if(y>=280 && y<360 && x>=80 && x<880){u->power_index=(x-80)/270;if(u->power_index>2)u->power_index=2;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
@@ -129,16 +152,31 @@ static void clipped(int x,int y,const char*text,size_t limit,float scale,uint32_
     char out[128];size_t n=strlen(text);if(n>limit)n=limit;while(n && (((unsigned char)text[n]&0xc0)==0x80))--n;memcpy(out,text,n);out[n]=0;if(strlen(text)>n)strcat(out,"...");render_draw_text(x,y,color,scale,out);
 }
 bool system_ui_render(UIContext*u){
+    if(u->state==UI_STATE_SYSTEM_APPS || u->state==UI_STATE_PLUGIN_CATALOG){
+        bool native=u->state==UI_STATE_SYSTEM_APPS;IntegrationStatus status;store_integration_status(&status);int selected=native?u->native_index:u->online_plugin_index,count=native?(int)u->native_count:(int)status.count,first=selected>4?selected-4:0;
+        render_fill_rect(0,60,960,444,0xFF111827);render_draw_text(45,112,COLOR_WHITE,1.35f,native?"Aplicacoes da consola":"AutoPlugin II | Catalogo integrado");
+        for(int row=first;row<count && row<first+6;row++){int y=170+(row-first)*42;if(row==selected)render_fill_rounded_rect(35,y-25,885,38,10,0xFF315477);OnlinePlugin p;const char*name=native?u->native_apps[row].title:(store_autoplugin_item(row,&p)?p.name:"");clipped(50,y,name,90,.8f,COLOR_WHITE);}
+        if(!count)render_draw_text(50,235,COLOR_WHITE,.8f,native?"Nao foram encontradas aplicacoes compativeis.":"A procurar o catalogo / sem dados carregados.");
+        if(!native){clipped(50,455,status.message,110,.65f,0xFFB8C7DC);OnlinePlugin p;if(store_autoplugin_item(selected,&p))render_draw_text(50,420,0xFFB8C7DC,.7f,p.automatic?"Instalacao automatica simples disponivel. Reiniciar depois.":"Transferencia verificada; configuracao especial ainda sem adaptador.");}
+        render_draw_text(50,490,0xFFB8C7DC,.65f,native?"X: abrir | O: voltar":"X: obter plugin | Triangulo: atualizar catalogo | O: voltar");return true;
+    }
     if(u->state==UI_STATE_GAME_SUPPORT){
         render_fill_rect(0,60,960,444,0xFF111827);render_draw_text(50,118,COLOR_WHITE,1.4f,"Opcoes do jogo");
-        const char*names[]={"Atualizacoes do jogo","Procurar / descarregar cheats","Procurar / descarregar mods","Descarregar imagem de fundo","Preparar plugins de cheats/mods","Descarregar conteudo do jogo"};
-        for(int i=0;i<6;i++){if(i==u->game_option)render_fill_rounded_rect(40,158+i*40,395,36,12,0xFF315477);render_draw_text(55,183+i*40,COLOR_WHITE,.82f,names[i]);}
+        const char*names[]={"Atualizar jogo e instalar DLCs","Procurar cheats e mods","Preparar plugins de cheats/mods","Desinstalar jogo"};
+        for(int i=0;i<4;i++){if(i==u->game_option)render_fill_rounded_rect(40,158+i*40,395,36,12,0xFF315477);render_draw_text(55,183+i*40,COLOR_WHITE,.82f,names[i]);}
         GameSupportStatus status;store_game_status(&status);for(size_t row=0,at=0;row<4 && status.message[at];row++){
             size_t n=strlen(status.message+at);if(n>50)n=50;while(n && (((unsigned char)status.message[at+n]&0xc0)==0x80))n--;if(!n)break;char line[64];memcpy(line,status.message+at,n);line[n]=0;render_draw_text(465,190+(int)row*27,COLOR_WHITE,.72f,line);at+=n;
         }
         if(status.mod_count && u->game_result<status.mod_count)clipped(465,315,status.mods[u->game_result],52,.72f,0xFFB8C7DC);
         render_draw_text(465,355,0xFFB8C7DC,.68f,"Mods: Esquerda/Direita escolhe resultado.");
         render_draw_text(50,465,0xFFB8C7DC,.75f,"X: procurar / descarregar  |  Cima/Baixo: opcao  |  O: voltar");return true;
+    }
+    if(u->state==UI_STATE_REMOVE_GAME){
+        render_fill_rect(0,60,960,444,0xFF111827);render_draw_text(55,125,COLOR_WHITE,1.4f,"Desinstalar este jogo?");clipped(55,185,u->remove_game_title,75,.95f,COLOR_WHITE);
+        render_draw_text(55,235,0xFFB8C7DC,.8f,"O sistema pode remover dados associados ao jogo.");
+        render_draw_text(55,275,0xFFB8C7DC,.75f,"ISO/PBP identificado: remove tambem o ficheiro/pasta do jogo.");
+        for(int i=0;i<2;i++){bool selected=u->power_index==i;render_fill_rounded_rect(100+i*400,345,360,65,16,selected?0xFFF2F5FA:0xFF26364D);render_draw_text(140+i*400,385,selected?0xFF172136:COLOR_WHITE,1.0f,i?"Desinstalar":"Cancelar");}
+        render_draw_text(55,465,0xFFB8C7DC,.75f,"Esquerda/Direita: escolher | X: confirmar | O: cancelar");return true;
     }
     if(u->state==UI_STATE_UNINSTALL){
         render_fill_rect(0,60,960,444,0xFF111827);

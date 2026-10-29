@@ -119,6 +119,7 @@ static void find_livearea_background(const char*base,char*out,size_t capacity){
 #endif
 }
 static bool metadata(AppItem*item,const char*root,const char*id){
+    if(!strcmp(id,"VSTUP0001"))return false;
     char bases[3][MAX_PATH_LEN];unsigned count=0;
 #if defined(__vita__)
     /* System appmeta exposes artwork without mounting another title's encrypted PFS. */

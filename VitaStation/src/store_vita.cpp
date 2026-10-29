@@ -1,3 +1,7 @@
+#include "integrations.h"
+#include "game_remove.h"
+#include "self_update.h"
+#include <psp2/appmgr.h>
 #include "game_support.h"
 #include "safety_backup.h"
 #include "plugins.h"
@@ -51,9 +55,12 @@ static std::atomic<bool> stop_worker{false},cancel_job{false};
 static StoreProgress progress{};
 static UpdateStatus update_status{};
 static GameSupportStatus game_status{};
+static IntegrationStatus integration_status{};static std::vector<OnlinePlugin>online_plugins;static std::string autoplugin_commit;
+static bool integration_pending=false,apollo_ready=false;static int integration_action=-1;
 static AppItem game_request{};static int game_action=0,game_selection=0;static bool game_pending=false;
 static char background_request[32]{},background_history[64][32]{};static unsigned background_next=0;
 static std::string mod_repos[5];
+static bool cleanup_pending=false;
 static bool update_pending=false,update_download=false,update_busy=false;
 static CatalogPackage queue[8];
 static char active_content_id[64]{},active_title_id[10]{},active_url[1024]{};
@@ -147,9 +154,9 @@ static void fpkg_hash(const uint8_t*data,size_t size,uint8_t*out){
     uint8_t digest[20],buffer[64]{};SHA1(data,size,digest);memcpy(buffer,digest+4,8);memcpy(buffer+8,digest+4,8);memcpy(buffer+16,digest+12,4);
     buffer[20]=digest[16];buffer[21]=digest[1];buffer[22]=digest[2];buffer[23]=digest[3];memcpy(buffer+24,buffer+16,8);SHA1(buffer,64,digest);memcpy(out,digest,16);
 }
-static void homebrew_head(const std::string&root,const CatalogPackage&p){
+static void homebrew_head(const std::string&root,const CatalogPackage&p,bool allow_self=false){
     auto sfo=pkgi_load(root+"/sce_sys/param.sfo");auto id=sfo_string(sfo,"TITLE_ID");
-    if(id.size()!=9 || id=="VTST00001" || id.compare(0,4,"NPXS")==0 || !std::all_of(id.begin(),id.end(),[](char c){return std::isalnum((unsigned char)c);}))throw std::runtime_error("Invalid or protected homebrew Title ID");
+    if(id.size()!=9 || (!allow_self && id=="VTST00001") || id.compare(0,4,"NPXS")==0 || !std::all_of(id.begin(),id.end(),[](char c){return std::isalnum((unsigned char)c);}))throw std::runtime_error("Invalid or protected homebrew Title ID");
     if(p.title_id[0] && id!=p.title_id)throw std::runtime_error("The package Title ID does not match the catalog");
     auto content=sfo_string(sfo,"CONTENT_ID");if(content.empty())content=fmt::format("EP9000-{}_00-XXXXXXXXXXXXXXXX",id);
     if(content.size()>47)throw std::runtime_error("Invalid content identifier");
@@ -255,7 +262,7 @@ static void merge_psp_dlc(const std::string&root,const std::string&dest){
     }
     pkgi_delete_dir(root);
 }
-static void install_package(const CatalogPackage&p,const std::string&root){
+static void install_package(const CatalogPackage&p,const std::string&root,bool update=false){
     phase(STORE_INSTALLING,"A instalar automaticamente...");
     /* Installation cannot be interrupted halfway through a promoter transaction. */
     if(p.vpk){
@@ -285,10 +292,15 @@ static void install_package(const CatalogPackage&p,const std::string&root){
         const char*base="ux0:temp/game";pkgi_mkdirs(base);auto dest=fmt::format("{}/{}",base,p.title_id);pkgi_rename(root,dest);
         ScePromoterUtilityImportParams args{};snprintf(args.path,sizeof(args.path),"%s",base);snprintf(args.titleid,sizeof(args.titleid),"%s",p.title_id);args.type=SCE_PKG_TYPE_PSM;args.attribute=1;check(scePromoterUtilityPromoteImport(&args),"Install PSM");return;
     }
-    check(scePromoterUtilityPromotePkgWithRif(root.c_str(),1),"Install package");
+    const std::string shallow="ux0:data/vst_pkg";
+    if(pkgi_get_inode_type(shallow)!=InodeType::NotExist)pkgi_rename(shallow,"ux0:data/VitaStation/pkg-staging/native-recovery-"+std::to_string(sceKernelGetProcessTimeWide()));
+    pkgi_rename(root,shallow);
+    int result=update?scePromoterUtilityPromotePkg(shallow.c_str(),1):scePromoterUtilityPromotePkgWithRif(shallow.c_str(),1);
+    if(pkgi_get_inode_type(shallow)!=InodeType::NotExist)pkgi_rename(shallow,root);
+    check(result,update?"Install game update":"Install package");
 }
 #include "store_alive.inc"
-static void run_job(const CatalogPackage&p){
+static void run_job(const CatalogPackage&p,bool update=false){
     init_network();if(p.size_bytes)free_space(p.size_bytes*2);
     const std::string root=fmt::format("ux0:data/VitaStation/pkg-staging/{}",p.type==CATALOG_HOMEBREW?p.cache_key:(p.vpk?p.title_id:p.content_id));
     if(p.type==CATALOG_HOMEBREW && !p.vpk){install_homebrew_payload(p,root);pkgi_delete_dir(root);return;}
@@ -302,7 +314,7 @@ static void run_job(const CatalogPackage&p){
         if(!d.pkgi_download("ux0:",p.content_id,p.url,license,p.digest[0]?digest.data():nullptr))throw std::runtime_error("Package download failed");
     }
     if(cancel_job)throw std::runtime_error("Download canceled");
-    init_services();install_package(p,root);
+    init_services();install_package(p,root,update);
     pkgi_delete_dir(root);pkgi_rm((root+".resume").c_str());
 }
 struct MemoryResponse {std::vector<uint8_t> bytes;size_t limit;};
@@ -336,29 +348,24 @@ static std::vector<uint8_t> https_bytes(const std::string&url,size_t limit){
 }
 #include "update_covers.inc"
 static unsigned submit_system_package(const CatalogPackage&p);
+static void apollo_data_for_game(const AppItem&app);
 #include "game_support.inc"
+#include "integrations.inc"
+#include "self_update_stage.inc"
 static void run_update(bool download){
+    UpdateStatus selected{};
     if(!download){
         auto bytes=https_bytes("https://api.github.com/repos/CarlosTuga/VitaStation/releases?per_page=100",2*1024*1024);
         ensure_update_covers(bytes);
-        UpdateStatus found{};if(!update_select((const char*)bytes.data(),bytes.size(),&found))throw std::runtime_error("Resposta de atualizacoes invalida.");
-        lock();update_status=found;unlock();return;
-    }
-    lock();UpdateStatus selected=update_status;unlock();
-    /* Bound memory and require TLS also after GitHub's asset redirect. */
-    CURL*h=https_client(selected.url);curl_easy_setopt(h,CURLOPT_PROTOCOLS_STR,"https");curl_easy_setopt(h,CURLOPT_REDIR_PROTOCOLS_STR,"https");
-    MemoryResponse data{{},64*1024*1024};curl_easy_setopt(h,CURLOPT_TIMEOUT,600L);curl_easy_setopt(h,CURLOPT_WRITEFUNCTION,memory_write);curl_easy_setopt(h,CURLOPT_WRITEDATA,&data);
-    auto code=curl_easy_perform(h);curl_easy_cleanup(h);if(code!=CURLE_OK)throw std::runtime_error(transfer_error(code,""));
-    if(data.bytes.size()!=selected.size)throw std::runtime_error("Tamanho do VPK incorreto.");
-    unsigned char sum[32];SHA256(data.bytes.data(),data.bytes.size(),sum);char digest[65];for(unsigned i=0;i<32;i++)snprintf(digest+i*2,3,"%02x",sum[i]);
-    if(strcasecmp(digest,selected.digest))throw std::runtime_error("SHA-256 da atualizacao incorreto.");
-    const std::string dir="ux0:data/VitaStation/updates",tmp=dir+"/VitaStation.part",dest=dir+"/VitaStation.vpk";pkgi_mkdirs(dir.c_str());pkgi_save(tmp,data.bytes.data(),data.bytes.size());pkgi_rm(dest.c_str());pkgi_rename(tmp,dest);
-    lock();update_status.phase=3;snprintf(update_status.message,sizeof(update_status.message),"VPK verificado: ux0:data/VitaStation/updates/VitaStation.vpk. Instala no VitaShell.");unlock();
+        if(!update_select((const char*)bytes.data(),bytes.size(),&selected))throw std::runtime_error("Resposta de atualizacoes invalida.");
+        if(selected.phase!=2){lock();update_status=selected;unlock();return;}
+    }else{lock();selected=update_status;unlock();}
+    stage_self_update(selected);
 }
 extern "C" void store_update_status(UpdateStatus*out){if(!out)return;if(lock_id<0){*out={};snprintf(out->message,sizeof(out->message),"Servico de atualizacoes indisponivel.");return;}lock();*out=update_status;if(!out->message[0])snprintf(out->message,sizeof(out->message),"X: procurar atualizacoes no GitHub.");unlock();}
 extern "C" void store_update_request(){
     if(lock_id<0 || cover_thread_id<0)return;
-    lock();if(update_status.phase==1){unlock();return;}if(progress.active || count || game_status.busy){snprintf(update_status.message,sizeof(update_status.message),"Aguarda a fila local antes de atualizar.");unlock();return;}update_busy=true;update_download=update_status.phase==2;update_pending=true;update_status.phase=1;snprintf(update_status.message,sizeof(update_status.message),update_download?"A descarregar e verificar o VPK...":"A procurar atualizacoes...");unlock();sceKernelSignalSema(cover_wake_id,1);
+    lock();if((update_status.phase==1 || update_status.phase==3 || update_status.phase==6)){unlock();return;}if(progress.active || count || game_status.busy || integration_status.busy){snprintf(update_status.message,sizeof(update_status.message),"Aguarda a fila local antes de atualizar.");unlock();return;}update_busy=true;update_download=update_status.phase==2;update_pending=true;update_status.phase=1;snprintf(update_status.message,sizeof(update_status.message),update_download?"A descarregar e verificar o VPK...":"A procurar atualizacoes...");unlock();sceKernelSignalSema(cover_wake_id,1);
 }
 static void refresh_homebrew(){
     auto bytes=https_bytes("https://raw.githubusercontent.com/VegettoSan/PSVitaAlive/main/catalog.json",16*1024*1024);
@@ -410,10 +417,14 @@ static int cover_worker(SceSize,void*){
     while(!stop_worker){
         sceKernelWaitSema(cover_wake_id,1,nullptr);if(stop_worker)break;
         lock();bool updating=update_pending,download=update_download;update_pending=false;unlock();
-        if(updating){try{run_update(download);}catch(const std::exception&e){lock();update_status.phase=5;snprintf(update_status.message,sizeof(update_status.message),"%s",e.what());unlock();}lock();update_busy=false;unlock();}
+        if(updating){try{run_update(download);}catch(const std::exception&e){lock();update_status.phase=5;snprintf(update_status.message,sizeof(update_status.message),"%s",e.what());unlock();}lock();update_busy=update_status.phase==3;unlock();}
         lock();bool game=game_pending;AppItem app=game_request;int action=game_action,selection=game_selection;game_pending=false;char background[32];snprintf(background,sizeof(background),"%s",background_request);background_request[0]=0;unlock();
-        if(game){try{run_game_request(app,action,selection);}catch(const std::exception&e){game_message(e.what());}lock();game_status.busy=false;unlock();}
+        if(game){bool success=true;try{run_game_request(app,action,selection);}catch(const std::exception&e){success=false;game_message(e.what());}lock();game_status.busy=false;if(action==0 || action==3){progress.phase=success?STORE_COMPLETE:STORE_FAILED;++progress.revision;if(success)++progress.completed;snprintf(progress.message,sizeof(progress.message),"%s",game_status.message);}unlock();}
         if(background[0]){try{fetch_game_background(background);}catch(const std::exception&e){vs_log("background",e.what(),-1);}}
+        lock();bool cleanup=cleanup_pending;cleanup_pending=false;unlock();
+        if(cleanup){try{cleanup_updater();}catch(const std::exception&e){vs_log("update-cleanup",e.what(),-1);}lock();update_busy=false;update_status.phase=0;unlock();}
+        lock();bool provider=integration_pending;int provider_action=integration_action;integration_pending=false;unlock();
+        if(provider){try{if(provider_action==-2)prepare_apollo();else if(provider_action<0)refresh_autoplugin();else install_autoplugin(provider_action);}catch(const std::exception&e){integration_message(e.what());}lock();integration_status.busy=false;unlock();}
         lock();bool refresh=homebrew_refresh_pending;homebrew_refresh_pending=false;unlock();
         if(refresh){try{refresh_homebrew();}catch(const std::exception&e){vs_log("homebrew-catalog",e.what(),-1);lock();snprintf(progress.homebrew_error,sizeof(progress.homebrew_error),"%s",e.what());unlock();}}
         lock();if(!cover_count){unlock();continue;}
@@ -499,7 +510,7 @@ extern "C" bool store_enqueue(const CatalogPackage*p,char*error,size_t size){
     else{
         if(!p->vpk && p->type!=CATALOG_HOMEBREW)return enqueue_system_bundle(*p,error,size);
         lock();
-        if(update_busy || game_status.busy)message="Atualizacao ativa; aguarda a conclusao.";
+        if(update_busy || game_status.busy || integration_status.busy)message="Atualizacao ativa; aguarda a conclusao.";
         else if(count>=8)message="A fila de descargas esta cheia.";
         else{
             for(unsigned i=0;i<count;i++)if(!strcmp(queue[(first+i)%8].url,p->url))message="O item ja esta na fila.";
@@ -512,7 +523,7 @@ extern "C" bool store_enqueue(const CatalogPackage*p,char*error,size_t size){
     return false;
 }
 extern "C" void store_progress(StoreProgress*p){if(!p)return;if(lock_id<0){*p={};return;}lock();*p=progress;unlock();}
-extern "C" bool store_busy(){StoreProgress p{};store_progress(&p);UpdateStatus u{};store_update_status(&u);GameSupportStatus g{};store_game_status(&g);return p.active || p.queued || u.phase==1 || g.busy;}
+extern "C" bool store_busy(){StoreProgress p{};store_progress(&p);UpdateStatus u{};store_update_status(&u);GameSupportStatus g{};store_game_status(&g);IntegrationStatus provider{};store_integration_status(&provider);return p.active || p.queued || u.phase==1 || u.phase==3 || u.phase==6 || g.busy || provider.busy;}
 extern "C" void store_retry_covers(){if(lock_id<0)return;lock();memset(cover_history,0,sizeof(cover_history));cover_history_next=0;progress.covers_failed=0;progress.cover_error[0]=0;unlock();}
 extern "C" void store_request_image(CatalogType type,const char*id,const char*url){
     if(offline_covers)return; /* Permanent library: no network request, deletion or expiry. */

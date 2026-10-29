@@ -7,6 +7,7 @@
 #define BTN_VOLUME_UP (1 << 12)
 #define BTN_VOLUME_DOWN (1 << 13)
 #define BTN_POWER (1 << 14)
+#define BTN_PS (1 << 15)
 
 #define BTN_UP        (1 << 0)
 #define BTN_DOWN      (1 << 1)

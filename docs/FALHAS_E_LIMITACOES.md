@@ -1,3 +1,5 @@
+> Estado atual: **1.6.4 beta**. Ver [revisão completa](../VitaStation/REVISAO_1.6.4_BETA.md) para funções, validação e limitações; secções de versões anteriores são históricas.
+
 # Falhas, limitações e validação pendente
 
 Estado de referência: VitaStation 1.6.3 beta e Carátulas de loja 1.04. Os relatórios antigos nas subpastas são históricos; não prevalecem sobre este estado.

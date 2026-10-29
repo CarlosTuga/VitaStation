@@ -1,5 +1,5 @@
 {
-  "version": "1.6.3-beta",
+  "version": "1.6.4-beta",
   "covers_version": "1.04",
   "date": "2026-10-29",
   "source_code_modified": true,
@@ -20,5 +20,7 @@
   "physical_update_uninstall_validation": "pending",
   "safety_backup_tests": "passed",
   "game_ui_background_tests": "passed",
-  "hardware_network_uninstall": "pending"
+  "hardware_network_uninstall": "pending",
+  "self_update_tests": "passed: resource integrity and injected transaction backend",
+  "shortcut_parser_tests": "passed"
 }

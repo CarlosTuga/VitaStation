@@ -1,3 +1,4 @@
+#include "integrations.h"
 #include "game_support.h"
 #include "updater.h"
 #include "store.h"
@@ -5,8 +6,16 @@
 #include <string.h>
 #include <stdio.h>
 #if !defined(__vita__)
+bool store_update_install(char*error,size_t n){if(error && n)snprintf(error,n,"Atualizacao exige uma PS Vita.");return false;}
+void store_update_fail(const char*m){(void)m;}
+void store_update_cleanup(void){}
 void store_update_request(void){}
 void store_update_status(UpdateStatus*s){if(s){memset(s,0,sizeof(*s));snprintf(s->message,sizeof(s->message),"Atualizacoes exigem uma PS Vita.");}}
+void store_autoplugin_request(int i){(void)i;}
+void store_integration_status(IntegrationStatus*s){memset(s,0,sizeof(*s));snprintf(s->message,sizeof(s->message),"Integracao de rede exige uma PS Vita.");}
+bool store_autoplugin_item(int i,OnlinePlugin*p){(void)i;(void)p;return false;}
+void store_apollo_request(void){}
+bool store_apollo_ready(void){return false;}
 void store_game_request(const AppItem*a,int action,int selection){(void)a;(void)action;(void)selection;}
 void store_game_status(GameSupportStatus*s){memset(s,0,sizeof(*s));snprintf(s->message,sizeof(s->message),"Funcao de rede disponivel na PS Vita.");}
 void store_request_background(const char*id){(void)id;}

@@ -59,8 +59,7 @@ def main():
             assert path.is_file() and path.stat().st_size == row['bytes'], row['path']
             assert digest(path) == row['sha256'], 'Source changed: ' + row['path']
     assets = ROOT / 'release-assets'
-    filenames = ['VitaStation-1.6.0-beta.vpk', 'Caratulas-de-loja-1.04.vpk',
-                 'VitaStation-1.6.0-public-source.zip']
+    filenames = ['VitaStation-1.6.4-beta.vpk', 'VitaStation-1.6.4-public-source.zip']
     present = all((assets / name).is_file() for name in filenames)
     if args.require_release_assets:
         assert present, 'Missing Release assets'

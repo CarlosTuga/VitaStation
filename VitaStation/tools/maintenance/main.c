@@ -49,6 +49,7 @@ int main(int argc,char**argv){
  if(result>=0){uint32_t args[]={0x400000,0xea60,0x40000,0,1,0};int code=0;SceSysmoduleOpt opt;memset(&opt,0,sizeof(opt));opt.result=&code;result=sceSysmoduleLoadModuleInternalWithArg(SCE_SYSMODULE_INTERNAL_PAF,sizeof(args),args,&opt);}
  if(result>=0)result=sceSysmoduleLoadModuleInternal(SCE_SYSMODULE_INTERNAL_PROMOTER_UTIL);
  if(result>=0)result=scePromoterUtilityInit();
+ if(result>=0)result=delete_installed("VSTUP0001");
  if(result>=0){draw("A remover o instalador de caratulas...",0);result=delete_installed("VSCV00001");}
  if(result>=0){remove_if_present("ux0:data/VitaStation/updates/Caratulas-de-loja-1.04.vpk.part");remove_if_present("ux0:data/VitaStation/updates/Caratulas-de-loja-1.04.vpk");draw("A remover todas as caratulas...",0);result=remove_tree("ux0:data/VitaStation/covers",0);}
  if(result>=0){remove_if_present("ur0:tai/VitaStation/VitaStationBoot.suprx");remove_if_present("ux0:tai/VitaStation/VitaStationBoot.suprx");sceIoSync("ux0:",0);sceIoSync("ur0:",0);draw("A remover o VitaStation...",0);result=delete_installed("VTST00001");}

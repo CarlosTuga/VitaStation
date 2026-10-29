@@ -146,7 +146,7 @@ int main(int argc,char**argv){
         for(int pos=0;pos<n;pos++){int raw=settings_group_item(group,pos);assert(raw>=0 && raw<total && !seen[raw]++);assert(settings_group_for(raw)==group && settings_group_position(group,raw)==pos);}
         assert(settings_group_item(group,n)==-1);
     }
-    for(int raw=0;raw<total;raw++)assert(seen[raw]==1);
+    for(int raw=0;raw<total;raw++){const SystemFeature*f=raw>=UI_LOCAL_SETTINGS_COUNT?system_feature_get((size_t)(raw-UI_LOCAL_SETTINGS_COUNT)):NULL;assert(seen[raw]==(f && f->control<0?0:1));}
     for(size_t i=0;i<system_feature_count();i++){
         const SystemFeature*f=system_feature_get(i);int group=settings_group_for((int)i+UI_LOCAL_SETTINGS_COUNT);
         if(f->control>=SYS_ACTION_LIBRARY)assert(group==(f->control==SYS_ACTION_SUSPEND?SETTINGS_CONSOLE:SETTINGS_VITASTATION));
@@ -161,7 +161,7 @@ int main(int argc,char**argv){
     assert(settings_menu_touch(&u,&library,20,90) && u.settings_group==SETTINGS_ROOT);
     assert(settings_menu_touch(&u,&library,600,250) && u.settings_group==SETTINGS_VITASTATION);
     for(size_t i=0;i<system_feature_count();i++)if(system_feature_get(i)->control==SYS_ACTION_REFRESH){u.settings_index=(int)i+UI_LOCAL_SETTINGS_COUNT;u.rescan_requested=false;ui_confirm(&u,&library);assert(u.rescan_requested && u.state==UI_STATE_HOME);u.state=UI_STATE_SETTINGS;}
-    puts("Settings separation: every entry in exactly one group, filtered navigation, nested back, touch and manual database rebuild passed.");
+    puts("Settings separation: supported entries grouped and unimplemented entries hidden, filtered navigation, nested back, touch and manual database rebuild passed.");
     texture_cache_clear(&cache);
     catalog_clear(&c);
     mkdir("region-fixture");

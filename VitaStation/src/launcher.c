@@ -1,3 +1,4 @@
+#include "launch_handoff.h"
 #include "launcher.h"
 #include "psp_media.h"
 #include "log.h"
@@ -43,6 +44,7 @@ static bool vita_is_installed(const char *id,void *context) {
     char path[100];
     snprintf(path,sizeof(path),"ux0:app/%s/sce_sys/param.sfo",id);
     FILE *f=fopen(path,"rb");
+    if(!f && !strncmp(id,"NPXS",4)){snprintf(path,sizeof(path),"vs0:app/%s/sce_sys/param.sfo",id);f=fopen(path,"rb");}
     if (!f) return psp_native_installed(id);
     return fclose(f)==0;
 }
@@ -50,10 +52,9 @@ static int vita_launch_uri(int flags,const char *uri,void *context) {
     (void)context;
     const char*prefix="psgm:play?titleid=";
     if(!strncmp(uri,prefix,strlen(prefix)) && launcher_title_id_valid(uri+strlen(prefix))){
-        /* LIVEAREA_OFF | DEBUG_CALLBACK | EXIT_TO: documented AppMgr name-launch flags. */
-        int result=sceAppMgrLaunchAppByName(0x70000,uri+strlen(prefix),NULL);
-        vs_log("launcher-name-exit-to",uri+strlen(prefix),result);
-        if(result>=0)return result;
+        /* The shell opens the target only after this process has exited. */
+        if(shell_handoff_request("VTST00001",uri+strlen(prefix)))return 0;
+        return -0x7001;
     }
     return sceAppMgrLaunchAppByUri(flags,uri);
 }
@@ -78,7 +79,7 @@ const char *launcher_error_message(void) {
         case LAUNCH_INVALID_ID:return "O identificador desta aplicacao e invalido.";
         case LAUNCH_NOT_INSTALLED:return "Esta aplicacao ja nao esta disponivel. Atualiza a biblioteca.";
         case LAUNCH_PLATFORM_UNAVAILABLE:return "O lancamento so esta disponivel na PS Vita.";
-        case LAUNCH_REJECTED:return "A consola nao aceitou o pedido de abertura.";
+        case LAUNCH_REJECTED:return last_result.platform_code==-0x7001?"Reinicia para carregar o plugin de abertura sem confirmacao.":"A consola nao aceitou o pedido de abertura.";
         default:return "Pedido de abertura enviado.";
     }
 }
