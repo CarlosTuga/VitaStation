@@ -112,7 +112,9 @@ int main(int argc, char *argv[]) {
         if(ui.exit_requested){
 #if defined(__vita__)
             if(bootstrap_begin_exit()){ui_render(&ui,&lib,&cache);continue;}
-            settings_save(&ui,VS_CONFIG_PATH);sceKernelExitProcess(0);
+            settings_save(&ui,VS_CONFIG_PATH);
+            if(!launcher_commit_exit()){ui.exit_requested=false;ui_show_toast(&ui,launcher_error_message());continue;}
+            sceKernelExitProcess(0);
 #endif
             running=false;break;
         }

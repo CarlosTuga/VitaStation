@@ -23,7 +23,7 @@ typedef struct {
     void *context;
 } LauncherBackend;
 typedef struct {
-    bool (*handoff)(const char*id,void*context);
+    int (*launch_uri)(int flags,const char*uri,void*context);
     void*context;
 } LauncherRouteBackend;
 int launcher_route_app(const char*id,const LauncherRouteBackend*backend,bool*exit_caller);
@@ -31,7 +31,8 @@ int launcher_route_app(const char*id,const LauncherRouteBackend*backend,bool*exi
 bool launcher_title_id_valid(const char *title_id);
 LauncherResult launcher_request_app(const char *title_id, const LauncherBackend *backend);
 bool launcher_launch_app(const char *title_id);
-/* Only the acknowledged shell handoff requires the caller to exit itself. */
+/* Queued native launch is committed only at the safe process-exit boundary. */
+bool launcher_commit_exit(void);
 bool launcher_exit_required(void);
 LauncherResult launcher_last_result(void);
 const char *launcher_error_message(void);

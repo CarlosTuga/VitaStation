@@ -441,12 +441,14 @@ static bool probe_installed(const char*id,void*context){
 static int probe_launch(int flags,const char*uri,void*context){
     LaunchProbe*p=context;p->uri_calls++;p->flags=flags;snprintf(p->uri,sizeof(p->uri),"%s",uri);return p->reply;
 }
-static bool probe_handoff(const char*id,void*context){(void)id;LaunchProbe*p=context;p->installed_checks++;return p->installed;}
 static void test_revision13(void){
-    LaunchProbe routing={0};routing.installed=true;bool close=false;LauncherRouteBackend route={probe_handoff,&routing};
-    assert(launcher_route_app("PCSG00001",&route,&close)==0 && close && routing.installed_checks==1 && routing.uri_calls==0);
-    routing.installed=false;assert(launcher_route_app("PCSG00001",&route,&close)==-0x7001 && !close && routing.uri_calls==0);
-    int calls=routing.installed_checks;assert(launcher_route_app("../bad",&route,&close)<0 && routing.installed_checks==calls);
+    LaunchProbe routing={0};bool close=false;LauncherRouteBackend route={probe_launch,&routing};
+    assert(launcher_route_app("PCSG00001",&route,&close)==0 && close && routing.uri_calls==1);
+    assert(routing.flags==0xFFFFF && !strcmp(routing.uri,"psgm:play?titleid=PCSG00001"));
+    routing.reply=-42;assert(launcher_route_app("PCSG00001",&route,&close)==-42 && !close && routing.uri_calls==2);
+    routing.reply=17;assert(launcher_route_app("VITASHELL",&route,&close)==17 && close && routing.uri_calls==3);
+    int calls=routing.uri_calls;assert(launcher_route_app("../bad",&route,&close)<0 && !close && routing.uri_calls==calls);
+    assert(launcher_route_app("PCSG00001",NULL,&close)<0 && !close);
     puts("Testing valid Title IDs actually reach the launch API boundary...");
     assert(launcher_title_id_valid("PCSG00001"));assert(launcher_title_id_valid("HBRW00001"));
     assert(!launcher_title_id_valid(NULL));assert(!launcher_title_id_valid(""));

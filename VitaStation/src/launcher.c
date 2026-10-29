@@ -8,6 +8,7 @@
 
 #if defined(__vita__)
 #include <psp2/appmgr.h>
+#include <psp2/io/fcntl.h>
 #endif
 
 static LauncherResult last_result = {LAUNCH_PLATFORM_UNAVAILABLE, 0};
@@ -15,9 +16,13 @@ static bool exit_required=false;
 bool launcher_exit_required(void){return exit_required;}
 int launcher_route_app(const char*id,const LauncherRouteBackend*b,bool*exit_caller){
     if(exit_caller)*exit_caller=false;
-    if(!launcher_title_id_valid(id) || !b || !b->handoff)return -1;
-    if(b->handoff(id,b->context)){if(exit_caller)*exit_caller=true;return 0;}
-    return -0x7001; /* Never issue a second-app/EXIT_TO request while we are alive. */
+    if(!launcher_title_id_valid(id) || !b || !b->launch_uri)return -1;
+    char uri[32];vs_launch_uri(uri,id);
+    /* Compatibility sequence used by VitaShell's launchAppByUriExit. The
+       caller must exit immediately after acceptance, not wait for a Shell ACK. */
+    int code=b->launch_uri(0xFFFFF,uri,b->context);
+    if(code>=0 && exit_caller)*exit_caller=true;
+    return code;
 }
 
 bool launcher_title_id_valid(const char *id) {
@@ -57,17 +62,32 @@ static bool vita_is_installed(const char *id,void *context) {
     if (!f) return psp_native_installed(id);
     return fclose(f)==0;
 }
-static bool vita_handoff(const char*id,void*context){(void)context;return shell_handoff_request("VTST00001",id)!=0;}
+static char pending_title[10];
+static int vita_direct_uri(int flags,const char*uri,void*context){(void)context;return sceAppMgrLaunchAppByUri(flags,uri);}
+bool launcher_commit_exit(void){
+    if(!pending_title[0])return true; /* Explicit exit to LiveArea. */
+    char target[10];memcpy(target,pending_title,sizeof(target));pending_title[0]=0;
+    /* Cancel any stale handoff before direct execution: only one owner. */
+    sceIoRemove("ux0:data/VitaStation/launch.request");sceIoRemove("ux0:data/VitaStation/launch.ack");
+    const LauncherRouteBackend route={vita_direct_uri,NULL};
+    last_result.platform_code=launcher_route_app(target,&route,&exit_required);
+    last_result.status=last_result.platform_code<0?LAUNCH_REJECTED:LAUNCH_ACCEPTED;
+    vs_log("launcher-direct",target,last_result.platform_code);
+    return last_result.status==LAUNCH_ACCEPTED;
+}
 static int vita_launch_uri(int flags,const char *uri,void *context) {
     (void)context;
     const char*prefix="psgm:play?titleid=";
     if(!strncmp(uri,prefix,strlen(prefix)) && launcher_title_id_valid(uri+strlen(prefix))){
-        /* Shell must acknowledge and wait for our actual process exit. */
-        const LauncherRouteBackend route={vita_handoff,NULL};
-        return launcher_route_app(uri+strlen(prefix),&route,&exit_required);
+        /* Queue locally until main reaches the safe exit boundary. No Shell
+           request is written and an ACK cannot be mistaken for execution. */
+        memcpy(pending_title,uri+strlen(prefix),sizeof(pending_title));
+        exit_required=true;return 0;
     }
     return sceAppMgrLaunchAppByUri(flags,uri);
 }
+#else
+bool launcher_commit_exit(void){return false;}
 #endif
 
 bool launcher_launch_app(const char *id) {
@@ -90,7 +110,7 @@ const char *launcher_error_message(void) {
         case LAUNCH_INVALID_ID:return "O identificador desta aplicacao e invalido.";
         case LAUNCH_NOT_INSTALLED:return "Esta aplicacao ja nao esta disponivel. Atualiza a biblioteca.";
         case LAUNCH_PLATFORM_UNAVAILABLE:return "O lancamento so esta disponivel na PS Vita.";
-        case LAUNCH_REJECTED:return last_result.platform_code==-0x7001?"Reinicia para carregar o plugin de abertura sem confirmacao.":"A consola nao aceitou o pedido de abertura.";
+        case LAUNCH_REJECTED:return last_result.platform_code==-0x7001?"A consola nao aceitou o pedido de abertura.":"A consola nao aceitou o pedido de abertura.";
         default:return "Pedido de abertura enviado.";
     }
 }

@@ -1,4 +1,4 @@
-> Estado atual: **1.6.12 beta**. Ver [revisão completa](../VitaStation/REVISAO_1.6.12_BETA.md) para funções, validação e limitações; secções de versões anteriores são históricas.
+> Estado atual: **1.6.13 beta**. Ver [revisão completa](../VitaStation/REVISAO_1.6.13_BETA.md) para funções, validação e limitações; secções de versões anteriores são históricas.
 
 # Plugins, módulos e ativação
 
