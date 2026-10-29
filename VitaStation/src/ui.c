@@ -219,7 +219,7 @@ void ui_observe_volume(UIContext *ui,int level,bool key_event){
     ui->system_volume=level;
 }
 static void launch_selected(UIContext *ui,Library *lib,AppItem *app){
-    if(app && bootstrap_busy()){snprintf(ui->pending_launch_id,sizeof(ui->pending_launch_id),"%s",app->title_id);ui_show_toast(ui,"A preparar componentes; a aplicacao abre automaticamente no fim.");return;}
+    if(app && app->media_raw && bootstrap_busy()){ui_show_toast(ui,"Componente PSP em preparacao. Tenta novamente quando terminar.");return;}
     if(store_busy()){ui_show_toast(ui,"Instalador VPK/ZIP local ativo. Aguarda; PKGs usam LiveArea.");return;}
     if(!app)return;
     if(app->media_raw){char message[256];if(!psp_create_bubble(app,message,sizeof(message))){ui_show_toast(ui,message);return;}ui->rescan_requested=true;}
@@ -229,7 +229,7 @@ static void launch_selected(UIContext *ui,Library *lib,AppItem *app){
         app->launch_count=previous_count;app->last_played=previous_time;
         ui_show_toast(ui,"Nao foi possivel guardar o historico");return;
     }
-    if(launcher_launch_app(app->title_id)){ui->exit_requested=true;ui_show_toast(ui,"Pedido de abertura enviado.");}
+    if(launcher_launch_app(app->title_id)){ui->exit_requested=launcher_exit_required();ui_show_toast(ui,"Pedido de abertura enviado.");}
     else{app->launch_count=previous_count;app->last_played=previous_time;library_save_userdata(lib,VS_USERDATA_PATH);ui_show_toast(ui,launcher_error_message());}
 }
 

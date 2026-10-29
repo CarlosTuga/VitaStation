@@ -2,6 +2,7 @@
 #include "launcher.h"
 #include "psp_media.h"
 #include "log.h"
+#include "bootstrap.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -10,6 +11,8 @@
 #endif
 
 static LauncherResult last_result = {LAUNCH_PLATFORM_UNAVAILABLE, 0};
+static bool exit_required=false;
+bool launcher_exit_required(void){return exit_required;}
 
 bool launcher_title_id_valid(const char *id) {
     if (!id) return false;
@@ -53,14 +56,17 @@ static int vita_launch_uri(int flags,const char *uri,void *context) {
     const char*prefix="psgm:play?titleid=";
     if(!strncmp(uri,prefix,strlen(prefix)) && launcher_title_id_valid(uri+strlen(prefix))){
         /* The shell opens the target only after this process has exited. */
-        if(shell_handoff_request("VTST00001",uri+strlen(prefix)))return 0;
-        return -0x7001;
+        if(!bootstrap_busy() && shell_handoff_request("VTST00001",uri+strlen(prefix))){exit_required=true;return 0;}
+        /* A missing/reloading bridge or optional preparation must not disable
+           ordinary app launch. Let the OS own the caller lifecycle here. */
+        return sceAppMgrLaunchAppByUri(flags,uri);
     }
     return sceAppMgrLaunchAppByUri(flags,uri);
 }
 #endif
 
 bool launcher_launch_app(const char *id) {
+    exit_required=false;
 #if defined(__vita__)
     const LauncherBackend backend={vita_is_installed,vita_launch_uri,NULL};
     last_result=launcher_request_app(id,&backend);

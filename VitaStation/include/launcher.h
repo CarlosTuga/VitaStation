@@ -26,6 +26,8 @@ typedef struct {
 bool launcher_title_id_valid(const char *title_id);
 LauncherResult launcher_request_app(const char *title_id, const LauncherBackend *backend);
 bool launcher_launch_app(const char *title_id);
+/* Only the acknowledged shell handoff requires the caller to exit itself. */
+bool launcher_exit_required(void);
 LauncherResult launcher_last_result(void);
 const char *launcher_error_message(void);
 

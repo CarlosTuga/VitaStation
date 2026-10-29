@@ -7,5 +7,6 @@ with tempfile.TemporaryDirectory() as temp:
   (art/name).write_bytes(b'\x89PNG\r\n\x1a\n'+b'\0\0\0\rIHDR'+struct.pack('>II',w,h))
  for test in ['game_ui','background']:
   sources=[str(p) for p in (r/'src').glob('*.c') if p.name!='main.c' and (test!='background' or p.name!='library.c')]
+  if test=='game_ui':sources=[p for p in sources if Path(p).name not in ['bootstrap.c','launcher.c']]
   exe=t/(test+'.exe');subprocess.run([sys.executable,'-m','ziglang','cc','-std=c99','-Wall','-Wextra','-Werror','-I',str(r/'include')]+sources+[str(r/'tests'/('test_'+test+'.c')),'-lm','-o',str(exe)],check=True)
   subprocess.run([str(exe)],cwd=t,check=True)

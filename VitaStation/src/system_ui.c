@@ -72,7 +72,7 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
         if(*selected>=count)*selected=count?count-1:0;
         if(command==SYSTEM_UI_UP && *selected>0)(*selected)--;
         if(command==SYSTEM_UI_DOWN && *selected+1<count)(*selected)++;
-        if(command==SYSTEM_UI_CONFIRM && count){if(u->state==UI_STATE_SYSTEM_APPS){if(launcher_launch_app(u->native_apps[*selected].title_id))u->exit_requested=true;else ui_show_toast(u,launcher_error_message());}else store_autoplugin_request(*selected);}
+        if(command==SYSTEM_UI_CONFIRM && count){if(u->state==UI_STATE_SYSTEM_APPS){if(launcher_launch_app(u->native_apps[*selected].title_id))u->exit_requested=launcher_exit_required();else ui_show_toast(u,launcher_error_message());}else store_autoplugin_request(*selected);}
         return true;
     }
     if(u->state==UI_STATE_GAME_SUPPORT){

@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     settings_ensure_dir("ux0:data");
 #endif
     settings_ensure_dir(VS_DATA_DIR);
-    vs_log("build","VitaStation 1.6.4 beta (01.64), permanent offline cover library",0);
+    vs_log("build","VitaStation 1.6.5 beta (01.65), permanent offline cover library",0);
     if(!render_init())return 1;
     input_init();
 
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
         if(update_cleanup_frames<180)update_cleanup_frames++;
         if(update_cleanup_frames==180 && !bootstrap_busy() && !store_busy()){store_update_cleanup();update_cleanup_frames++;}
 #endif
-        if(store_apollo_ready()){if(launcher_launch_app("NP0APOLLO"))ui.exit_requested=true;else ui_show_toast(&ui,launcher_error_message());}
+        if(store_apollo_ready()){if(launcher_launch_app("NP0APOLLO"))ui.exit_requested=launcher_exit_required();else ui_show_toast(&ui,launcher_error_message());}
         if(ui.exit_requested){
 #if defined(__vita__)
             bootstrap_shutdown();settings_save(&ui,VS_CONFIG_PATH);sceKernelExitProcess(0);
