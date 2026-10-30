@@ -20,6 +20,7 @@
 #define COLOR_ACCENT_GLOW    0x4000A0F0
 
 bool render_init(void);
+bool render_set_font(const char *path);
 void render_shutdown(void);
 void render_begin_frame(void);
 void render_end_frame(void);

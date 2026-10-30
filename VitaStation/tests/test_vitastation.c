@@ -356,8 +356,8 @@ static void test_hardened_cases(void) {
     texture_cache_evict_lru(&cache);assert(drawn->in_use);render_end_frame();assert(drawn->pins==0);
     texture_cache_evict_lru(&cache);assert(!drawn->in_use);texture_cache_clear(&cache);
     puts("Testing touch categories, settings, quick menu and loading request...");
-    ui_init(&ui);ui_handle_touch(&ui,&lib,40+2*UI_TAB_WIDTH+10,30);assert(ui.current_section==SECTION_RECENT);
-    ui_handle_touch(&ui,&lib,40+3*UI_TAB_WIDTH+10,30);assert(ui.current_section==SECTION_FAVORITES);
+    ui_init(&ui);ui_handle_touch(&ui,&lib,40+3*UI_TAB_WIDTH+10,30);assert(ui.current_section==SECTION_RECENT);
+    ui_handle_touch(&ui,&lib,40+4*UI_TAB_WIDTH+10,30);assert(ui.current_section==SECTION_FAVORITES);
     ui_open_options(&ui);assert(ui.state==UI_STATE_GAME_SUPPORT);ui_cancel(&ui);assert(ui.state==UI_STATE_HOME);ui_open_quick_menu(&ui);ui_confirm(&ui,&lib);assert(ui.state==UI_STATE_SETTINGS);ui_navigate_down(&ui,&lib);assert(ui.settings_root_index==1);ui_confirm(&ui,&lib);assert(ui.settings_group==SETTINGS_VITASTATION);ui_navigate_down(&ui,&lib);assert(ui.settings_index==1);
     ui_confirm(&ui,&lib);assert(ui.state==UI_STATE_STORE);ui_cancel(&ui);assert(ui.state==UI_STATE_HOME);
     ui_open_quick_menu(&ui);for(int i=0;i<4;i++)ui_navigate_right(&ui,&lib);ui_confirm(&ui,&lib);
@@ -402,7 +402,7 @@ static void test_revision12(void){
     UIContext ui;ui_init(&ui);Library lib;library_init(&lib);
     for(int round=0;round<3;round++)for(int category=1;category<=SECTION_COUNT;category++){
         assert(ui_handle_category_buttons(&ui,input_map_buttons(0x200)));
-        assert(ui.current_section==(AppSection)(category%SECTION_COUNT));assert(ui.selected_card_index==0);
+        assert(ui.current_section==library_tab_section(category%SECTION_COUNT));assert(ui.selected_card_index==0);
     }
     assert(ui_handle_category_buttons(&ui,input_map_buttons(0x100)));assert(ui.current_section==SECTION_PSP_PS1);
     ui.state=UI_STATE_GAME_DETAILS;ui.scroll_offset=300;ui.selected_card_index=10;

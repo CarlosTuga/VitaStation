@@ -30,3 +30,8 @@ Runtime payload and per-bubble loader from RetroFlow v8.5.0. See assets/psp-runt
 ## Som de arranque PS5 (1.6.8)
 
 Recurso separado da licença do código. Origem: PS5 Sound Collection, Purrcival, https://archive.org/details/ps5_sound_collection. O arquivo declara CC BY-ND 4.0. Direitos dos respetivos titulares; autorização de redistribuição confirmada pelo responsável do projeto. Ver assets/audio/NOTICE.md e source.json para atribuição, formato e hash.
+
+
+## Fontes incluídas na 1.6.14
+
+Rajdhani Medium e Audiowide Regular, distribuídas sob SIL Open Font License 1.1. Ficheiros e licenças completas em `assets/fonts/`. Fontes originais: https://github.com/google/fonts/tree/main/ofl/rajdhani e https://github.com/google/fonts/tree/main/ofl/audiowide . As fontes não foram modificadas. Os temas visuais do VitaStation são desenhos procedurais originais inspirados em estilos de consolas, sem relação oficial com a Sony.

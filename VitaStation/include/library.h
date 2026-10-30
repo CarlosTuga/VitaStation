@@ -13,7 +13,7 @@
 typedef enum {
     SECTION_GAMES = 0,
     SECTION_MEDIA = 1, /* compatibility alias: homebrew */
-    SECTION_HOMEBREW = 1, SECTION_RECENT = 2, SECTION_FAVORITES = 3, SECTION_STORE = 4, SECTION_PSP_PS1 = 5, SECTION_COUNT = 6
+    SECTION_HOMEBREW = 1, SECTION_RECENT = 2, SECTION_FAVORITES = 3, SECTION_STORE = 4, SECTION_PSP_PS1 = 5, SECTION_VITA = 6, SECTION_COUNT = 7
 } AppSection;
 
 typedef enum {
@@ -49,12 +49,22 @@ typedef struct {
     bool scan_complete;
     AppItem items[MAX_APPS];
     int count;
+    char vita_ids[MAX_APPS][10];
+    int vita_count;
     int games_indices[MAX_APPS];
     int games_count;
     int media_indices[MAX_APPS];
     int media_count;
 } Library;
 
+bool library_vita_contains(const Library*lib,const char*id);
+bool library_vita_set(Library*lib,const char*id,bool enabled);
+AppSection library_tab_section(int position);
+int library_tab_position(AppSection section);
+bool library_vita_contains(const Library*lib,const char*id);
+bool library_vita_set(Library*lib,const char*id,bool enabled);
+AppSection library_tab_section(int position);
+int library_tab_position(AppSection section);
 uint64_t library_date(int year,int month,int day,int hour,int minute,int second);
 uint64_t library_file_date(const char*path);
 int library_section_count(Library *lib, AppSection section);

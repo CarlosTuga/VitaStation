@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     settings_ensure_dir("ux0:data");
 #endif
     settings_ensure_dir(VS_DATA_DIR);
-    vs_log("build","VitaStation 1.6.11 beta (01.71), permanent offline cover library",0);
+    vs_log("build","VitaStation " VS_VERSION_LABEL ", permanent offline cover library",0);
     if(!render_init())return 1;
     input_init();
 
@@ -62,6 +62,8 @@ int main(int argc, char *argv[]) {
     ui_init(&ui);
     catalog_init(&catalog);ui.catalog=&catalog;store_start();
     settings_load(&ui, VS_CONFIG_PATH);
+    personalization_load(&ui,VS_DATA_DIR "/appearance.ini");
+    if(!render_set_font(ui.font_path)){ui.font_path[0]=0;vs_log("font","custom font unavailable; system font retained",-1);}
     ui.autoboot_enabled=autoboot_is_enabled();
     audio_set_sfx_enabled(ui.sound_enabled);
     ui.toast_timer=0;if(cached)ui.splash_time=1.4f;ui.state=UI_STATE_SPLASH;ui_render(&ui,&lib,&cache);
@@ -69,6 +71,8 @@ int main(int argc, char *argv[]) {
     char first_frame[96];snprintf(first_frame,sizeof(first_frame),"first_frame_ms=%llu",(unsigned long long)((sceKernelGetProcessTimeWide()-boot_start)/1000));vs_log("startup",first_frame,0);
 #endif
     audio_init();audio_set_sfx_enabled(ui.sound_enabled);audio_play_sfx(SND_BOOT);
+    system_apps_populate(&lib,VS_DATA_DIR "/system-apps-cache.bin");
+    library_load_userdata(&lib,VS_USERDATA_PATH);library_load_vita(&lib,VS_VITA_PATH);
     bool startup_worker=(rebuild || prepare_components) && bootstrap_start_mode(&lib,rebuild,prepare_components);
     ui.library_loading=rebuild && startup_worker;
     if(rebuild && !ui.library_loading)ui_show_toast(&ui,"Usa Reconstruir base de dados nas definicoes.");

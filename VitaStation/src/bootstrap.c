@@ -1,4 +1,5 @@
 #include "safety_backup.h"
+#include "integrations.h"
 #include "bootstrap.h"
 #include "bootstrap_exit.h"
 #include "installation_watch.h"
@@ -24,7 +25,7 @@ static BootstrapExit exit_state;
 static int load(SceSize size,void*arg){
  (void)size;(void)arg;uint64_t start=sceKernelGetProcessTimeWide();
  if(scan_requested){int scanned=library_scan(&pending,"ux0:app/");
- if(scanned>=0){library_load_userdata(&pending,VS_USERDATA_PATH);if(library_cache_save(&pending,VS_DATA_DIR "/library-cache.bin") && installation_cache_commit(VS_DATA_DIR "/installation-state.txt")){library_cache_reset_counter(VS_DATA_DIR "/library-starts.txt");installation_clear_dirty();}}
+ if(scanned>=0){system_apps_populate(&pending,VS_DATA_DIR "/system-apps-cache.bin");library_load_userdata(&pending,VS_USERDATA_PATH);library_load_vita(&pending,VS_VITA_PATH);if(library_cache_save(&pending,VS_DATA_DIR "/library-cache.bin") && installation_cache_commit(VS_DATA_DIR "/installation-state.txt")){library_cache_reset_counter(VS_DATA_DIR "/library-starts.txt");installation_clear_dirty();}}
  char timing[96];snprintf(timing,sizeof(timing),"library_ready_ms=%llu apps=%d",(unsigned long long)((sceKernelGetProcessTimeWide()-start)/1000),scanned);vs_log("startup",timing,scanned);
  sceKernelLockMutex(mutex,1,NULL);result=scanned;library_ready=true;sceKernelUnlockMutex(mutex,1);
  }
@@ -57,6 +58,7 @@ unsigned bootstrap_poll(Library*lib,int*out,char*text,size_t size){
    pending.items[i].is_favorite=lib->items[j].is_favorite;pending.items[i].last_played=lib->items[j].last_played;pending.items[i].launch_count=lib->items[j].launch_count;
    if(lib->items[j].classification_override){pending.items[i].classification_override=true;pending.items[i].type=lib->items[j].type;pending.items[i].section=lib->items[j].section;}break;
   }
+  pending.vita_count=lib->vita_count;memcpy(pending.vita_ids,lib->vita_ids,sizeof(pending.vita_ids));
   library_update_indices(&pending);*lib=pending;
  }flags|=1;}
  if(plugins_ready){plugins_ready=false;if(text && size)snprintf(text,size,"%s",message);flags|=2;if(prepare_success)flags|=8;}

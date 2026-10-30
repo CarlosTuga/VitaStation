@@ -14,6 +14,7 @@
 #if defined(__vita__)
 #include <vita2d.h>
 static vita2d_pgf *g_pgf = NULL;
+static vita2d_font *g_font;
 #endif
 
 /* Textures already referenced by this frame must survive until GPU completion. */
@@ -30,8 +31,17 @@ bool render_init(void) {
     return true;
 }
 
+bool render_set_font(const char*path){
+#if defined(__vita__)
+ vita2d_font*next=NULL;if(path && *path){FILE*f=fopen(path,"rb");if(!f)return false;bool valid=!fseek(f,0,SEEK_END) && ftell(f)>0 && ftell(f)<=6*1024*1024;fclose(f);if(!valid)return false;next=vita2d_load_font_file(path);if(!next)return false;}
+ vita2d_wait_rendering_done();if(g_font)vita2d_free_font(g_font);g_font=next;return true;
+#else
+ (void)path;return true;
+#endif
+}
 void render_shutdown(void) {
 #if defined(__vita__)
+    if(g_font){vita2d_free_font(g_font);g_font=NULL;}
     if (g_pgf) {
         vita2d_free_pgf(g_pgf);
         g_pgf = NULL;
@@ -115,6 +125,7 @@ void render_fill_rounded_rect(int x, int y, int w, int h, int radius, uint32_t c
 int render_text_width(float scale,const char *text){
     if(!text)return 0;
 #if defined(__vita__)
+    if(g_font)return vita2d_font_text_width(g_font,(unsigned)(24*scale),text);
     return g_pgf?vita2d_pgf_text_width(g_pgf,scale,text):0;
 #else
     return (int)(strlen(text)*10*scale);
@@ -129,7 +140,8 @@ void render_draw_text(int x, int y, uint32_t color, float scale, const char *tex
     uint8_t r = (color >> 16) & 0xFF;
     uint8_t g = (color >> 8) & 0xFF;
     uint8_t b = color & 0xFF;
-    if (g_pgf) {
+    if(g_font){unsigned size=(unsigned)(24*scale);if(size<8)size=8;if(theme_text_shadow(color))vita2d_font_draw_text(g_font,x+1,y+1,RGBA8(0,0,0,220),size,text);vita2d_font_draw_text(g_font,x,y,RGBA8(r,g,b,a),size,text);}
+    else if (g_pgf) {
         if(theme_text_shadow(color))vita2d_pgf_draw_text(g_pgf,x+1,y+1,RGBA8(0,0,0,220),scale,text);
         vita2d_pgf_draw_text(g_pgf, x, y, RGBA8(r, g, b, a), scale, text);
     }

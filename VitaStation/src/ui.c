@@ -12,6 +12,7 @@
 #include "settings_menu.h"
 #include "psp_media.h"
 #include "theme.h"
+#include "personalization.h"
 #include "bootstrap.h"
 #include "system_info.h"
 #include "render.h"
@@ -109,12 +110,12 @@ void ui_select_tab(UIContext *ui, AppSection section) {
     }
 }
 bool ui_handle_category_buttons(UIContext *ui,uint32_t pressed){
-    if(!ui || ui->state==UI_STATE_SYSTEM_APPS || ui->state==UI_STATE_PLUGIN_CATALOG || ui->state==UI_STATE_REMOVE_GAME || ui->state==UI_STATE_GAME_SUPPORT || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS || ui->state==UI_STATE_SYSTEM_INFO || ui->state==UI_STATE_LOADING || ui->state==UI_STATE_SPLASH)return false;
+    if(!ui || ui->state==UI_STATE_PERSONALIZATION || ui->state==UI_STATE_ASSET_PICKER || ui->state==UI_STATE_SYSTEM_APPS || ui->state==UI_STATE_PLUGIN_CATALOG || ui->state==UI_STATE_REMOVE_GAME || ui->state==UI_STATE_GAME_SUPPORT || ui->state==UI_STATE_UNINSTALL || ui->state==UI_STATE_POWER || ui->state==UI_STATE_PLUGINS || ui->state==UI_STATE_SYSTEM_INFO || ui->state==UI_STATE_LOADING || ui->state==UI_STATE_SPLASH)return false;
     bool left=(pressed&BTN_L1)!=0,right=(pressed&BTN_R1)!=0;
     if(left==right)return false; /* Opposite simultaneous inputs cancel. */
     if(ui->state==UI_STATE_SETTINGS){settings_menu_input(ui,right?SYSTEM_UI_DOWN:SYSTEM_UI_UP);return true;}
     ui->state=UI_STATE_HOME;
-    ui_select_tab(ui,(AppSection)(((int)ui->current_section+(right?1:SECTION_COUNT-1))%SECTION_COUNT));
+    ui_select_tab(ui,library_tab_section((library_tab_position(ui->current_section)+(right?1:SECTION_COUNT-1))%SECTION_COUNT));
     return true;
 }
 
@@ -266,7 +267,7 @@ void ui_confirm(UIContext *ui, Library *lib) {
     }
     if(ui->state==UI_STATE_SETTINGS && ui->settings_index>=9 && ui->settings_index<12){
         int before_env=ui->environment_theme,before_text=ui->text_theme;bool before_contrast=ui->high_contrast;
-        if(ui->settings_index==9)ui->environment_theme=(ui->environment_theme+1)%5;
+        if(ui->settings_index==9)ui->environment_theme=(ui->environment_theme+1)%VS_THEME_COUNT;
         if(ui->settings_index==10)ui->text_theme=(ui->text_theme+1)%5;
         if(ui->settings_index==11)ui->high_contrast=!ui->high_contrast;
         if(!settings_save(ui,VS_CONFIG_PATH)){ui->environment_theme=before_env;ui->text_theme=before_text;ui->high_contrast=before_contrast;ui_show_toast(ui,"Nao foi possivel guardar as cores.");}return;
@@ -387,7 +388,7 @@ void ui_handle_touch(UIContext *ui, Library *lib, int tx, int ty) {
         if(tx>=648 && tx<680){ui_handle_category_buttons(ui,BTN_R1);return;}
         if(tx>=690 && tx<724){ui_open_quick_menu(ui);return;}
         if(tx>=734 && tx<774){settings_menu_open(ui);return;}
-        if(tx>=40 && tx<630) ui_select_tab(ui,(AppSection)((tx-40)/UI_TAB_WIDTH));
+        if(tx>=40 && tx<40+SECTION_COUNT*UI_TAB_WIDTH) ui_select_tab(ui,library_tab_section((tx-40)/UI_TAB_WIDTH));
         return;
     }
     if(ui->state==UI_STATE_HOME && ty>=410 && ty<=460 && tx>=60 && tx<280){ui->store_action_index=0;ui_confirm(ui,lib);if(ui->state==UI_STATE_GAME_DETAILS)ui_confirm(ui,lib);return;}
@@ -541,11 +542,12 @@ void ui_update(UIContext *ui, Library *lib, TextureCache *cache, float delta_tim
 }
 
 static void draw_ps5_top_bar(UIContext *ui) {
-    const char *tabs[]={"Jogos","Homebrews","Recentes","Favoritos","Loja","PSP / PS1"};
+    const char *tabs[]={"Jogos","Vita","Homebrew","Recentes","Favoritos","Loja","PSP / PS1"};
     render_fill_rounded_rect(8,18,23,22,7,0x38374353);render_draw_text(14,34,COLOR_WHITE,.6f,"L");
     for(int i=0;i<SECTION_COUNT;i++){
-        bool selected=ui->current_section==(AppSection)i;
-        render_draw_text(40+i*UI_TAB_WIDTH,37,selected?COLOR_WHITE:0x94DDE4ED,.75f,tabs[i]);
+        bool selected=ui->current_section==library_tab_section(i);
+        float tab_scale=.68f;while(tab_scale>.45f && render_text_width(tab_scale,tabs[i])>UI_TAB_WIDTH-7)tab_scale-=.025f;
+        render_draw_text(40+i*UI_TAB_WIDTH,37,selected?COLOR_WHITE:0x94DDE4ED,tab_scale,tabs[i]);
         if(selected)render_fill_rounded_rect(40+i*UI_TAB_WIDTH,48,30,2,1,0xEAF2F6FF);
     }
     render_fill_rounded_rect(650,18,23,22,7,0x38374353);render_draw_text(656,34,COLOR_WHITE,.6f,"R");
@@ -647,20 +649,13 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
 
     render_fill_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, COLOR_BG_DARK);
     if(ui->state==UI_STATE_SPLASH){draw_splash(ui,cache);render_end_frame();return;}
-    if(!ui->current_bg && !ui->target_bg){
-        for(int y=0;y<544;y+=4){
-            float dy=(y-160)/320.0f,glow=expf(-dy*dy);
-            unsigned r=(unsigned)(7+5*glow),g=(unsigned)(11+13*glow),b=(unsigned)(19+24*glow);
-            render_fill_rect(0,y,960,4,0xFF000000|(r<<16)|(g<<8)|b);
-        }
-        for(int x=0;x<960;x+=16){float dx=(x-740)/460.0f;unsigned alpha=(unsigned)(40*expf(-dx*dx));render_fill_rect(x,0,16,544,(alpha<<24)|0x38709C);}
-    }
-    if (ui->current_bg) {
+    if(ui->wallpaper_path[0] || (!ui->current_bg && !ui->target_bg))personalization_background(ui,cache);
+    if (!ui->wallpaper_path[0] && ui->current_bg) {
         /* sem fundo novo: o atual desvanece; com fundo novo: fica opaco por baixo */
         float a = (ui->current_bg != ui->target_bg && !ui->target_bg) ? 1.0f - ui->bg_crossfade_alpha : 1.0f;
         render_draw_texture_cover(ui->current_bg,0,0,SCREEN_WIDTH,SCREEN_HEIGHT,a);
     }
-    if (ui->target_bg && ui->target_bg != ui->current_bg) {
+    if (!ui->wallpaper_path[0] && ui->target_bg && ui->target_bg != ui->current_bg) {
         render_draw_texture_cover(ui->target_bg,0,0,SCREEN_WIDTH,SCREEN_HEIGHT,ui->bg_crossfade_alpha);
     }
 
@@ -669,7 +664,8 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
     for(int y=220;y<509;y+=8){unsigned a=(unsigned)(125*(y-220)/289);render_fill_rect(0,y,960,8,(a<<24)|0x04070C);}
     draw_ps5_top_bar(ui);
 
-    if(system_ui_render(ui)){}
+    if(personalization_render(ui,cache)){}
+    else if(system_ui_render(ui,lib)){}
     else if(ui->state==UI_STATE_LOADING){render_draw_text(60,250,COLOR_WHITE,1.4f,"A descobrir aplicacoes...");}
     else if(ui->catalog && (ui->state==UI_STATE_CATALOG_DETAILS || (ui->state==UI_STATE_HOME && ui->current_section==SECTION_STORE))){store_ui_render(ui,cache);}
     else if(ui->state==UI_STATE_HOME && ui->current_section==SECTION_STORE){draw_store_home(ui,lib,cache);}
@@ -682,9 +678,9 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
             snprintf(info_line, sizeof(info_line), "Disponivel na tua biblioteca%s",
                 curr_app->is_favorite ? " | Favorito" : "");
             render_draw_text(60, 378, COLOR_TEXT_MUTED, 0.9f, info_line);
-            render_draw_text(60,295,0xBCD6DFEB,.68f,curr_app->type==APP_TYPE_UNKNOWN?"APLICACAO INSTALADA":curr_app->type==APP_TYPE_HOMEBREW?"HOMEBREW | PS VITA":"JOGOS | PS VITA");
+            render_draw_text(60,295,0xBCD6DFEB,.68f,curr_app->type==APP_TYPE_SYSTEM?"APLICACOES | VITA":curr_app->type==APP_TYPE_UNKNOWN?"APLICACAO INSTALADA":curr_app->type==APP_TYPE_HOMEBREW?"HOMEBREW | PS VITA":"JOGOS | PS VITA");
         } else {
-            render_draw_text(60, 343, COLOR_WHITE, 1.5f, (ui->library_loading?"A carregar a biblioteca em segundo plano...":ui->current_section==SECTION_GAMES?"Nenhum jogo encontrado.":ui->current_section==SECTION_HOMEBREW?"Nenhuma aplicacao Homebrew encontrada.":ui->current_section==SECTION_PSP_PS1?"Nenhum jogo PSP ou PS1 encontrado.":ui->current_section==SECTION_RECENT?"Ainda nao existem aplicacoes recentes.":"Ainda nao existem favoritos."));
+            render_draw_text(60, 343, COLOR_WHITE, 1.5f, (ui->library_loading?"A carregar a biblioteca em segundo plano...":ui->current_section==SECTION_GAMES?"Nenhum jogo encontrado.":ui->current_section==SECTION_HOMEBREW?"Nenhuma aplicacao Homebrew encontrada.":ui->current_section==SECTION_VITA?"Adiciona aplicacoes em Definicoes > VitaStation > Aplicacoes da categoria Vita.":ui->current_section==SECTION_PSP_PS1?"Nenhum jogo PSP ou PS1 encontrado.":ui->current_section==SECTION_RECENT?"Ainda nao existem aplicacoes recentes.":"Ainda nao existem favoritos."));
             render_draw_text(60, 378, COLOR_TEXT_MUTED, 0.9f, "START: menu | Reconstruir base de dados nas definicoes");
         }
 
@@ -803,7 +799,7 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
         render_draw_text(46,126,0xFF9DB5CE,.65f,"O: categorias  |  Cima / Baixo: escolher");
         int position=settings_group_position(ui->settings_group,ui->settings_index);
         int first=position>5?position-5:0;
-        const char*local[]={"Som do VitaStation","Loja externa predefinida","Animações do launcher","Voltar ao início","Iniciar VitaStation com a consola","Gerir plugins","Comportamento do botão PS","Desligar ou reiniciar","Instalar DLCs com o jogo","Cor do ambiente","Cor das letras","Alto contraste","Versão da aplicação","Atualizações do VitaStation","Desinstalar VitaStation e carátulas","Aplicacoes da consola","Catalogo AutoPlugin II","Apollo: gestao de saves"};
+        const char*local[]={"Som do VitaStation","Loja externa predefinida","Animações do launcher","Voltar ao início","Iniciar VitaStation com a consola","Gerir plugins","Comportamento do botão PS","Desligar ou reiniciar","Instalar DLCs com o jogo","Cor do ambiente","Cor das letras","Alto contraste","Versão da aplicação","Atualizações do VitaStation","Desinstalar VitaStation e carátulas","Aplicacoes da categoria Vita","Catalogo AutoPlugin II","Apollo: gestao de saves","Personalizacao: temas e imagens"};
         int total=settings_group_count(ui->settings_group);
         for(int row=first;row<first+7 && row<total;row++){
             int i=settings_group_item(ui->settings_group,row),y=164+(row-first)*46;bool sel=i==ui->settings_index;
@@ -840,10 +836,14 @@ void ui_render(UIContext *ui, Library *lib, TextureCache *cache) {
                 render_draw_text(465,347,0xFFB7C9E0,.8f,"Nao abre o painel original do sistema.");
             }
         }else{
-            if(ui->settings_index>=12){
+            if(ui->settings_index==18){
+                render_draw_text(465,220,COLOR_WHITE,1.0f,"Personalizacao");
+                draw_title(465,270,.8f,"10 temas novos, fontes, wallpaper e bloqueio",45);
+                render_draw_text(465,330,COLOR_WHITE,.72f,"X: escolher o ambiente e imagens");
+            }else if(ui->settings_index>=12){
                 UpdateStatus status;store_update_status(&status);IntegrationStatus provider;store_integration_status(&provider);
                 render_draw_text(465,220,COLOR_WHITE,1.0f,VS_VERSION_LABEL);
-                draw_title(465,270,.8f,ui->settings_index==12?"Desenvolvido por Carlos Tuga":ui->settings_index==14?"Remove o launcher e todas as caratulas":ui->settings_index==15?"Musica, video, fotografias, trofeus e navegador":ui->settings_index==16?"Procurar e obter plugins sem abrir AutoPlugin II":ui->settings_index==17?(provider.message[0]?provider.message:"Dados de patches e gestao avancada de saves"):status.message,48);
+                draw_title(465,270,.8f,ui->settings_index==12?"Desenvolvido por Carlos Tuga":ui->settings_index==14?"Remove o launcher e todas as caratulas":ui->settings_index==15?"Escolher aplicacoes adicionais para a categoria Vita":ui->settings_index==16?"Procurar e obter plugins sem abrir AutoPlugin II":ui->settings_index==17?(provider.message[0]?provider.message:"Dados de patches e gestao avancada de saves"):status.message,48);
                 if(ui->settings_index==13 && status.phase==1){
                     render_fill_rounded_rect(465,292,420,12,6,0xFF30445E);
                     if(status.total){double fraction=(double)status.done/(double)status.total;if(fraction>1)fraction=1;render_fill_rounded_rect(465,292,(float)(420*fraction),12,6,0xFF67B9F5);}

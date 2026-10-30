@@ -1,5 +1,3 @@
-# Pacotes 1.6.13 beta
+# Pacotes 1.6.14 beta
 
-Atualizar pelo VitaStation ou instalar o VPK no VitaShell. Retira a dependência do handoff do Shell e usa execução direta no encerramento. Som confirmado mantido. Bridge 1.6.12 inalterado; instalar o VPK e voltar a abrir o launcher. Abertura confirmada pelo utilizador na consola, incluindo Need for Speed Most Wanted com X. Outras funções mantêm os limites documentados. Ver VitaStation/REVISAO_1.6.13_BETA.md. Carátulas 1.04 continuam na Release v1.6.0-beta.
-
-Releases: https://github.com/CarlosTuga/VitaStation/releases
+Categoria Vita e personalização: 10 temas novos, fontes e wallpapers. Instalar o VPK e voltar a abrir. Bridge 1.6.12 inalterado. Bloqueio exige aplicar a imagem em Fotografias. Ver VitaStation/REVISAO_1.6.14_BETA.md para instruções e limites. Carátulas 1.04 continuam na release v1.6.0-beta.

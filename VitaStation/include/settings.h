@@ -12,6 +12,7 @@
 #endif
 #define VS_CONFIG_PATH   VS_DATA_DIR "/config.ini"
 #define VS_USERDATA_PATH VS_DATA_DIR "/userdata.csv"
+#define VS_VITA_PATH VS_DATA_DIR "/vita-category.txt"
 
 
 #ifdef __cplusplus
@@ -21,6 +22,10 @@ void settings_ensure_dir(const char *dir_path);
 void settings_load(UIContext *ui, const char *config_path);
 bool settings_save(const UIContext *ui, const char *config_path);
 
+bool personalization_save(const UIContext *ui,const char *path);
+void personalization_load(UIContext *ui,const char *path);
+bool library_save_vita(const Library *lib,const char *path);
+void library_load_vita(Library *lib,const char *path);
 bool library_save_userdata(const Library *lib, const char *path);
 void library_load_userdata(Library *lib, const char *path);
 

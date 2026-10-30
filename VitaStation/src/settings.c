@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <errno.h>
 #include "launcher.h"
+#include "theme.h"
 
 #if defined(__vita__)
 #include <psp2/io/stat.h>
@@ -110,7 +111,7 @@ void settings_load(UIContext *ui, const char *config_path) {
         if (sscanf(line, "%63[^=]=%63s", key, val) == 2) {
             if (strcmp(key,"store_id")==0) { if(launcher_title_id_valid(val) || !strcmp(val,"default")) snprintf(ui->store_id,sizeof(ui->store_id),"%.9s",strcmp(val,"default")?val:"");
             } else if(!strcmp(key,"environment_theme") || !strcmp(key,"text_theme")){
-                if(strlen(val)==1 && val[0]>='0' && val[0]<='4'){if(!strcmp(key,"environment_theme"))ui->environment_theme=val[0]-'0';else ui->text_theme=val[0]-'0';}
+                char tail;int choice;if(sscanf(val,"%d%c",&choice,&tail)==1 && choice>=0 && choice<(!strcmp(key,"environment_theme")?VS_THEME_COUNT:5)){if(!strcmp(key,"environment_theme"))ui->environment_theme=choice;else ui->text_theme=choice;}
             } else if(!strcmp(key,"high_contrast")){
                 if(!strcmp(val,"0") || !strcmp(val,"1"))ui->high_contrast=!strcmp(val,"1");
             } else if (strcmp(key, "sound_enabled") == 0) {
@@ -220,3 +221,30 @@ void library_load_userdata(Library *lib, const char *path) {
     library_update_indices(lib);
 }
 
+
+bool library_save_vita(const Library*lib,const char*path){
+ if(!lib || !path || lib->vita_count<0 || lib->vita_count>MAX_APPS)return false;
+ settings_ensure_dir(VS_DATA_DIR);char tmp[300];FILE*f=open_tmp_for_write(path,tmp,sizeof(tmp));if(!f)return false;
+ for(int i=0;i<lib->vita_count;i++)fprintf(f,"%s\n",lib->vita_ids[i]);
+ return commit_tmp(f,tmp,path);
+}
+void library_load_vita(Library*lib,const char*path){
+ if(!lib || !path)return;
+ FILE*f=open_for_read(path);if(!f)return;lib->vita_count=0;char line[128];
+ while(fgets(line,sizeof(line),f)){line[strcspn(line,"\r\n")]=0;if(launcher_title_id_valid(line))library_vita_set(lib,line,true);}
+ fclose(f);
+}
+
+bool personalization_save(const UIContext*u,const char*path){
+ if(!u || !path || strchr(u->wallpaper_path,'\n') || strchr(u->font_path,'\n') || strchr(u->lock_path,'\n'))return false;
+ settings_ensure_dir(VS_DATA_DIR);char tmp[300];FILE*f=open_tmp_for_write(path,tmp,sizeof(tmp));if(!f)return false;
+ fprintf(f,"wallpaper=%s\nfont=%s\nlock=%s\n",u->wallpaper_path,u->font_path,u->lock_path);return commit_tmp(f,tmp,path);
+}
+void personalization_load(UIContext*u,const char*path){
+ if(!u || !path)return;
+ FILE*f=open_for_read(path);if(!f)return;char line[300];while(fgets(line,sizeof(line),f)){line[strcspn(line,"\r\n")]=0;char*value=strchr(line,'=');if(!value)continue;*value++=0;if(strlen(value)>=256)continue;
+ if(!strcmp(line,"wallpaper"))snprintf(u->wallpaper_path,sizeof(u->wallpaper_path),"%s",value);
+ else if(!strcmp(line,"font"))snprintf(u->font_path,sizeof(u->font_path),"%s",value);
+ else if(!strcmp(line,"lock"))snprintf(u->lock_path,sizeof(u->lock_path),"%s",value);
+ }fclose(f);
+}

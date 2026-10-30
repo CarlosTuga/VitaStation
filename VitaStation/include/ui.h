@@ -5,8 +5,8 @@
 #include "texture.h"
 #include "catalog.h"
 #include "plugins.h"
-#define UI_LOCAL_SETTINGS_COUNT 18
-#define UI_TAB_WIDTH 98
+#define UI_LOCAL_SETTINGS_COUNT 19
+#define UI_TAB_WIDTH 86
 #include <stdbool.h>
 
 typedef enum {
@@ -14,7 +14,7 @@ typedef enum {
     UI_STATE_GAME_DETAILS = 1,
     UI_STATE_QUICK_MENU = 2,
     UI_STATE_SETTINGS = 3, UI_STATE_STORE = 4, UI_STATE_LOADING = 5, UI_STATE_SPLASH = 6, UI_STATE_CATALOG_DETAILS = 7,
-    UI_STATE_POWER=8, UI_STATE_PLUGINS=9, UI_STATE_SYSTEM_INFO=10, UI_STATE_UNINSTALL=11, UI_STATE_GAME_SUPPORT=12,UI_STATE_REMOVE_GAME=13,UI_STATE_SYSTEM_APPS=14,UI_STATE_PLUGIN_CATALOG=15
+    UI_STATE_POWER=8, UI_STATE_PLUGINS=9, UI_STATE_SYSTEM_INFO=10, UI_STATE_UNINSTALL=11, UI_STATE_GAME_SUPPORT=12,UI_STATE_REMOVE_GAME=13,UI_STATE_SYSTEM_APPS=14,UI_STATE_PLUGIN_CATALOG=15,UI_STATE_PERSONALIZATION=16,UI_STATE_ASSET_PICKER=17
 } UIState;
 
 typedef struct {
@@ -31,7 +31,9 @@ typedef struct {
     bool autoboot_enabled;
     bool ps_routing_enabled;
     bool auto_dlcs_enabled;
-    AppItem native_apps[16];size_t native_count;int native_index,online_plugin_index;
+    int personal_index,asset_index,asset_kind;
+    char wallpaper_path[256],font_path[256],lock_path[256];
+    char native_ids[MAX_APPS][10];size_t native_count;int native_index,online_plugin_index;
     char remove_game_id[32],remove_game_title[128];
     int game_option,game_result;
     bool uninstall_restore;

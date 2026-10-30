@@ -1,4 +1,5 @@
 #include "integrations.h"
+#include "personalization.h"
 #include "launcher.h"
 #include "game_support.h"
 #include "safety_backup.h"
@@ -15,6 +16,7 @@
 #include "render.h"
 #include <stdio.h>
 #include <string.h>
+static AppItem*native_app(UIContext*u,Library*lib,int index){if(!lib || index<0 || (size_t)index>=u->native_count)return NULL;for(int i=0;i<lib->count;i++)if(!strcmp(lib->items[i].title_id,u->native_ids[index]))return &lib->items[i];return NULL;}
 void ui_open_power_menu(UIContext*u){if(!u || u->state==UI_STATE_POWER)return;u->power_return_state=u->state;u->state=UI_STATE_POWER;u->power_index=2;}
 void system_ui_update(UIContext*u,float dt){
     if(!u || u->state!=UI_STATE_SYSTEM_INFO)return;
@@ -22,6 +24,7 @@ void system_ui_update(UIContext*u,float dt){
 }
 bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
     if(!u)return false;
+    if(personalization_input(u,lib,command))return true;
     if(settings_menu_input(u,command))return true;
     if(u->state==UI_STATE_SETTINGS && command==SYSTEM_UI_CONFIRM){
         if(u->settings_index>=UI_LOCAL_SETTINGS_COUNT){
@@ -43,8 +46,11 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
             }
             if(f && f->control>=SYS_INFO_NETWORK){u->information_page=f->control;u->information_count=system_info_read(u->information_page,u->information_lines);u->information_poll=1;u->state=UI_STATE_SYSTEM_INFO;return true;}
         }
-        if(u->settings_index==15){u->native_count=system_apps_scan(u->native_apps,16);u->native_index=0;u->state=UI_STATE_SYSTEM_APPS;return true;}
+        if(u->settings_index==15){u->native_count=0;u->native_index=0;
+            if(lib)for(int i=0;i<lib->count;i++)if(lib->items[i].exists){int at=(int)u->native_count++;while(at>0 && strcmp(native_app(u,lib,at-1)->title,lib->items[i].title)>0){memcpy(u->native_ids[at],u->native_ids[at-1],10);at--;}snprintf(u->native_ids[at],10,"%.9s",lib->items[i].title_id);}
+            u->state=UI_STATE_SYSTEM_APPS;return true;}
         if(u->settings_index==16){u->online_plugin_index=0;u->state=UI_STATE_PLUGIN_CATALOG;store_autoplugin_request(-3);return true;}
+        if(u->settings_index==18){u->personal_index=0;u->state=UI_STATE_PERSONALIZATION;return true;}
         if(u->settings_index==17){store_apollo_request();return true;}
         if(u->settings_index==14){u->uninstall_restore=false;u->uninstall_scroll=0;u->uninstall_count=safety_backup_plan(u->uninstall_lines,48);u->power_index=0;u->state=UI_STATE_UNINSTALL;return true;}
         if(u->settings_index==12){ui_show_toast(u,"VitaStation " VS_VERSION_LABEL);return true;}
@@ -72,7 +78,10 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
         if(*selected>=count)*selected=count?count-1:0;
         if(command==SYSTEM_UI_UP && *selected>0)(*selected)--;
         if(command==SYSTEM_UI_DOWN && *selected+1<count)(*selected)++;
-        if(command==SYSTEM_UI_CONFIRM && count){if(u->state==UI_STATE_SYSTEM_APPS){if(launcher_launch_app(u->native_apps[*selected].title_id))u->exit_requested=launcher_exit_required();else ui_show_toast(u,launcher_error_message());}else store_autoplugin_request(*selected);}
+        if(command==SYSTEM_UI_CONFIRM && count){if(u->state==UI_STATE_SYSTEM_APPS){if(lib && *selected>=0 && (size_t)*selected<u->native_count){AppItem*a=native_app(u,lib,*selected);if(a){
+                if(a->section==SECTION_VITA)ui_show_toast(u,"Aplicacao da consola incluida de origem na categoria Vita.");
+                else{bool before=library_vita_contains(lib,a->title_id);if(!library_vita_set(lib,a->title_id,!before) || !library_save_vita(lib,VS_VITA_PATH)){library_vita_set(lib,a->title_id,before);ui_show_toast(u,"Nao foi possivel guardar a categoria Vita.");}else ui_show_toast(u,before?"Removida da categoria Vita.":"Adicionada a categoria Vita.");}
+            }}}else store_autoplugin_request(*selected);}
         return true;
     }
     if(u->state==UI_STATE_GAME_SUPPORT){
@@ -137,8 +146,9 @@ bool system_ui_input(UIContext*u,Library*lib,SystemUICommand command){
 }
 bool system_ui_touch(UIContext*u,Library*lib,int x,int y){
     if(!u)return false;
+    if(personalization_touch(u,lib,x,y))return true;
     if(settings_menu_touch(u,lib,x,y))return true;
-    if(u->state==UI_STATE_SYSTEM_APPS || u->state==UI_STATE_PLUGIN_CATALOG){if(y>=145 && y<397){int*selection=u->state==UI_STATE_SYSTEM_APPS?&u->native_index:&u->online_plugin_index;int first=*selection>4?*selection-4:0;*selection=first+(y-145)/42;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
+    if(u->state==UI_STATE_SYSTEM_APPS || u->state==UI_STATE_PLUGIN_CATALOG){if(y>=145 && y<397){bool native=u->state==UI_STATE_SYSTEM_APPS;int*selection=native?&u->native_index:&u->online_plugin_index;int first=*selection>4?*selection-4:0;int row=first+(y-145)/42;IntegrationStatus status;store_integration_status(&status);int count=native?(int)u->native_count:(int)status.count;if(row<count){*selection=row;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}}return true;}
     if(u->state==UI_STATE_REMOVE_GAME){if(y>=345 && y<410 && x>=100 && x<860){u->power_index=x>=500;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
     if(u->state==UI_STATE_GAME_SUPPORT){if(x<435 && y>=158 && y<318){int option=(y-158)/40;if(option==u->game_option)system_ui_input(u,lib,SYSTEM_UI_CONFIRM);else u->game_option=option;}return true;}
     if(u->state==UI_STATE_UNINSTALL){if(y>=350 && y<415 && x>=100 && x<860){u->power_index=x>=500;system_ui_input(u,lib,SYSTEM_UI_CONFIRM);}return true;}
@@ -151,14 +161,14 @@ bool system_ui_touch(UIContext*u,Library*lib,int x,int y){
 static void clipped(int x,int y,const char*text,size_t limit,float scale,uint32_t color){
     char out[128];size_t n=strlen(text);if(n>limit)n=limit;while(n && (((unsigned char)text[n]&0xc0)==0x80))--n;memcpy(out,text,n);out[n]=0;if(strlen(text)>n)strcat(out,"...");render_draw_text(x,y,color,scale,out);
 }
-bool system_ui_render(UIContext*u){
+bool system_ui_render(UIContext*u,Library*lib){
     if(u->state==UI_STATE_SYSTEM_APPS || u->state==UI_STATE_PLUGIN_CATALOG){
         bool native=u->state==UI_STATE_SYSTEM_APPS;IntegrationStatus status;store_integration_status(&status);int selected=native?u->native_index:u->online_plugin_index,count=native?(int)u->native_count:(int)status.count,first=selected>4?selected-4:0;
-        render_fill_rect(0,60,960,444,0xFF111827);render_draw_text(45,112,COLOR_WHITE,1.35f,native?"Aplicacoes da consola":"AutoPlugin II | Catalogo integrado");
-        for(int row=first;row<count && row<first+6;row++){int y=170+(row-first)*42;if(row==selected)render_fill_rounded_rect(35,y-25,885,38,10,0xFF315477);OnlinePlugin p;const char*name=native?u->native_apps[row].title:(store_autoplugin_item(row,&p)?p.name:"");clipped(50,y,name,90,.8f,COLOR_WHITE);}
+        render_fill_rect(0,60,960,444,0xFF111827);render_draw_text(45,112,COLOR_WHITE,1.35f,native?"Gerir aplicacoes da categoria Vita":"AutoPlugin II | Catalogo integrado");
+        for(int row=first;row<count && row<first+6;row++){int y=170+(row-first)*42;if(row==selected)render_fill_rounded_rect(35,y-25,885,38,10,0xFF315477);OnlinePlugin p;char label[180];const char*name="";if(native){AppItem*a=native_app(u,lib,row);if(a){snprintf(label,sizeof(label),"%s %s",a->section==SECTION_VITA?"[fixo]":library_vita_contains(lib,a->title_id)?"[X]":"[ ]",a->title);name=label;}}else name=store_autoplugin_item(row,&p)?p.name:"";clipped(50,y,name,90,.8f,COLOR_WHITE);}
         if(!count)render_draw_text(50,235,COLOR_WHITE,.8f,native?"Nao foram encontradas aplicacoes compativeis.":"A procurar o catalogo / sem dados carregados.");
         if(!native){clipped(50,455,status.message,110,.65f,0xFFB8C7DC);OnlinePlugin p;if(store_autoplugin_item(selected,&p))render_draw_text(50,420,0xFFB8C7DC,.7f,p.automatic?"Instalacao automatica simples disponivel. Reiniciar depois.":"Transferencia verificada; configuracao especial ainda sem adaptador.");}
-        render_draw_text(50,490,0xFFB8C7DC,.65f,native?"X: abrir | O: voltar":"X: obter plugin | Triangulo: atualizar catalogo | O: voltar");return true;
+        render_draw_text(50,490,0xFFB8C7DC,.65f,native?"X: adicionar/remover | [fixo]: aplicacao da consola | O: voltar":"X: obter plugin | Triangulo: atualizar catalogo | O: voltar");return true;
     }
     if(u->state==UI_STATE_GAME_SUPPORT){
         render_fill_rect(0,60,960,444,0xFF111827);render_draw_text(50,118,COLOR_WHITE,1.4f,"Opcoes do jogo");

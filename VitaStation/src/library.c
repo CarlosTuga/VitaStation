@@ -1,3 +1,4 @@
+#include "launcher.h"
 #include "library.h"
 #include "psp_media.h"
 #include <stdio.h>
@@ -346,6 +347,7 @@ static int section_indices(Library *lib, AppSection section, int *idx) {
         if((section==SECTION_GAMES && a->section==SECTION_GAMES) ||
            (section==SECTION_HOMEBREW && a->section==SECTION_HOMEBREW) ||
            (section==SECTION_PSP_PS1 && a->section==SECTION_PSP_PS1) ||
+           (section==SECTION_VITA && (a->section==SECTION_VITA || library_vita_contains(lib,a->title_id))) ||
            (section==SECTION_RECENT && a->last_played) ||
            (section==SECTION_FAVORITES && a->is_favorite)) idx[n++]=i;
     }
@@ -410,4 +412,16 @@ void library_classify_catalog(Library*lib,const char*games,const char*demos){
         fclose(f);
     }
     library_update_indices(lib);
+}
+
+/* Persisted section IDs stay stable; only their presentation order changes. */
+AppSection library_tab_section(int position){static const AppSection order[]={SECTION_GAMES,SECTION_VITA,SECTION_HOMEBREW,SECTION_RECENT,SECTION_FAVORITES,SECTION_STORE,SECTION_PSP_PS1};return position>=0 && position<SECTION_COUNT?order[position]:SECTION_GAMES;}
+int library_tab_position(AppSection section){for(int i=0;i<SECTION_COUNT;i++)if(library_tab_section(i)==section)return i;return 0;}
+bool library_vita_contains(const Library*lib,const char*id){if(!lib || !id)return false;for(int i=0;i<lib->vita_count;i++)if(!strcmp(lib->vita_ids[i],id))return true;return false;}
+bool library_vita_set(Library*lib,const char*id,bool enabled){
+ if(!lib || !launcher_title_id_valid(id) || !strcmp(id,"VTST00001"))return false;
+ for(int i=0;i<lib->vita_count;i++)if(!strcmp(lib->vita_ids[i],id)){if(!enabled){for(int j=i;j+1<lib->vita_count;j++)memcpy(lib->vita_ids[j],lib->vita_ids[j+1],10);lib->vita_count--;}return true;}
+ if(!enabled)return true;
+ if(lib->vita_count>=MAX_APPS)return false;
+ memcpy(lib->vita_ids[lib->vita_count++],id,10);return true;
 }

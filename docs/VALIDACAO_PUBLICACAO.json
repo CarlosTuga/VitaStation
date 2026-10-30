@@ -1,7 +1,7 @@
 {
-  "version": "1.6.13-beta",
+  "version": "1.6.14-beta",
   "covers_version": "1.04",
-  "date": "2026-10-29",
+  "date": "2026-10-30",
   "source_code_modified": true,
   "line_endings_normalized": true,
   "public_asset_hash_metadata_refreshed": true,
@@ -23,7 +23,8 @@
   "hardware_network_uninstall": "pending",
   "self_update_tests": "passed: resource integrity and injected transaction backend",
   "shortcut_parser_tests": "passed",
-  "hardware_app_launch": "user confirmed: applications and Need for Speed Most Wanted open with one X on 1.6.13",
+  "hardware_app_launch": "confirmed on 1.6.13; adapter unchanged; 1.6.14 new features pending hardware test",
   "hardware_audio": "user confirmed working from 1.6.10, unchanged",
-  "hardware_close_dialog": "not separately confirmed"
+  "hardware_close_dialog": "not separately confirmed",
+  "personalization_tests": "passed: stable IDs, persistence, cache, 10 themes, interrupted save"
 }

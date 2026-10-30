@@ -37,6 +37,7 @@ set(SOURCES
     src/bootstrap_state.c
     src/bootstrap.c
     src/texture.c
+    src/personalization.c
     src/theme.c
     src/render.c
     src/ui.c
@@ -141,7 +142,7 @@ if(VITA)
         SceDisplay_stub SceGxm_stub SceSysmodule_stub SceCtrl_stub
         ScePgf_stub ScePvf_stub SceCommonDialog_stub
         SceLibKernel_stub SceKernelThreadMgr_stub SceProcessmgr_stub SceIofilemgr_stub
-        SceAVConfig_stub SceTouch_stub SceAtrac_stub SceAudio_stub ScePower_stub SceAppMgr_stub SceAppUtil_stub SceRtc_stub SceSqlite_stub
+        SceAVConfig_stub SceTouch_stub SceAtrac_stub SceAudio_stub ScePower_stub SceAppMgr_stub SceAppUtil_stub SceRtc_stub SceSqlite_stub ScePhotoExport_stub
     )
 
     # UNSAFE: necessario para ler ux0:app/ de outras aplicacoes e lanca-las.
@@ -158,6 +159,12 @@ if(VITA)
     file(GLOB VS_PLUGIN_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/plugin-sources/*")
     file(GLOB VS_ALIVE_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/alive/*")
     file(GLOB_RECURSE VS_PSP_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/psp-runtime/*")
+    file(GLOB VS_FONT_FILES "${CMAKE_CURRENT_SOURCE_DIR}/assets/fonts/*")
+    set(VS_FONT_ARGS)
+    foreach(font_file IN LISTS VS_FONT_FILES)
+        get_filename_component(font_name "${font_file}" NAME)
+        list(APPEND VS_FONT_ARGS -a "${font_file}=assets/fonts/${font_name}")
+    endforeach()
     set(VS_PLUGIN_ARGS -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json=assets/game-support/sources.json")
     foreach(psp_file IN LISTS VS_PSP_FILES)
         file(RELATIVE_PATH psp_name "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${psp_file}")
@@ -176,13 +183,13 @@ if(VITA)
         list(APPEND VS_PLUGIN_ARGS -a "${alive_file}=assets/alive/${alive_name}")
     endforeach()
     add_custom_command(OUTPUT "${VS_SFO}"
-        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.73 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
+        COMMAND "${VITA_MKSFOEX}" -s APP_VER=01.74 -s TITLE_ID=VTST00001 VitaStation "${VS_SFO}"
         DEPENDS "${VS_SELF}" VERBATIM
     )
     add_custom_command(OUTPUT "${VS_VPK}"
-        COMMAND "${VITA_PACK_VPK}" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/plugins.lua=assets/autoplugin/plugins.lua" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/commit.txt=assets/autoplugin/commit.txt" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/NOTICE.md=assets/autoplugin/NOTICE.md" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/NOTICE.md=assets/audio/NOTICE.md" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/source.json=assets/audio/source.json" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/startup.pcm=assets/audio/startup.pcm" -a "${VS_UPDATER_SELF}=assets/updater/eboot.bin" -a "${VS_UPDATER_SFO}=assets/updater/param.sfo" -a "${VS_MAINT_SELF}=maintenance.self" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
+        COMMAND "${VITA_PACK_VPK}" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/plugins.lua=assets/autoplugin/plugins.lua" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/commit.txt=assets/autoplugin/commit.txt" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/NOTICE.md=assets/autoplugin/NOTICE.md" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/NOTICE.md=assets/audio/NOTICE.md" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/source.json=assets/audio/source.json" -a "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/startup.pcm=assets/audio/startup.pcm" -a "${VS_UPDATER_SELF}=assets/updater/eboot.bin" -a "${VS_UPDATER_SFO}=assets/updater/param.sfo" -a "${VS_MAINT_SELF}=maintenance.self" -a "${VS_ICON}=sce_sys/icon0.png" -a "${VS_LOGO}=assets/brand-logo.png" -a "${VS_CA}=assets/cacert.pem" -a "${VS_BOOT}=assets/plugins/VitaStationBoot.suprx" ${VS_PLUGIN_ARGS} ${VS_FONT_ARGS} -s "${VS_SFO}" -b "${VS_SELF}" "${VS_VPK}.tmp"
         COMMAND "${CMAKE_COMMAND}" -E rename "${VS_VPK}.tmp" "${VS_VPK}"
-        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/plugins.lua" "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/commit.txt" "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/NOTICE.md" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/NOTICE.md" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/source.json" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/startup.pcm" "${VS_UPDATER_SELF}" "${VS_UPDATER_SFO}" "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json" VERBATIM
+        DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/plugins.lua" "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/commit.txt" "${CMAKE_CURRENT_SOURCE_DIR}/assets/autoplugin/NOTICE.md" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/NOTICE.md" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/source.json" "${CMAKE_CURRENT_SOURCE_DIR}/assets/audio/startup.pcm" "${VS_UPDATER_SELF}" "${VS_UPDATER_SFO}" "${VS_MAINT_SELF}" "${VS_SFO}" "${VS_SELF}" "${VS_ICON}" "${VS_LOGO}" "${VS_CA}" "${VS_BOOT}" ${VS_FONT_FILES} ${VS_PLUGIN_FILES} ${VS_PLUGIN_SOURCES} ${VS_ALIVE_FILES} ${VS_PSP_FILES} "${CMAKE_CURRENT_SOURCE_DIR}/assets/game-support/sources.json" VERBATIM
     )
     add_custom_target(VitaStation-vpk ALL DEPENDS "${VS_VPK}")
 else()
