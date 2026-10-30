@@ -1,4 +1,4 @@
-> **1.6.14 beta:** categoria Vita no topo; gestão manual nas definições; dez temas novos, fontes e wallpaper. Bloqueio: exportar imagem e aplicar em Fotografias. Abertura/áudio da 1.6.13 preservados; bridge 1.6.12 inalterado. [Funções, instruções e limites](VitaStation/REVISAO_1.6.14_BETA.md). As novas funções requerem teste físico.
+> **1.6.14 beta:** categoria Vita no topo; gestão manual nas definições; dez esquemas visuais simples, fontes e wallpaper. Bloqueio: exportar imagem e aplicar em Fotografias. Abertura/áudio da 1.6.13 preservados; bridge 1.6.12 inalterado. [Funções, instruções e limites](VitaStation/REVISAO_1.6.14_BETA.md). O utilizador confirmou funcionamento geral nos seus testes e aceitou manter os esquemas visuais simples.
 
 # VitaStation
 
